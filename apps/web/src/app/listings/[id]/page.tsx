@@ -76,12 +76,18 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
               </span>
             </div>
 
-            <button
-              disabled={isSoldOut}
-              className="w-full rounded-full bg-[#2d6a4f] py-4 text-sm font-bold text-white hover:bg-[#1b4332] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              {isSoldOut ? "Sold Out" : "Pesan Sekarang"}
-            </button>
+            {isSoldOut ? (
+              <button disabled className="w-full rounded-full bg-[#2d6a4f] py-4 text-sm font-bold text-white opacity-40 cursor-not-allowed">
+                Sold Out
+              </button>
+            ) : (
+              <Link
+                href={`/checkout?id=${listing.id}`}
+                className="block w-full rounded-full bg-[#2d6a4f] py-4 text-sm font-bold text-white hover:bg-[#1b4332] transition-colors text-center"
+              >
+                Pesan Sekarang
+              </Link>
+            )}
 
             <p className="text-center text-xs text-[#aaa]">
               Bayar saat checkout via e-wallet atau QRIS
