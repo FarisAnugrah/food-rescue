@@ -1,148 +1,290 @@
 import Link from "next/link";
 
 const STATS = [
-  { value: "700+", label: "Ton makanan terbuang/hari" },
-  { value: "22 Jt", label: "Orang kelaparan di Indonesia" },
-  { value: "140K", label: "m³ gas metana/hari" },
+  { value: "185", label: "Merchant Aktif", suffix: "+" },
+  { value: "1.752", label: "Ton Makanan Diselamatkan", suffix: "" },
+  { value: "70", label: "Diskon hingga", suffix: "%" },
 ];
 
 const FEATURES = [
   {
-    icon: "🍱",
+    label: "01",
     title: "Surprise Bag",
-    desc: "Dapatkan makanan berkualitas dari restoran & bakery favoritmu dengan harga 50-70% lebih murah.",
+    desc: "Makanan berkualitas dari restoran & bakery dengan harga 50–70% lebih murah. Tiap bag berbeda — selalu ada kejutan.",
   },
   {
-    icon: "📍",
-    title: "Nearby Pickup",
-    desc: "Temukan merchant terdekat di peta, pesan, dan ambil langsung di lokasi sesuai jadwal.",
+    label: "02",
+    title: "Pickup Fleksibel",
+    desc: "Pesan lewat app, ambil langsung di merchant sesuai pickup window yang ditentukan. Cepat, no queue.",
   },
   {
-    icon: "🌱",
-    title: "Track Impact",
-    desc: "Lihat berapa kg makanan yang kamu selamatkan dan CO2 yang berhasil dicegah.",
+    label: "03",
+    title: "Lacak Dampakmu",
+    desc: "Setiap order yang kamu beli otomatis tercatat — berapa kg makanan yang diselamatkan dan CO₂ yang dicegah.",
   },
 ];
 
-const STEPS = [
-  { step: "1", title: "Cari", desc: "Browse makanan surplus di sekitarmu" },
-  { step: "2", title: "Pesan", desc: "Bayar dengan harga diskon besar" },
-  { step: "3", title: "Ambil", desc: "Pickup di merchant sesuai waktu yang ditentukan" },
+const TESTIMONIALS = [
+  {
+    quote:
+      "Awalnya skeptis, tapi ternyata makanannya masih layak banget. Sekarang tiap sore saya cek app-nya sebelum pulang kerja.",
+    name: "Rendra A.",
+    role: "Consumer, Jakarta Selatan",
+  },
+  {
+    quote:
+      "Dulu makanan sisa tiap malam dibuang. Sekarang malah jadi revenue tambahan. Tim onboarding-nya juga helpful banget.",
+    name: "Dewi S.",
+    role: "Owner Bakery, Bandung",
+  },
 ];
 
 export default function Home() {
   return (
-    <div className="flex flex-col">
-      <nav className="sticky top-0 z-10 flex items-center justify-between border-b bg-white/80 px-6 py-4 backdrop-blur">
-        <span className="text-xl font-bold text-primary">Food Rescue</span>
-        <div className="flex gap-3">
-          <Link
-            href="/auth/login"
-            className="rounded-lg border px-4 py-2 text-sm font-medium hover:bg-gray-50"
-          >
-            Masuk
-          </Link>
-          <Link
-            href="/auth/register"
-            className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-dark"
-          >
-            Daftar
-          </Link>
+    <div className="flex flex-col min-h-screen bg-[#fafaf7]">
+
+      {/* Navbar */}
+      <nav className="sticky top-0 z-20 bg-[#fafaf7]/90 backdrop-blur border-b border-[#e8e4d4]">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+          <span className="text-xl font-bold tracking-tight text-[#1b4332]">
+            food<span className="text-[#2d6a4f]">rescue</span>
+          </span>
+          <div className="hidden gap-8 text-sm font-medium text-[#4a4a4a] sm:flex">
+            <a href="#cara-kerja" className="hover:text-[#2d6a4f] transition-colors">Cara Kerja</a>
+            <a href="#dampak" className="hover:text-[#2d6a4f] transition-colors">Dampak</a>
+            <a href="#merchant" className="hover:text-[#2d6a4f] transition-colors">Untuk Merchant</a>
+          </div>
+          <div className="flex gap-2">
+            <Link
+              href="/auth/login"
+              className="rounded-full px-4 py-2 text-sm font-medium text-[#1b4332] hover:bg-[#d8f3dc] transition-colors"
+            >
+              Masuk
+            </Link>
+            <Link
+              href="/auth/register"
+              className="rounded-full bg-[#2d6a4f] px-5 py-2 text-sm font-medium text-white hover:bg-[#1b4332] transition-colors"
+            >
+              Daftar Gratis
+            </Link>
+          </div>
         </div>
       </nav>
 
-      <section className="flex flex-col items-center gap-6 px-6 py-24 text-center">
-        <h1 className="max-w-2xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
-          Selamatkan Makanan,
+      {/* Hero */}
+      <section className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 py-24 sm:py-32">
+        <span className="rounded-full bg-[#d8f3dc] px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-[#2d6a4f]">
+          Gerakan Food Rescue Indonesia
+        </span>
+        <h1 className="max-w-3xl text-5xl font-bold leading-[1.1] tracking-tight text-[#1b4332] sm:text-7xl">
+          Makanan Lebih.
           <br />
-          <span className="text-primary">Hemat Uangmu</span>
+          <span className="text-[#52b788]">Bukan Sampah.</span>
         </h1>
-        <p className="max-w-lg text-lg text-gray-500">
+        <p className="max-w-xl text-lg text-[#555] leading-relaxed">
           Beli makanan surplus dari restoran & toko di sekitarmu dengan diskon hingga 70%.
-          Kurangi food waste, bantu lingkungan.
+          Kurangi food waste, bantu lingkungan, hemat uang.
         </p>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3 pt-2">
           <Link
             href="/auth/register"
-            className="rounded-lg bg-primary px-6 py-3 font-medium text-white hover:bg-primary-dark"
+            className="rounded-full bg-[#2d6a4f] px-7 py-3.5 text-sm font-semibold text-white hover:bg-[#1b4332] transition-colors"
           >
-            Mulai Sekarang
+            Mulai Selamatkan Makanan
           </Link>
           <a
             href="#cara-kerja"
-            className="rounded-lg border px-6 py-3 font-medium hover:bg-gray-50"
+            className="rounded-full border border-[#c8c4b4] px-7 py-3.5 text-sm font-semibold text-[#1b4332] hover:bg-[#f0ede0] transition-colors"
           >
-            Cara Kerja
+            Lihat Cara Kerja
           </a>
         </div>
+
+        {/* Hero visual placeholder — ganti dengan foto real */}
+        <div className="mt-10 w-full overflow-hidden rounded-2xl bg-[#d8f3dc] aspect-[16/7] flex items-center justify-center">
+          <span className="text-[#2d6a4f] text-sm font-medium opacity-60">
+            [ Hero image — foto makanan merchant ]
+          </span>
+        </div>
       </section>
 
-      <section className="bg-gray-50 px-6 py-16">
-        <div className="mx-auto grid max-w-4xl grid-cols-1 gap-8 sm:grid-cols-3">
+      {/* Stats */}
+      <section id="dampak" className="bg-[#1b4332] py-16">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-0 px-6 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-[#2d6a4f]">
           {STATS.map((s) => (
-            <div key={s.label} className="text-center">
-              <p className="text-3xl font-bold text-primary">{s.value}</p>
-              <p className="mt-1 text-sm text-gray-500">{s.label}</p>
+            <div key={s.label} className="flex flex-col items-center py-10 sm:py-6 text-center">
+              <p className="text-5xl font-bold text-white">
+                {s.value}
+                <span className="text-[#52b788]">{s.suffix}</span>
+              </p>
+              <p className="mt-2 text-sm text-[#95d5b2]">{s.label}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="px-6 py-20">
-        <h2 className="mb-12 text-center text-3xl font-bold">
-          Kenapa Food Rescue?
-        </h2>
-        <div className="mx-auto grid max-w-4xl grid-cols-1 gap-8 sm:grid-cols-3">
+      {/* Features */}
+      <section id="cara-kerja" className="mx-auto max-w-6xl px-6 py-24">
+        <div className="mb-16 flex flex-col gap-3">
+          <span className="text-xs font-semibold uppercase tracking-widest text-[#52b788]">
+            Fitur Utama
+          </span>
+          <h2 className="text-4xl font-bold text-[#1b4332] sm:text-5xl">
+            Semua dalam satu app.
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
           {FEATURES.map((f) => (
-            <div key={f.title} className="rounded-xl border p-6">
-              <span className="text-3xl">{f.icon}</span>
-              <h3 className="mt-3 text-lg font-semibold">{f.title}</h3>
-              <p className="mt-2 text-sm text-gray-500">{f.desc}</p>
+            <div
+              key={f.label}
+              className="group rounded-2xl border border-[#e8e4d4] bg-white p-8 hover:border-[#2d6a4f] hover:shadow-lg transition-all"
+            >
+              <span className="text-xs font-bold text-[#c8c4b4]">{f.label}</span>
+              <h3 className="mt-4 text-xl font-bold text-[#1b4332]">{f.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-[#666]">{f.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section id="cara-kerja" className="bg-gray-50 px-6 py-20">
-        <h2 className="mb-12 text-center text-3xl font-bold">Cara Kerja</h2>
-        <div className="mx-auto grid max-w-3xl grid-cols-1 gap-8 sm:grid-cols-3">
-          {STEPS.map((s) => (
-            <div key={s.step} className="text-center">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary text-lg font-bold text-white">
-                {s.step}
+      {/* How it works */}
+      <section className="bg-[#fefae0] py-24">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="mb-16 flex flex-col gap-3">
+            <span className="text-xs font-semibold uppercase tracking-widest text-[#52b788]">
+              Cara Kerja
+            </span>
+            <h2 className="text-4xl font-bold text-[#1b4332] sm:text-5xl">
+              3 langkah, selesai.
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+            {[
+              { n: "1", t: "Cari di Sekitarmu", d: "Buka app, lihat daftar merchant & surprise bag yang tersedia di dekatmu hari ini." },
+              { n: "2", t: "Pesan & Bayar", d: "Pilih bag, bayar via e-wallet atau QRIS. Harga sudah diskon besar — langsung konfirmasi." },
+              { n: "3", t: "Pickup & Nikmati", d: "Tunjukkan QR code ke merchant, ambil makananmu dalam pickup window yang ditentukan." },
+            ].map((s) => (
+              <div key={s.n} className="flex gap-5">
+                <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#2d6a4f] text-sm font-bold text-white">
+                  {s.n}
+                </span>
+                <div>
+                  <h3 className="font-bold text-[#1b4332]">{s.t}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-[#666]">{s.d}</p>
+                </div>
               </div>
-              <h3 className="mt-4 text-lg font-semibold">{s.title}</h3>
-              <p className="mt-1 text-sm text-gray-500">{s.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="px-6 py-20">
-        <div className="mx-auto max-w-2xl rounded-2xl bg-primary p-12 text-center text-white">
-          <h2 className="text-3xl font-bold">Bergabung Sekarang</h2>
-          <p className="mt-3 text-primary-dark/70 text-green-100">
-            Jadilah bagian dari gerakan menyelamatkan makanan di Indonesia.
-          </p>
-          <div className="mt-6 flex justify-center gap-3">
-            <Link
-              href="/auth/register"
-              className="rounded-lg bg-white px-6 py-3 font-medium text-primary hover:bg-gray-100"
-            >
-              Daftar sebagai Consumer
-            </Link>
-            <Link
-              href="/auth/register"
-              className="rounded-lg border border-white px-6 py-3 font-medium text-white hover:bg-primary-dark"
-            >
-              Daftar sebagai Merchant
-            </Link>
+            ))}
           </div>
         </div>
       </section>
 
-      <footer className="border-t px-6 py-8 text-center text-sm text-gray-400">
-        &copy; {new Date().getFullYear()} Food Rescue. Selamatkan makanan, kurangi limbah.
+      {/* Testimonials */}
+      <section className="mx-auto max-w-6xl px-6 py-24">
+        <div className="mb-16 flex flex-col gap-3">
+          <span className="text-xs font-semibold uppercase tracking-widest text-[#52b788]">
+            Kata Mereka
+          </span>
+          <h2 className="text-4xl font-bold text-[#1b4332] sm:text-5xl">
+            Sudah dirasakan manfaatnya.
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          {TESTIMONIALS.map((t) => (
+            <div
+              key={t.name}
+              className="rounded-2xl bg-[#f4f1de] p-8 flex flex-col gap-6"
+            >
+              <p className="text-lg leading-relaxed text-[#333]">
+                &ldquo;{t.quote}&rdquo;
+              </p>
+              <div>
+                <p className="font-semibold text-[#1b4332]">{t.name}</p>
+                <p className="text-sm text-[#888]">{t.role}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Merchant CTA */}
+      <section id="merchant" className="bg-[#1b4332] py-24">
+        <div className="mx-auto max-w-6xl px-6 flex flex-col sm:flex-row items-center justify-between gap-10">
+          <div className="flex flex-col gap-4 max-w-lg">
+            <span className="text-xs font-semibold uppercase tracking-widest text-[#52b788]">
+              Untuk Merchant
+            </span>
+            <h2 className="text-4xl font-bold text-white leading-tight">
+              Surplus makananmu = revenue tambahan.
+            </h2>
+            <p className="text-[#95d5b2] leading-relaxed">
+              Daftarkan tokomu, posting surplus bag dalam hitungan menit.
+              Merchant kami rata-rata mendapat revenue tambahan 15–30% dari makanan yang sebelumnya terbuang.
+            </p>
+            <Link
+              href="/auth/register"
+              className="w-fit rounded-full bg-[#52b788] px-7 py-3.5 text-sm font-semibold text-[#1b4332] hover:bg-[#74c69d] transition-colors"
+            >
+              Daftar sebagai Merchant
+            </Link>
+          </div>
+          <div className="w-full sm:w-80 h-56 rounded-2xl bg-[#2d6a4f] flex items-center justify-center">
+            <span className="text-[#52b788] text-sm opacity-60">[ foto merchant ]</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="mx-auto max-w-6xl px-6 py-24 text-center">
+        <h2 className="text-4xl font-bold text-[#1b4332] sm:text-5xl">
+          Siap menyelamatkan makanan pertamamu?
+        </h2>
+        <p className="mx-auto mt-4 max-w-md text-[#666]">
+          Gratis. Tidak perlu kartu kredit. Langsung bisa order dalam 5 menit.
+        </p>
+        <div className="mt-8 flex justify-center gap-3 flex-wrap">
+          <Link
+            href="/auth/register"
+            className="rounded-full bg-[#2d6a4f] px-8 py-4 font-semibold text-white hover:bg-[#1b4332] transition-colors"
+          >
+            Buat Akun Gratis
+          </Link>
+          <Link
+            href="/auth/login"
+            className="rounded-full border border-[#c8c4b4] px-8 py-4 font-semibold text-[#1b4332] hover:bg-[#f0ede0] transition-colors"
+          >
+            Sudah punya akun
+          </Link>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-[#e8e4d4] bg-[#fafaf7]">
+        <div className="mx-auto max-w-6xl px-6 py-12 flex flex-col sm:flex-row justify-between gap-8 text-sm text-[#888]">
+          <div>
+            <span className="text-base font-bold text-[#1b4332]">
+              food<span className="text-[#2d6a4f]">rescue</span>
+            </span>
+            <p className="mt-2 max-w-xs leading-relaxed">
+              Platform marketplace food rescue Indonesia. Selamatkan makanan, kurangi limbah.
+            </p>
+          </div>
+          <div className="flex gap-12">
+            <div className="flex flex-col gap-2">
+              <span className="font-semibold text-[#1b4332]">Platform</span>
+              <a href="#cara-kerja" className="hover:text-[#2d6a4f]">Cara Kerja</a>
+              <Link href="/auth/register" className="hover:text-[#2d6a4f]">Daftar Consumer</Link>
+              <Link href="/auth/register" className="hover:text-[#2d6a4f]">Daftar Merchant</Link>
+            </div>
+            <div className="flex flex-col gap-2">
+              <span className="font-semibold text-[#1b4332]">Dampak</span>
+              <a href="#dampak" className="hover:text-[#2d6a4f]">Statistik</a>
+              <a href="#merchant" className="hover:text-[#2d6a4f]">Untuk Merchant</a>
+            </div>
+          </div>
+        </div>
+        <div className="border-t border-[#e8e4d4] py-4 text-center text-xs text-[#aaa]">
+          &copy; {new Date().getFullYear()} Food Rescue Indonesia
+        </div>
       </footer>
     </div>
   );
