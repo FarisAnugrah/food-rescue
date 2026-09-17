@@ -2,26 +2,26 @@
 
 import { createClient } from "./supabase/server";
 import { revalidatePath } from "next/cache";
+import { Invoice } from "./xendit";
 
 export async function createOrder(listingId: string, quantity: number, totalPrice: number, totalWeightKg: number) {
   const supabase = await createClient();
   
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-    // Generate dummy id
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.XENDIT_SECRET_KEY) {
+    // Generate dummy id & dummy invoice URL
     const dummyId = "o-" + Math.random().toString(36).substr(2, 9);
-    return { data: dummyId, error: null };
+    return { data: dummyId, invoiceUrl: `/orders/${dummyId}?success=true`, error: null };
   }
 
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { data: null, error: "Unauthorized" };
+  if (!user) return { data: null, invoiceUrl: null, error: "Unauthorized" };
 
-  // Generate unique QR string (e.g. FR-ABCD-1234)
+  // Get user details for invoice
+  const { data: userData } = await supabase.from("users").select("name, email").eq("id", user.id).single();
+
   const qrCode = "FR-" + Math.random().toString(36).substring(2, 6).toUpperCase() + "-" + Math.floor(1000 + Math.random() * 9000);
-
-  // Note: Dalam production sungguhan, kita harus pakai Postgres Transaction / RPC
-  // untuk kurangi stock & bikin order secara atomic supaya tidak race condition.
-  // Untuk MVP, kita pakai dua request.
   
+  // 1. Create order di DB dengan status PENDING
   const { data: order, error } = await supabase
     .from("orders")
     .insert({
@@ -31,20 +31,43 @@ export async function createOrder(listingId: string, quantity: number, totalPric
       total_price: totalPrice,
       total_weight_kg: totalWeightKg,
       qr_code: qrCode,
-      status: "paid" // Harusnya pending lalu nunggu Midtrans callback. Untuk MVP kita langsung anggap paid.
+      status: "pending" 
     })
     .select("id")
     .single();
 
-  if (error) return { data: null, error: error.message };
+  if (error) return { data: null, invoiceUrl: null, error: error.message };
 
-  // Reduce stock
+  // 2. Reduce stock temporarily (kalau invoice expired nanti harus dikembalikan)
   await supabase.rpc('increment_sold', { x_listing_id: listingId, x_qty: quantity });
 
-  revalidatePath("/orders");
-  revalidatePath(`/listings/${listingId}`);
-  
-  return { data: order.id, error: null };
+  // 3. Create Xendit Invoice
+  try {
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+    
+    const invoice = await Invoice.createInvoice({
+      data: {
+        externalId: order.id,
+        amount: totalPrice,
+        description: `Food Rescue Order - ${quantity} bag(s)`,
+        customer: {
+          givenNames: userData?.name || "Consumer",
+          email: userData?.email || user.email,
+        },
+        successRedirectUrl: `${siteUrl}/orders/${order.id}?success=true`,
+        failureRedirectUrl: `${siteUrl}/checkout?id=${listingId}&error=payment_failed`,
+        currency: "IDR",
+        invoiceDuration: 1800, // 30 mins
+      }
+    });
+
+    return { data: order.id, invoiceUrl: invoice.invoiceUrl, error: null };
+  } catch (err: any) {
+    // Revert if payment creation fails
+    await supabase.from("orders").delete().eq("id", order.id);
+    await supabase.rpc('increment_sold', { x_listing_id: listingId, x_qty: -quantity });
+    return { data: null, invoiceUrl: null, error: "Gagal membuat pembayaran" };
+  }
 }
 
 export async function verifyOrder(orderId: string) {
