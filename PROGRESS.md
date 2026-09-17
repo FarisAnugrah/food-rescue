@@ -9,10 +9,10 @@
 - [x] Create docs (APPFLOW, PRD, SRS, UML, USER_STORIES, BRD)
 - [x] Update docs with FoodCycle Indonesia insights
 - [x] Setup git repository & branching (development/staging/production)
-- [ ] Initialize frontend project (Next.js)
-- [ ] Initialize mobile project (React Native / Expo)
-- [ ] Setup Supabase (database, auth, storage)
-- [ ] Design & migrate database schema
+- [x] Initialize frontend project (Next.js)
+- [x] Initialize mobile project (React Native / Expo)
+- [x] Setup Supabase (database, auth, storage)
+- [x] Design & migrate database schema
 - [ ] Setup Midtrans sandbox
 
 ## Phase 2: MVP Development
@@ -30,11 +30,11 @@
 
 ## Phase 3: Enhanced Features
 - [ ] Consumer: Personal impact dashboard & badges
-- [ ] Merchant: Analytics dashboard (revenue, impact, rating)
-- [ ] Merchant: Food Waste Warrior badge system
+- [x] Merchant: Analytics dashboard (revenue, impact, rating)
+- [x] Merchant: Food Waste Warrior badge system
 - [ ] Push notifications (order, pickup reminder, weekly summary)
 - [ ] Review & rating system
-- [ ] Admin: Impact dashboard & merchant leaderboard
+- [x] Admin: Impact dashboard & merchant leaderboard
 
 ## Phase 4: Launch
 - [ ] QA & Testing
