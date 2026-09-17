@@ -1,22 +1,45 @@
 # Project Progress — Food Rescue
 
-## Phase 1: Planning & Setup
+## Phase 0: Research & Reference
 - [x] Brainstorming & ideation
-- [x] Create initial documentation (APPFLOW, PRD, SRS, UML, USER_STORIES, BRD)
-- [ ] Initialize frontend project (Next.js/React Native)
-- [ ] Setup backend / Supabase
-- [ ] Design database schema
+- [x] Study referensi FoodCycle Indonesia (food rescue workflow, impact metrics, food safety)
+- [x] Create initial documentation
+
+## Phase 1: Planning & Setup
+- [x] Create docs (APPFLOW, PRD, SRS, UML, USER_STORIES, BRD)
+- [x] Update docs with FoodCycle Indonesia insights
+- [x] Setup git repository & branching (development/staging/production)
+- [ ] Initialize frontend project (Next.js)
+- [ ] Initialize mobile project (React Native / Expo)
+- [ ] Setup Supabase (database, auth, storage)
+- [ ] Design & migrate database schema
+- [ ] Setup Midtrans sandbox
 
 ## Phase 2: MVP Development
-- [ ] Authentication (Consumer, Merchant, Admin)
-- [ ] Merchant: Create/manage listings
-- [ ] Consumer: Browse/search listings
-- [ ] Consumer: Checkout & Payment integration
-- [ ] Merchant: Manage orders & QR scanning
-- [ ] Admin: Merchant approval dashboard
+- [ ] Authentication (Email/password, Google OAuth, role-based)
+- [ ] Merchant: Registration & document submission
+- [ ] Admin: Merchant verification & approval
+- [ ] Merchant: Create/manage listings (surprise bag + specific items)
+- [ ] Consumer: Browse/search listings (map + list + filters)
+- [ ] Consumer: Listing detail (halal label, weight, pickup window)
+- [ ] Consumer: Checkout & Payment integration (Midtrans)
+- [ ] Consumer: QR code generation after payment
+- [ ] Merchant: Scan QR & verify pickup
+- [ ] Impact tracking: kg food saved, CO2 prevented per order
+- [ ] Impact counter: global stats on home screen
 
-## Phase 3: Launch
+## Phase 3: Enhanced Features
+- [ ] Consumer: Personal impact dashboard & badges
+- [ ] Merchant: Analytics dashboard (revenue, impact, rating)
+- [ ] Merchant: Food Waste Warrior badge system
+- [ ] Push notifications (order, pickup reminder, weekly summary)
+- [ ] Review & rating system
+- [ ] Admin: Impact dashboard & merchant leaderboard
+
+## Phase 4: Launch
 - [ ] QA & Testing
-- [ ] Beta testing (5 merchants, 50 consumers)
-- [ ] Play Store / Web deployment
-- [ ] Post-launch support
+- [ ] Beta testing (10 merchants, 100 consumers, 1 kota)
+- [ ] Play Store submission ($25)
+- [ ] Web deployment (Vercel)
+- [ ] Marketing push (eco-community, kampus, social media)
+- [ ] Post-launch monitoring & iteration
