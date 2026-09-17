@@ -28,13 +28,11 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4 bg-[#fafaf7]">
+    <div className="flex min-h-screen items-center justify-center px-4 bg-[#fafaf7] relative">
+      <Link href="/" className="absolute top-6 left-6 text-sm font-medium text-[#888] hover:text-[#2d6a4f] transition-colors">
+        ← Kembali ke Beranda
+      </Link>
       <div className="w-full max-w-sm space-y-6">
-        <div className="flex justify-center mb-2">
-          <Link href="/" className="text-sm font-medium text-[#888] hover:text-[#2d6a4f] transition-colors">
-            ← Kembali ke Beranda
-          </Link>
-        </div>
         <div className="text-center">
           <h1 className="text-2xl font-bold text-[#1b4332]">
             food<span className="text-[#2d6a4f]">rescue</span>

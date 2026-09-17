@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ScrollToTop } from "@/components/scroll-to-top";
 
 const STATS = [
   { value: "185", label: "Merchant Aktif", suffix: "+" },
@@ -42,6 +43,7 @@ const TESTIMONIALS = [
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-[#fafaf7]">
+      <ScrollToTop />
 
       {/* Navbar */}
       <nav className="sticky top-0 z-20 bg-[#fafaf7]/90 backdrop-blur border-b border-[#e8e4d4]">
