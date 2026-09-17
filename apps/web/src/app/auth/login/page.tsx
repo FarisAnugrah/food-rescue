@@ -30,87 +30,88 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen bg-[#fafaf7]">
       {/* Left Banner */}
-      <div className="hidden lg:flex w-1/2 flex-col justify-between bg-[#1b4332] p-12 relative overflow-hidden">
+      <div className="hidden lg:flex w-1/2 flex-col bg-[#1b4332] p-10 xl:p-14 relative overflow-hidden h-screen">
         {/* Background gradient blobs */}
         <div className="absolute top-[-10%] left-[-10%] w-[80%] h-[80%] rounded-full bg-[#2d6a4f] opacity-60 blur-[120px]"></div>
         <div className="absolute bottom-[-10%] right-[-10%] w-[70%] h-[70%] rounded-full bg-[#52b788] opacity-30 blur-[100px]"></div>
 
         {/* Decorative Floating Badges */}
-        <div className="absolute top-[35%] right-[15%] rotate-12 rounded-full bg-[#d8f3dc] px-4 py-2 text-xs font-bold text-[#1b4332] shadow-xl">
+        <div className="absolute top-[35%] right-[10%] rotate-12 rounded-full bg-[#d8f3dc] px-4 py-2 text-xs font-bold text-[#1b4332] shadow-xl">
           -70% Off
         </div>
-        <div className="absolute bottom-[25%] left-[10%] -rotate-6 rounded-full bg-[#fefae0] px-4 py-2 text-xs font-bold text-[#92400e] shadow-xl">
+        <div className="absolute bottom-[20%] left-[5%] -rotate-6 rounded-full bg-[#fefae0] px-4 py-2 text-xs font-bold text-[#92400e] shadow-xl">
           🌱 Eco Friendly
         </div>
         <div className="absolute top-[50%] left-[5%] rotate-6 rounded-full bg-white/20 backdrop-blur-md px-4 py-2 text-xs font-bold text-white shadow-xl">
           🍱 Surprise Bag
         </div>
 
-        <div className="relative z-10">
+        {/* Header */}
+        <div className="relative z-10 shrink-0">
           <Link href="/" className="text-2xl font-bold tracking-tight text-white">
             food<span className="text-[#52b788]">rescue</span>
           </Link>
-        </div>
-        
-        <div className="relative z-10 mt-8">
-          <h2 className="text-4xl lg:text-5xl font-bold text-white leading-tight">
-            Setiap porsi makanan<br />layak diselamatkan.
-          </h2>
-          <p className="mt-4 text-[#95d5b2] text-lg max-w-md leading-relaxed">
-            Bergabunglah dengan ribuan food hero lainnya. Hemat uang, dan kurangi dampak buruk bagi bumi.
-          </p>
+          <div className="mt-8 xl:mt-12">
+            <h2 className="text-4xl xl:text-5xl font-bold text-white leading-tight">
+              Setiap porsi makanan<br />layak diselamatkan.
+            </h2>
+            <p className="mt-4 text-[#95d5b2] text-sm xl:text-base max-w-md leading-relaxed">
+              Bergabunglah dengan ribuan food hero lainnya. Hemat uang, dan kurangi dampak buruk bagi bumi.
+            </p>
+          </div>
         </div>
 
         {/* Floating cards (Zig-zag 3 cards) */}
-        <div className="relative z-10 flex-1 flex flex-col justify-center gap-5 mt-10">
-          <div className="self-start rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-5 max-w-[280px] transform -rotate-2 hover:rotate-0 transition-all shadow-lg">
+        <div className="relative z-10 flex-1 flex flex-col justify-center gap-4 xl:gap-5 my-8">
+          <div className="self-start rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-4 xl:p-5 w-full max-w-[280px] transform -rotate-2 hover:rotate-0 transition-all shadow-lg">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-8 h-8 rounded-full bg-[#52b788] flex items-center justify-center text-sm">👤</div>
+              <div className="w-8 h-8 rounded-full bg-[#52b788] flex items-center justify-center text-sm shrink-0">👤</div>
               <div>
-                <p className="text-sm font-bold text-white">Rendra A.</p>
-                <p className="text-xs text-[#95d5b2]">Consumer</p>
+                <p className="text-sm font-bold text-white leading-none">Rendra A.</p>
+                <p className="text-xs text-[#95d5b2] mt-1">Consumer</p>
               </div>
             </div>
-            <p className="text-sm text-white/90 leading-relaxed">
+            <p className="text-xs xl:text-sm text-white/90 leading-relaxed">
               "Makan siang enak dengan harga setengahnya. Nyesel baru tau sekarang."
             </p>
           </div>
           
-          <div className="self-center ml-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-5 max-w-[280px] transform rotate-3 hover:rotate-0 transition-all shadow-lg">
+          <div className="self-end xl:self-center xl:ml-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-4 xl:p-5 w-full max-w-[280px] transform rotate-3 hover:rotate-0 transition-all shadow-lg">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-8 h-8 rounded-full bg-[#fefae0] flex items-center justify-center text-sm">🏪</div>
+              <div className="w-8 h-8 rounded-full bg-[#fefae0] flex items-center justify-center text-sm shrink-0">🏪</div>
               <div>
-                <p className="text-sm font-bold text-white">Bakery Makmur</p>
-                <p className="text-xs text-[#95d5b2]">Merchant</p>
+                <p className="text-sm font-bold text-white leading-none">Bakery Makmur</p>
+                <p className="text-xs text-[#95d5b2] mt-1">Merchant</p>
               </div>
             </div>
-            <p className="text-sm text-white/90 leading-relaxed">
+            <p className="text-xs xl:text-sm text-white/90 leading-relaxed">
               "Zero food waste bulan ini. Semua habis terjual via aplikasi."
             </p>
           </div>
 
-          <div className="self-start ml-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-5 max-w-[280px] transform -rotate-1 hover:rotate-0 transition-all shadow-lg">
+          <div className="self-start xl:ml-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-4 xl:p-5 w-full max-w-[280px] transform -rotate-1 hover:rotate-0 transition-all shadow-lg">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-8 h-8 rounded-full bg-[#d8f3dc] flex items-center justify-center text-sm">👩🏻‍🎓</div>
+              <div className="w-8 h-8 rounded-full bg-[#d8f3dc] flex items-center justify-center text-sm shrink-0">👩🏻‍🎓</div>
               <div>
-                <p className="text-sm font-bold text-white">Siti Nurhaliza</p>
-                <p className="text-xs text-[#95d5b2]">Mahasiswi</p>
+                <p className="text-sm font-bold text-white leading-none">Siti N.</p>
+                <p className="text-xs text-[#95d5b2] mt-1">Mahasiswi</p>
               </div>
             </div>
-            <p className="text-sm text-white/90 leading-relaxed">
-              "Sangat membantu anak kos! Tiap jam 8 malam pasti mantengin surprise bag."
+            <p className="text-xs xl:text-sm text-white/90 leading-relaxed">
+              "Sangat membantu anak kos! Tiap malam pasti mantengin surprise bag."
             </p>
           </div>
         </div>
 
-        <div className="relative z-10 flex gap-10 border-t border-white/10 pt-8 mt-6">
+        {/* Footer Stats */}
+        <div className="relative z-10 shrink-0 flex gap-8 border-t border-white/10 pt-6">
           <div>
-            <p className="text-3xl font-bold text-white">1.7K+</p>
-            <p className="text-xs text-[#95d5b2] mt-1 uppercase tracking-wider font-semibold">Ton Diselamatkan</p>
+            <p className="text-2xl xl:text-3xl font-bold text-white">1.7K+</p>
+            <p className="text-[10px] xl:text-xs text-[#95d5b2] mt-1 uppercase tracking-wider font-semibold">Ton Diselamatkan</p>
           </div>
           <div>
-            <p className="text-3xl font-bold text-white">180+</p>
-            <p className="text-xs text-[#95d5b2] mt-1 uppercase tracking-wider font-semibold">Merchant Bergabung</p>
+            <p className="text-2xl xl:text-3xl font-bold text-white">180+</p>
+            <p className="text-[10px] xl:text-xs text-[#95d5b2] mt-1 uppercase tracking-wider font-semibold">Merchant Bergabung</p>
           </div>
         </div>
       </div>
