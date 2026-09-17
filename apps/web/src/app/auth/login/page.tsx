@@ -36,13 +36,13 @@ export default function LoginPage() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[70%] h-[70%] rounded-full bg-[#52b788] opacity-30 blur-[100px]"></div>
 
         {/* Decorative Floating Badges */}
-        <div className="absolute top-[35%] right-[10%] rotate-12 rounded-full bg-[#d8f3dc] px-4 py-2 text-xs font-bold text-[#1b4332] shadow-xl">
+        <div className="absolute top-[15%] right-[5%] rotate-12 rounded-full bg-[#d8f3dc] px-4 py-2 text-xs font-bold text-[#1b4332] shadow-xl">
           -70% Off
         </div>
-        <div className="absolute bottom-[20%] left-[5%] -rotate-6 rounded-full bg-[#fefae0] px-4 py-2 text-xs font-bold text-[#92400e] shadow-xl">
+        <div className="absolute bottom-[10%] left-[5%] -rotate-6 rounded-full bg-[#fefae0] px-4 py-2 text-xs font-bold text-[#92400e] shadow-xl">
           🌱 Eco Friendly
         </div>
-        <div className="absolute top-[50%] left-[5%] rotate-6 rounded-full bg-white/20 backdrop-blur-md px-4 py-2 text-xs font-bold text-white shadow-xl">
+        <div className="absolute top-[50%] right-[-5%] -rotate-6 rounded-full bg-white/20 backdrop-blur-md px-4 py-2 text-xs font-bold text-white shadow-xl">
           🍱 Surprise Bag
         </div>
 
