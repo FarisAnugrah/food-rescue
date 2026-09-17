@@ -28,11 +28,18 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
+    <div className="flex min-h-screen items-center justify-center px-4 bg-[#fafaf7]">
       <div className="w-full max-w-sm space-y-6">
+        <div className="flex justify-center mb-2">
+          <Link href="/" className="text-sm font-medium text-[#888] hover:text-[#2d6a4f] transition-colors">
+            ← Kembali ke Beranda
+          </Link>
+        </div>
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-primary">Food Rescue</h1>
-          <p className="mt-1 text-sm text-gray-500">Masuk ke akunmu</p>
+          <h1 className="text-2xl font-bold text-[#1b4332]">
+            food<span className="text-[#2d6a4f]">rescue</span>
+          </h1>
+          <p className="mt-1 text-sm text-[#555]">Masuk ke akunmu</p>
         </div>
 
         {error && (
@@ -47,19 +54,19 @@ export default function LoginPage() {
             type="email"
             placeholder="Email"
             required
-            className="w-full rounded-lg border px-4 py-2.5 text-sm focus:border-primary focus:outline-none"
+            className="w-full rounded-xl border border-[#e8e4d4] px-4 py-3 text-sm focus:border-[#2d6a4f] focus:outline-none"
           />
           <input
             name="password"
             type="password"
             placeholder="Password"
             required
-            className="w-full rounded-lg border px-4 py-2.5 text-sm focus:border-primary focus:outline-none"
+            className="w-full rounded-xl border border-[#e8e4d4] px-4 py-3 text-sm focus:border-[#2d6a4f] focus:outline-none"
           />
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-primary py-2.5 text-sm font-medium text-white hover:bg-primary-dark disabled:opacity-50"
+            className="w-full rounded-full bg-[#2d6a4f] py-3.5 text-sm font-bold text-white hover:bg-[#1b4332] disabled:opacity-50 transition-colors"
           >
             {loading ? "Loading..." : "Masuk"}
           </button>
@@ -77,14 +84,14 @@ export default function LoginPage() {
         <button
           onClick={handleGoogle}
           disabled={loading}
-          className="w-full rounded-lg border py-2.5 text-sm font-medium hover:bg-gray-50 disabled:opacity-50"
+          className="w-full rounded-full border border-[#e8e4d4] py-3.5 text-sm font-semibold text-[#555] hover:bg-[#f0ede0] disabled:opacity-50 transition-colors"
         >
           Lanjutkan dengan Google
         </button>
 
-        <p className="text-center text-sm text-gray-500">
+        <p className="text-center text-sm text-[#888]">
           Belum punya akun?{" "}
-          <Link href="/auth/register" className="font-medium text-primary">
+          <Link href="/auth/register" className="font-semibold text-[#2d6a4f] hover:underline">
             Daftar
           </Link>
         </p>
