@@ -31,9 +31,20 @@ export default function LoginPage() {
     <div className="flex min-h-screen bg-[#fafaf7]">
       {/* Left Banner */}
       <div className="hidden lg:flex w-1/2 flex-col justify-between bg-[#1b4332] p-12 relative overflow-hidden">
-        {/* Background gradient blob */}
-        <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] rounded-full bg-[#2d6a4f] opacity-50 blur-[100px]"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-[#52b788] opacity-20 blur-[80px]"></div>
+        {/* Background gradient blobs */}
+        <div className="absolute top-[-10%] left-[-10%] w-[80%] h-[80%] rounded-full bg-[#2d6a4f] opacity-60 blur-[120px]"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[70%] h-[70%] rounded-full bg-[#52b788] opacity-30 blur-[100px]"></div>
+
+        {/* Decorative Floating Badges */}
+        <div className="absolute top-[35%] right-[15%] rotate-12 rounded-full bg-[#d8f3dc] px-4 py-2 text-xs font-bold text-[#1b4332] shadow-xl">
+          -70% Off
+        </div>
+        <div className="absolute bottom-[25%] left-[10%] -rotate-6 rounded-full bg-[#fefae0] px-4 py-2 text-xs font-bold text-[#92400e] shadow-xl">
+          🌱 Eco Friendly
+        </div>
+        <div className="absolute top-[50%] left-[5%] rotate-6 rounded-full bg-white/20 backdrop-blur-md px-4 py-2 text-xs font-bold text-white shadow-xl">
+          🍱 Surprise Bag
+        </div>
 
         <div className="relative z-10">
           <Link href="/" className="text-2xl font-bold tracking-tight text-white">
@@ -41,19 +52,19 @@ export default function LoginPage() {
           </Link>
         </div>
         
-        <div className="relative z-10 mt-12">
-          <h2 className="text-4xl font-bold text-white leading-tight">
+        <div className="relative z-10 mt-8">
+          <h2 className="text-4xl lg:text-5xl font-bold text-white leading-tight">
             Setiap porsi makanan<br />layak diselamatkan.
           </h2>
-          <p className="mt-4 text-[#95d5b2] text-lg max-w-md">
+          <p className="mt-4 text-[#95d5b2] text-lg max-w-md leading-relaxed">
             Bergabunglah dengan ribuan food hero lainnya. Hemat uang, dan kurangi dampak buruk bagi bumi.
           </p>
         </div>
 
-        {/* Floating cards */}
-        <div className="relative z-10 flex-1 flex flex-col justify-center gap-6 mt-12">
-          <div className="self-start rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-5 max-w-xs transform -rotate-2 hover:rotate-0 transition-all">
-            <div className="flex items-center gap-3 mb-3">
+        {/* Floating cards (Zig-zag 3 cards) */}
+        <div className="relative z-10 flex-1 flex flex-col justify-center gap-5 mt-10">
+          <div className="self-start rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-5 max-w-[280px] transform -rotate-2 hover:rotate-0 transition-all shadow-lg">
+            <div className="flex items-center gap-3 mb-2">
               <div className="w-8 h-8 rounded-full bg-[#52b788] flex items-center justify-center text-sm">👤</div>
               <div>
                 <p className="text-sm font-bold text-white">Rendra A.</p>
@@ -65,8 +76,8 @@ export default function LoginPage() {
             </p>
           </div>
           
-          <div className="self-end rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-5 max-w-xs transform rotate-2 hover:rotate-0 transition-all">
-            <div className="flex items-center gap-3 mb-3">
+          <div className="self-center ml-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-5 max-w-[280px] transform rotate-3 hover:rotate-0 transition-all shadow-lg">
+            <div className="flex items-center gap-3 mb-2">
               <div className="w-8 h-8 rounded-full bg-[#fefae0] flex items-center justify-center text-sm">🏪</div>
               <div>
                 <p className="text-sm font-bold text-white">Bakery Makmur</p>
@@ -77,16 +88,29 @@ export default function LoginPage() {
               "Zero food waste bulan ini. Semua habis terjual via aplikasi."
             </p>
           </div>
+
+          <div className="self-start ml-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-5 max-w-[280px] transform -rotate-1 hover:rotate-0 transition-all shadow-lg">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-8 h-8 rounded-full bg-[#d8f3dc] flex items-center justify-center text-sm">👩🏻‍🎓</div>
+              <div>
+                <p className="text-sm font-bold text-white">Siti Nurhaliza</p>
+                <p className="text-xs text-[#95d5b2]">Mahasiswi</p>
+              </div>
+            </div>
+            <p className="text-sm text-white/90 leading-relaxed">
+              "Sangat membantu anak kos! Tiap jam 8 malam pasti mantengin surprise bag."
+            </p>
+          </div>
         </div>
 
-        <div className="relative z-10 flex gap-8 border-t border-white/10 pt-6">
+        <div className="relative z-10 flex gap-10 border-t border-white/10 pt-8 mt-6">
           <div>
             <p className="text-3xl font-bold text-white">1.7K+</p>
-            <p className="text-xs text-[#95d5b2] mt-1 uppercase tracking-wider">Ton Diselamatkan</p>
+            <p className="text-xs text-[#95d5b2] mt-1 uppercase tracking-wider font-semibold">Ton Diselamatkan</p>
           </div>
           <div>
             <p className="text-3xl font-bold text-white">180+</p>
-            <p className="text-xs text-[#95d5b2] mt-1 uppercase tracking-wider">Merchant Bergabung</p>
+            <p className="text-xs text-[#95d5b2] mt-1 uppercase tracking-wider font-semibold">Merchant Bergabung</p>
           </div>
         </div>
       </div>

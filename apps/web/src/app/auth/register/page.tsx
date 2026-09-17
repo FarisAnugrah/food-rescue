@@ -31,9 +31,20 @@ export default function RegisterPage() {
     <div className="flex min-h-screen bg-[#fafaf7]">
       {/* Left Banner */}
       <div className="hidden lg:flex w-1/2 flex-col justify-between bg-[#1b4332] p-12 relative overflow-hidden">
-        {/* Background gradient blob */}
-        <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] rounded-full bg-[#2d6a4f] opacity-50 blur-[100px]"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-[#52b788] opacity-20 blur-[80px]"></div>
+        {/* Background gradient blobs */}
+        <div className="absolute top-[-10%] left-[-10%] w-[80%] h-[80%] rounded-full bg-[#2d6a4f] opacity-60 blur-[120px]"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[70%] h-[70%] rounded-full bg-[#52b788] opacity-30 blur-[100px]"></div>
+
+        {/* Decorative Floating Badges */}
+        <div className="absolute top-[35%] right-[15%] rotate-12 rounded-full bg-[#d8f3dc] px-4 py-2 text-xs font-bold text-[#1b4332] shadow-xl">
+          -70% Off
+        </div>
+        <div className="absolute bottom-[25%] left-[10%] -rotate-6 rounded-full bg-[#fefae0] px-4 py-2 text-xs font-bold text-[#92400e] shadow-xl">
+          🌱 Eco Friendly
+        </div>
+        <div className="absolute top-[50%] left-[5%] rotate-6 rounded-full bg-white/20 backdrop-blur-md px-4 py-2 text-xs font-bold text-white shadow-xl">
+          🍱 Surprise Bag
+        </div>
 
         <div className="relative z-10">
           <Link href="/" className="text-2xl font-bold tracking-tight text-white">
@@ -41,18 +52,18 @@ export default function RegisterPage() {
           </Link>
         </div>
         
-        <div className="relative z-10 mt-12">
-          <h2 className="text-4xl font-bold text-white leading-tight">
+        <div className="relative z-10 mt-8">
+          <h2 className="text-4xl lg:text-5xl font-bold text-white leading-tight">
             Mulai langkah kecilmu<br />untuk bumi hari ini.
           </h2>
-          <p className="mt-4 text-[#95d5b2] text-lg max-w-md">
+          <p className="mt-4 text-[#95d5b2] text-lg max-w-md leading-relaxed">
             Daftar secara gratis, telusuri makanan surplus di sekitarmu, dan selamatkan makanan lezat.
           </p>
         </div>
 
-        {/* Info Cards */}
-        <div className="relative z-10 flex-1 flex flex-col justify-center gap-4 mt-12">
-          <div className="rounded-2xl bg-[#2d6a4f]/40 backdrop-blur-md border border-[#52b788]/30 p-5 flex gap-4 items-start max-w-sm">
+        {/* Info Cards (Zig-zag) */}
+        <div className="relative z-10 flex-1 flex flex-col justify-center gap-5 mt-10">
+          <div className="self-start rounded-2xl bg-[#2d6a4f]/40 backdrop-blur-md border border-[#52b788]/30 p-5 flex gap-4 items-start max-w-[320px] transform -rotate-1 hover:rotate-0 transition-all shadow-lg">
             <div className="w-10 h-10 shrink-0 rounded-full bg-[#52b788] flex items-center justify-center text-lg">💰</div>
             <div>
               <h3 className="font-bold text-white text-sm">Hemat hingga 70%</h3>
@@ -60,19 +71,27 @@ export default function RegisterPage() {
             </div>
           </div>
           
-          <div className="rounded-2xl bg-[#2d6a4f]/40 backdrop-blur-md border border-[#52b788]/30 p-5 flex gap-4 items-start max-w-sm ml-8">
+          <div className="self-center ml-12 rounded-2xl bg-[#2d6a4f]/40 backdrop-blur-md border border-[#52b788]/30 p-5 flex gap-4 items-start max-w-[320px] transform rotate-2 hover:rotate-0 transition-all shadow-lg">
             <div className="w-10 h-10 shrink-0 rounded-full bg-[#52b788] flex items-center justify-center text-lg">🌱</div>
             <div>
               <h3 className="font-bold text-white text-sm">Kurangi Emisi CO₂</h3>
               <p className="text-[#95d5b2] text-xs mt-1 leading-relaxed">Setiap 1kg makanan yang diselamatkan mencegah 2.5kg CO₂ terbuang ke atmosfer.</p>
             </div>
           </div>
+
+          <div className="self-start ml-4 rounded-2xl bg-[#2d6a4f]/40 backdrop-blur-md border border-[#52b788]/30 p-5 flex gap-4 items-start max-w-[320px] transform -rotate-2 hover:rotate-0 transition-all shadow-lg">
+            <div className="w-10 h-10 shrink-0 rounded-full bg-[#52b788] flex items-center justify-center text-lg">🤝</div>
+            <div>
+              <h3 className="font-bold text-white text-sm">Bantu Komunitas Lokal</h3>
+              <p className="text-[#95d5b2] text-xs mt-1 leading-relaxed">Dukung merchant lokal mengurangi kerugian akibat makanan yang tidak terjual.</p>
+            </div>
+          </div>
         </div>
 
-        <div className="relative z-10 flex gap-8 border-t border-white/10 pt-6">
+        <div className="relative z-10 flex gap-10 border-t border-white/10 pt-8 mt-6">
           <div>
             <p className="text-3xl font-bold text-white">850+</p>
-            <p className="text-xs text-[#95d5b2] mt-1 uppercase tracking-wider">Food Heroes</p>
+            <p className="text-xs text-[#95d5b2] mt-1 uppercase tracking-wider font-semibold">Food Heroes Bergabung</p>
           </div>
         </div>
       </div>
