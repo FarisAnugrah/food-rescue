@@ -31,22 +31,49 @@ export default function RegisterPage() {
     <div className="flex min-h-screen bg-[#fafaf7]">
       {/* Left Banner */}
       <div className="hidden lg:flex w-1/2 flex-col justify-between bg-[#1b4332] p-12 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[#d8f3dc] opacity-10">
-           {/* Nanti image background letak sini */}
-        </div>
+        {/* Background gradient blob */}
+        <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] rounded-full bg-[#2d6a4f] opacity-50 blur-[100px]"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-[#52b788] opacity-20 blur-[80px]"></div>
+
         <div className="relative z-10">
           <Link href="/" className="text-2xl font-bold tracking-tight text-white">
             food<span className="text-[#52b788]">rescue</span>
           </Link>
         </div>
         
-        <div className="relative z-10">
+        <div className="relative z-10 mt-12">
           <h2 className="text-4xl font-bold text-white leading-tight">
             Mulai langkah kecilmu<br />untuk bumi hari ini.
           </h2>
           <p className="mt-4 text-[#95d5b2] text-lg max-w-md">
             Daftar secara gratis, telusuri makanan surplus di sekitarmu, dan selamatkan makanan lezat.
           </p>
+        </div>
+
+        {/* Info Cards */}
+        <div className="relative z-10 flex-1 flex flex-col justify-center gap-4 mt-12">
+          <div className="rounded-2xl bg-[#2d6a4f]/40 backdrop-blur-md border border-[#52b788]/30 p-5 flex gap-4 items-start max-w-sm">
+            <div className="w-10 h-10 shrink-0 rounded-full bg-[#52b788] flex items-center justify-center text-lg">💰</div>
+            <div>
+              <h3 className="font-bold text-white text-sm">Hemat hingga 70%</h3>
+              <p className="text-[#95d5b2] text-xs mt-1 leading-relaxed">Dapatkan makanan berkualitas dari brand favorit dengan harga jauh lebih murah.</p>
+            </div>
+          </div>
+          
+          <div className="rounded-2xl bg-[#2d6a4f]/40 backdrop-blur-md border border-[#52b788]/30 p-5 flex gap-4 items-start max-w-sm ml-8">
+            <div className="w-10 h-10 shrink-0 rounded-full bg-[#52b788] flex items-center justify-center text-lg">🌱</div>
+            <div>
+              <h3 className="font-bold text-white text-sm">Kurangi Emisi CO₂</h3>
+              <p className="text-[#95d5b2] text-xs mt-1 leading-relaxed">Setiap 1kg makanan yang diselamatkan mencegah 2.5kg CO₂ terbuang ke atmosfer.</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="relative z-10 flex gap-8 border-t border-white/10 pt-6">
+          <div>
+            <p className="text-3xl font-bold text-white">850+</p>
+            <p className="text-xs text-[#95d5b2] mt-1 uppercase tracking-wider">Food Heroes</p>
+          </div>
         </div>
       </div>
 
