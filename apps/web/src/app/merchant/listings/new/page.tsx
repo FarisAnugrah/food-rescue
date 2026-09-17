@@ -3,16 +3,32 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import MerchantNav from "@/components/merchant/merchant-nav";
+import { createListing } from "@/lib/listing-actions";
 
 const CATEGORIES = ["Bakery", "Restoran", "Japanese", "Western", "Healthy", "Lainnya"];
 
 export default function NewListingPage() {
   const router = useRouter();
   const [type, setType] = useState<"surprise_bag" | "specific">("surprise_bag");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    router.push("/merchant/listings");
+    setLoading(true);
+    setError("");
+    
+    const formData = new FormData(e.currentTarget);
+    formData.append("type", type);
+
+    const res = await createListing(formData);
+    
+    if (res.error) {
+      setError(res.error);
+      setLoading(false);
+    } else {
+      router.push("/merchant/listings");
+    }
   }
 
   return (
@@ -24,6 +40,7 @@ export default function NewListingPage() {
         <p className="mt-1 text-[#888] mb-8">Posting surplus makananmu</p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {error && <div className="text-red-500 text-sm bg-red-50 p-3 rounded-xl">{error}</div>}
           <div className="flex gap-3">
             {(["surprise_bag", "specific"] as const).map((t) => (
               <button
@@ -127,12 +144,14 @@ export default function NewListingPage() {
           <div className="flex gap-3 pt-2">
             <button
               type="submit"
-              className="flex-1 rounded-full bg-[#2d6a4f] py-3.5 text-sm font-bold text-white hover:bg-[#1b4332] transition-colors"
+              disabled={loading}
+              className="flex-1 rounded-full bg-[#2d6a4f] py-3.5 text-sm font-bold text-white hover:bg-[#1b4332] transition-colors disabled:opacity-50"
             >
-              Publish Listing
+              {loading ? "Menyimpan..." : "Publish Listing"}
             </button>
             <button
               type="button"
+              disabled={loading}
               onClick={() => router.back()}
               className="rounded-full border border-[#e8e4d4] px-6 py-3.5 text-sm font-medium text-[#555] hover:bg-[#f0ede0] transition-colors"
             >

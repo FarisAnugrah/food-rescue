@@ -1,10 +1,10 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { formatCurrency, calculateDiscount } from "@food-rescue/shared";
-import { DUMMY_LISTINGS } from "@/lib/dummy-data";
+import { getListingByIdAction } from "@/lib/listing-actions";
 
 const PAYMENT_METHODS = [
   { id: "gopay", label: "GoPay" },
@@ -16,12 +16,34 @@ const PAYMENT_METHODS = [
 function CheckoutContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const listingId = searchParams.get("id") ?? "1";
-  const listing = DUMMY_LISTINGS.find((l) => l.id === listingId) ?? DUMMY_LISTINGS[0];
+  const listingId = searchParams.get("id");
+  
+  const [listing, setListing] = useState<any>(null);
+  const [loadingListing, setLoadingListing] = useState(true);
 
   const [qty, setQty] = useState(1);
   const [method, setMethod] = useState("gopay");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!listingId) {
+      router.push("/listings");
+      return;
+    }
+    getListingByIdAction(listingId!).then(({ data }) => {
+      if (data) setListing(data);
+      else router.push("/listings");
+      setLoadingListing(false);
+    });
+  }, [listingId, router]);
+
+  if (loadingListing || !listing) {
+    return (
+      <div className="min-h-screen bg-[#fafaf7] flex items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   const remaining = listing.quantity - listing.quantity_sold;
   const total = listing.discounted_price * qty;
