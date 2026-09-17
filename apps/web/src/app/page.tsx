@@ -72,38 +72,38 @@ export default function Home() {
       </nav>
 
       {/* Hero */}
-      <section className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 py-24 sm:py-32">
-        <span className="rounded-full bg-[#d8f3dc] px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-[#2d6a4f]">
-          Gerakan Food Rescue Indonesia
-        </span>
-        <h1 className="max-w-3xl text-5xl font-bold leading-[1.1] tracking-tight text-[#1b4332] sm:text-7xl">
-          Makanan Lebih.
-          <br />
-          <span className="text-[#52b788]">Bukan Sampah.</span>
-        </h1>
-        <p className="max-w-xl text-lg text-[#555] leading-relaxed">
-          Beli makanan surplus dari restoran & toko di sekitarmu dengan diskon hingga 70%.
-          Kurangi food waste, bantu lingkungan, hemat uang.
-        </p>
-        <div className="flex flex-wrap gap-3 pt-2">
-          <Link
-            href="/auth/register"
-            className="rounded-full bg-[#2d6a4f] px-7 py-3.5 text-sm font-semibold text-white hover:bg-[#1b4332] transition-colors"
-          >
-            Mulai Selamatkan Makanan
-          </Link>
-          <a
-            href="#cara-kerja"
-            className="rounded-full border border-[#c8c4b4] px-7 py-3.5 text-sm font-semibold text-[#1b4332] hover:bg-[#f0ede0] transition-colors"
-          >
-            Lihat Cara Kerja
-          </a>
+      <section className="mx-auto grid max-w-6xl grid-cols-1 gap-12 px-6 py-24 sm:grid-cols-2 sm:items-center sm:py-32">
+        <div className="flex flex-col items-start gap-6">
+          <span className="rounded-full bg-[#d8f3dc] px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-[#2d6a4f]">
+            Gerakan Food Rescue Indonesia
+          </span>
+          <h1 className="text-5xl font-bold leading-[1.1] tracking-tight text-[#1b4332] sm:text-6xl">
+            Makanan Lebih.
+            <br />
+            <span className="text-[#52b788]">Bukan Sampah.</span>
+          </h1>
+          <p className="max-w-md text-lg text-[#555] leading-relaxed">
+            Beli makanan surplus dari restoran & toko di sekitarmu dengan diskon hingga 70%.
+            Kurangi food waste, bantu lingkungan, hemat uang.
+          </p>
+          <div className="flex flex-wrap gap-3 pt-2">
+            <Link
+              href="/auth/register"
+              className="rounded-full bg-[#2d6a4f] px-7 py-3.5 text-sm font-semibold text-white hover:bg-[#1b4332] transition-colors"
+            >
+              Mulai Selamatkan Makanan
+            </Link>
+            <a
+              href="#cara-kerja"
+              className="rounded-full border border-[#c8c4b4] px-7 py-3.5 text-sm font-semibold text-[#1b4332] hover:bg-[#f0ede0] transition-colors"
+            >
+              Lihat Cara Kerja
+            </a>
+          </div>
         </div>
-
-        {/* Hero visual placeholder — ganti dengan foto real */}
-        <div className="mt-10 w-full overflow-hidden rounded-2xl bg-[#d8f3dc] aspect-[16/7] flex items-center justify-center">
+        <div className="overflow-hidden rounded-2xl bg-[#d8f3dc] aspect-square sm:aspect-[4/5] flex items-center justify-center">
           <span className="text-[#2d6a4f] text-sm font-medium opacity-60">
-            [ Hero image — foto makanan merchant ]
+            [ Hero image ]
           </span>
         </div>
       </section>
