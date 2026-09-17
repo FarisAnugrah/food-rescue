@@ -47,7 +47,8 @@ export async function getConsumerOrderById(id: string) {
     .select(`
       *,
       listings (
-        title
+        title,
+        merchant_id
       )
     `)
     .eq("id", id)
@@ -57,6 +58,7 @@ export async function getConsumerOrderById(id: string) {
     const transformed = {
       ...data,
       listing_title: data.listings?.title,
+      merchant_id: data.listings?.merchant_id,
     };
     return { data: transformed, error: null };
   }

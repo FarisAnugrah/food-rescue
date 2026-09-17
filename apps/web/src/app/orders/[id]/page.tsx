@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { formatCurrency, formatWeight } from "@food-rescue/shared";
+import { submitReview } from "@/lib/enhanced-actions";
 import { getConsumerOrderById } from "@/lib/order-queries";
 
 export const dynamic = "force-dynamic";
@@ -49,6 +50,9 @@ export default async function OrderDetailPage({ params, searchParams }: { params
       </div>
     );
   }
+
+  // Check if review exists (simulated via status for now, ideally check DB)
+  const canReview = order.status === "picked_up";
 
   return (
     <div className="min-h-screen bg-[#fafaf7]">
@@ -105,6 +109,29 @@ export default async function OrderDetailPage({ params, searchParams }: { params
             </div>
           )}
         </div>
+
+        {canReview && (
+          <div className="rounded-2xl bg-[#d8f3dc] border border-[#b7e4c7] p-6">
+            <h3 className="font-bold text-[#1b4332] mb-2">Beri Ulasan</h3>
+            <p className="text-sm text-[#2d6a4f] mb-4">Bagaimana kondisi makanan yang kamu ambil?</p>
+            <form action={submitReview} className="flex flex-col gap-3">
+              <input type="hidden" name="order_id" value={order.id} />
+              <input type="hidden" name="merchant_id" value={order.merchant_id || "dummy_merchant"} />
+              <select name="rating" required className="rounded-xl border border-[#e8e4d4] px-4 py-3 text-sm focus:border-[#2d6a4f] focus:outline-none">
+                <option value="">Pilih Rating</option>
+                <option value="5">⭐⭐⭐⭐⭐ Sangat Bagus</option>
+                <option value="4">⭐⭐⭐⭐ Bagus</option>
+                <option value="3">⭐⭐⭐ Cukup</option>
+                <option value="2">⭐⭐ Kurang</option>
+                <option value="1">⭐ Buruk</option>
+              </select>
+              <textarea name="comment" placeholder="Tulis komentar opsional..." rows={2} className="rounded-xl border border-[#e8e4d4] px-4 py-3 text-sm focus:border-[#2d6a4f] focus:outline-none resize-none" />
+              <button type="submit" className="rounded-xl bg-[#2d6a4f] py-3 text-sm font-bold text-white hover:bg-[#1b4332] transition-colors mt-2">
+                Kirim Ulasan
+              </button>
+            </form>
+          </div>
+        )}
       </div>
     </div>
   );
