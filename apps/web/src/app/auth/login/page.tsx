@@ -36,7 +36,7 @@ export default function LoginPage() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[70%] h-[70%] rounded-full bg-[#52b788] opacity-30 blur-[100px]"></div>
 
         {/* Decorative Floating Badges Cluster */}
-        <div className="absolute top-[20%] xl:top-[25%] right-[5%] xl:right-[10%] w-72 h-48 z-0 hidden sm:block">
+        <div className="absolute top-[50%] xl:top-[55%] right-[5%] xl:right-[8%] w-72 h-48 z-0 hidden sm:block">
           <div className="absolute top-0 right-10 rotate-12 rounded-full bg-[#d8f3dc] px-4 py-2 text-xs font-bold text-[#1b4332] shadow-xl">
             -70% Off
           </div>
