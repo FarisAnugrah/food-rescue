@@ -35,15 +35,17 @@ export default function RegisterPage() {
         <div className="absolute top-[-10%] left-[-10%] w-[80%] h-[80%] rounded-full bg-[#2d6a4f] opacity-60 blur-[120px]"></div>
         <div className="absolute bottom-[-10%] right-[-10%] w-[70%] h-[70%] rounded-full bg-[#52b788] opacity-30 blur-[100px]"></div>
 
-        {/* Decorative Floating Badges - Posisikan di belakang layer kartu */}
-        <div className="absolute top-[30%] right-[10%] rotate-12 rounded-full bg-[#d8f3dc] px-4 py-2 text-xs font-bold text-[#1b4332] shadow-xl z-0">
-          -70% Off
-        </div>
-        <div className="absolute bottom-[20%] left-[10%] -rotate-6 rounded-full bg-[#fefae0] px-4 py-2 text-xs font-bold text-[#92400e] shadow-xl z-0">
-          🌱 Eco Friendly
-        </div>
-        <div className="absolute top-[45%] left-[10%] rotate-6 rounded-full bg-white/20 backdrop-blur-md px-4 py-2 text-xs font-bold text-white shadow-xl z-0">
-          🍱 Surprise Bag
+        {/* Decorative Floating Badges Cluster */}
+        <div className="absolute top-[15%] xl:top-[20%] right-[10%] xl:right-[15%] flex flex-col items-end gap-3 z-0">
+          <div className="rotate-6 rounded-full bg-[#d8f3dc] px-4 py-2 text-xs font-bold text-[#1b4332] shadow-xl">
+            -70% Off
+          </div>
+          <div className="-rotate-6 mr-8 rounded-full bg-[#fefae0] px-4 py-2 text-xs font-bold text-[#92400e] shadow-xl">
+            🌱 Eco Friendly
+          </div>
+          <div className="rotate-3 mr-2 rounded-full bg-white/20 backdrop-blur-md px-4 py-2 text-xs font-bold text-white shadow-xl">
+            🍱 Surprise Bag
+          </div>
         </div>
 
         {/* Header */}
