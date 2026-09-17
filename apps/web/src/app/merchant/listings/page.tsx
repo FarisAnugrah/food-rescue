@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { formatCurrency } from "@food-rescue/shared";
 import MerchantNav from "@/components/merchant/merchant-nav";
-import { DUMMY_LISTINGS } from "@/lib/dummy-data";
+import { getMerchantListings } from "@/lib/listing-queries";
+
+export const dynamic = "force-dynamic";
 
 const STATUS_STYLES: Record<string, string> = {
   active: "bg-[#d8f3dc] text-[#2d6a4f]",
@@ -15,7 +17,9 @@ const STATUS_LABELS: Record<string, string> = {
   expired: "Expired",
 };
 
-export default function MerchantListings() {
+export default async function MerchantListings() {
+  const { data: listings } = await getMerchantListings();
+
   return (
     <div className="min-h-screen bg-[#fafaf7]">
       <MerchantNav active="/merchant/listings" />
@@ -46,7 +50,7 @@ export default function MerchantListings() {
               </tr>
             </thead>
             <tbody>
-              {DUMMY_LISTINGS.map((l) => {
+              {(listings || []).map((l: any) => {
                 const remaining = l.quantity - l.quantity_sold;
                 const start = new Date(l.pickup_start).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
                 const end = new Date(l.pickup_end).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
