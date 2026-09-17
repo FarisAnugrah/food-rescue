@@ -16,17 +16,17 @@
 - [ ] Setup Midtrans sandbox
 
 ## Phase 2: MVP Development
-- [ ] Authentication (Email/password, Google OAuth, role-based)
-- [ ] Merchant: Registration & document submission
-- [ ] Admin: Merchant verification & approval
-- [ ] Merchant: Create/manage listings (surprise bag + specific items)
-- [ ] Consumer: Browse/search listings (map + list + filters)
-- [ ] Consumer: Listing detail (halal label, weight, pickup window)
-- [ ] Consumer: Checkout & Payment integration (Midtrans)
-- [ ] Consumer: QR code generation after payment
-- [ ] Merchant: Scan QR & verify pickup
-- [ ] Impact tracking: kg food saved, CO2 prevented per order
-- [ ] Impact counter: global stats on home screen
+- [x] Authentication (Email/password, Google OAuth, role-based)
+- [x] Merchant: Registration & document submission
+- [x] Admin: Merchant verification & approval
+- [x] Merchant: Create/manage listings (surprise bag + specific items)
+- [x] Consumer: Browse/search listings (map + list + filters)
+- [x] Consumer: Listing detail (halal label, weight, pickup window)
+- [x] Consumer: Checkout & Payment integration (UI only)
+- [x] Consumer: QR code generation after payment
+- [x] Merchant: Scan QR & verify pickup
+- [x] Impact tracking: kg food saved, CO2 prevented per order
+- [x] Impact counter: global stats on home screen
 
 ## Phase 3: Enhanced Features
 - [ ] Consumer: Personal impact dashboard & badges
