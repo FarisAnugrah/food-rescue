@@ -13,7 +13,7 @@
 - [x] Initialize mobile project (React Native / Expo)
 - [x] Setup Supabase (database, auth, storage)
 - [x] Design & migrate database schema
-- [ ] Setup Midtrans sandbox
+- [x] Setup Xendit payment integration (Checkout & Webhooks)
 
 ## Phase 2: MVP Development
 - [x] Authentication (Email/password, Google OAuth, role-based)
