@@ -1,6 +1,8 @@
 import { formatCurrency } from "@food-rescue/shared";
 import MerchantNav from "@/components/merchant/merchant-nav";
-import { DUMMY_MERCHANT_ORDERS } from "@/lib/dummy-merchant";
+import { getMerchantOrders } from "@/lib/order-queries";
+
+export const dynamic = "force-dynamic";
 
 const STATUS_STYLES: Record<string, string> = {
   paid: "bg-[#fefae0] text-[#92400e]",
@@ -16,9 +18,11 @@ const STATUS_LABELS: Record<string, string> = {
   cancelled: "Dibatalkan",
 };
 
-export default function MerchantOrders() {
-  const pending = DUMMY_MERCHANT_ORDERS.filter((o) => o.status === "paid");
-  const done = DUMMY_MERCHANT_ORDERS.filter((o) => o.status !== "paid");
+export default async function MerchantOrders() {
+  const { data: orders } = await getMerchantOrders();
+  
+  const pending = (orders || []).filter((o: any) => o.status === "paid");
+  const done = (orders || []).filter((o: any) => o.status !== "paid");
 
   return (
     <div className="min-h-screen bg-[#fafaf7]">

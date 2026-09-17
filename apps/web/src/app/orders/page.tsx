@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { formatCurrency, formatWeight } from "@food-rescue/shared";
-import { DUMMY_MERCHANT_ORDERS } from "@/lib/dummy-merchant";
+import { getConsumerOrders } from "@/lib/order-queries";
+
+export const dynamic = "force-dynamic";
 
 const STATUS_STYLES: Record<string, string> = {
   pending: "bg-gray-100 text-gray-500",
@@ -18,7 +20,9 @@ const STATUS_LABELS: Record<string, string> = {
   cancelled: "Dibatalkan",
 };
 
-export default function OrdersPage() {
+export default async function OrdersPage() {
+  const { data: orders } = await getConsumerOrders();
+
   return (
     <div className="min-h-screen bg-[#fafaf7]">
       <nav className="sticky top-0 z-20 bg-[#fafaf7]/90 backdrop-blur border-b border-[#e8e4d4]">
@@ -38,7 +42,9 @@ export default function OrdersPage() {
         <p className="text-[#888] mb-8">Riwayat & pickup</p>
 
         <div className="flex flex-col gap-4">
-          {DUMMY_MERCHANT_ORDERS.map((o) => (
+          {(orders || []).length === 0 ? (
+            <p className="text-[#aaa]">Belum ada order. Mulai rescue makanan sekarang!</p>
+          ) : (orders || []).map((o: any) => (
             <Link
               key={o.id}
               href={`/orders/${o.id}`}

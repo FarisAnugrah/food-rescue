@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { formatCurrency, formatWeight } from "@food-rescue/shared";
-import { DUMMY_MERCHANT_ORDERS } from "@/lib/dummy-merchant";
+import { getConsumerOrderById } from "@/lib/order-queries";
+
+export const dynamic = "force-dynamic";
 
 const STATUS_STYLES: Record<string, string> = {
   paid: "bg-[#fefae0] text-[#92400e]",
@@ -17,10 +19,14 @@ const STATUS_LABELS: Record<string, string> = {
   cancelled: "Dibatalkan",
 };
 
-export default async function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function OrderDetailPage({ params, searchParams }: { params: Promise<{ id: string }>, searchParams: Promise<{ success?: string }> }) {
   const { id } = await params;
+  const { success } = await searchParams;
 
-  if (id === "o-new") {
+  const { data: order } = await getConsumerOrderById(id);
+  if (!order) notFound();
+
+  if (success === "true") {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-[#fafaf7] px-6 text-center">
         <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#d8f3dc] text-4xl">✓</div>
@@ -30,7 +36,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
           <div className="h-48 w-48 rounded-xl bg-[#f0ede0] flex items-center justify-center">
             <span className="text-sm text-[#aaa]">[ QR Code ]</span>
           </div>
-          <p className="font-mono text-lg font-bold text-[#1b4332]">FR-NEW-XYZ789</p>
+          <p className="font-mono text-lg font-bold text-[#1b4332]">{order.qr_code}</p>
         </div>
         <div className="flex gap-3">
           <Link href="/orders" className="rounded-full border border-[#e8e4d4] px-6 py-3 text-sm font-medium text-[#1b4332] hover:bg-[#f0ede0]">
@@ -43,9 +49,6 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
       </div>
     );
   }
-
-  const order = DUMMY_MERCHANT_ORDERS.find((o) => o.id === id);
-  if (!order) notFound();
 
   return (
     <div className="min-h-screen bg-[#fafaf7]">
