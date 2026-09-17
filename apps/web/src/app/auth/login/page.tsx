@@ -52,11 +52,11 @@ export default function LoginPage() {
 
       {/* Right Form */}
       <div className="flex w-full lg:w-1/2 flex-col justify-center px-8 sm:px-16 xl:px-32 relative">
-        <Link href="/" className="absolute top-8 left-8 lg:hidden text-2xl font-bold tracking-tight text-[#1b4332]">
-          food<span className="text-[#2d6a4f]">rescue</span>
+        <Link href="/" className="absolute top-8 left-8 text-sm font-medium text-[#888] hover:text-[#2d6a4f] transition-colors flex items-center gap-2">
+          <span>←</span> Kembali ke Beranda
         </Link>
         
-        <div className="w-full max-w-sm mx-auto space-y-8">
+        <div className="w-full max-w-sm mx-auto space-y-8 mt-12 lg:mt-0">
           <div>
             <h1 className="text-3xl font-bold text-[#1b4332]">Selamat datang kembali</h1>
             <p className="mt-2 text-[#666]">Masuk ke akun untuk mulai rescue makanan hari ini.</p>
