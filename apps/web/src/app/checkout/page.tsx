@@ -57,7 +57,7 @@ function CheckoutContent() {
     setLoading(true);
     setError("");
     
-    const { data: orderId, error: err } = await createOrder(listing.id, qty, total, weightTotal);
+    const { data: orderId, invoiceUrl, error: err } = await createOrder(listing.id, qty, total, weightTotal);
     
     if (err) {
       setError(err);
@@ -65,7 +65,11 @@ function CheckoutContent() {
       return;
     }
 
-    router.push(`/orders/${orderId}?success=true`);
+    if (invoiceUrl) {
+      window.location.href = invoiceUrl; // Redirect to Xendit
+    } else {
+      router.push(`/orders/${orderId}?success=true`);
+    }
   }
 
   return (
