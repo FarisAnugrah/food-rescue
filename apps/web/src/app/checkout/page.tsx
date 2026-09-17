@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { formatCurrency, calculateDiscount } from "@food-rescue/shared";
 import { getListingByIdAction } from "@/lib/listing-actions";
+import { createOrder } from "@/lib/order-actions";
 
 const PAYMENT_METHODS = [
   { id: "gopay", label: "GoPay" },
@@ -24,13 +25,14 @@ function CheckoutContent() {
   const [qty, setQty] = useState(1);
   const [method, setMethod] = useState("gopay");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (!listingId) {
       router.push("/listings");
       return;
     }
-    getListingByIdAction(listingId!).then(({ data }) => {
+    getListingByIdAction(listingId).then(({ data }) => {
       if (data) setListing(data);
       else router.push("/listings");
       setLoadingListing(false);
@@ -49,12 +51,21 @@ function CheckoutContent() {
   const total = listing.discounted_price * qty;
   const saved = (listing.original_price - listing.discounted_price) * qty;
   const discount = calculateDiscount(listing.original_price, listing.discounted_price);
+  const weightTotal = listing.weight_kg * qty;
 
-  function handlePay() {
+  async function handlePay() {
     setLoading(true);
-    setTimeout(() => {
-      router.push("/orders/o-new?success=true");
-    }, 1500);
+    setError("");
+    
+    const { data: orderId, error: err } = await createOrder(listing.id, qty, total, weightTotal);
+    
+    if (err) {
+      setError(err);
+      setLoading(false);
+      return;
+    }
+
+    router.push(`/orders/${orderId}?success=true`);
   }
 
   return (
@@ -137,6 +148,12 @@ function CheckoutContent() {
             <span>{formatCurrency(total)}</span>
           </div>
         </div>
+
+        {error && (
+          <div className="rounded-xl bg-red-50 p-4 text-sm text-red-600 border border-red-100">
+            {error}
+          </div>
+        )}
 
         <button
           onClick={handlePay}
