@@ -148,7 +148,7 @@ export default function RegisterPage() {
               <input
                 name="email"
                 type="email"
-                placeholder="nama@email.com"
+                placeholder={role === "consumer" ? "nama@email.com" : "admin@namatoko.com"}
                 required
                 className="w-full rounded-xl border border-[#e8e4d4] px-4 py-3.5 text-sm focus:border-[#2d6a4f] focus:outline-none focus:ring-1 focus:ring-[#2d6a4f] transition-all bg-white"
               />
