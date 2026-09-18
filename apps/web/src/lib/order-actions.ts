@@ -59,7 +59,8 @@ export async function createOrder(listingId: string, quantity: number, totalPric
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Basic ${xenditToken}`
+            "Authorization": `Basic ${xenditToken}`,
+            "api-version": "2022-07-31"
           },
           body: JSON.stringify({
             reference_id: order.id,
@@ -70,6 +71,8 @@ export async function createOrder(listingId: string, quantity: number, totalPric
         });
 
         if (!qrRes.ok) {
+          const errData = await qrRes.json();
+          console.error("Xendit API Response:", errData);
           throw new Error("Gagal memanggil API Xendit QRIS");
         }
 
