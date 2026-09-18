@@ -7,19 +7,37 @@ export default function ProfileForm({ merchant }: { merchant: any }) {
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState({ text: "", type: "" });
   const [coords, setCoords] = useState({ lat: merchant.lat || "", lng: merchant.lng || "" });
+  const [address, setAddress] = useState(merchant.address || "");
 
   function getLocation() {
     if (navigator.geolocation) {
+      setLoading(true);
       navigator.geolocation.getCurrentPosition(
-        (position) => {
+        async (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
           setCoords({
-            lat: position.coords.latitude.toString(),
-            lng: position.coords.longitude.toString(),
+            lat: lat.toString(),
+            lng: lng.toString(),
           });
+
+          // Reverse Geocoding via OpenStreetMap (gratis, tanpa API Key)
+          try {
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+            const data = await res.json();
+            if (data && data.display_name) {
+              setAddress(data.display_name);
+            }
+          } catch (err) {
+            console.error("Gagal mendapatkan nama jalan", err);
+          }
+          setLoading(false);
         },
         (error) => {
           alert("Gagal mendapatkan lokasi. Pastikan izin lokasi diberikan.");
-        }
+          setLoading(false);
+        },
+        { enableHighAccuracy: true }
       );
     } else {
       alert("Browser tidak mendukung Geolocation.");
@@ -78,7 +96,7 @@ export default function ProfileForm({ merchant }: { merchant: any }) {
 
       <div>
         <label className="block text-sm font-semibold text-[#1b4332] mb-1">Alamat Lengkap</label>
-        <textarea name="address" defaultValue={merchant.address} rows={3} required className="w-full rounded-xl border border-[#e8e4d4] px-4 py-2 bg-white text-sm focus:border-[#2d6a4f] outline-none resize-none" />
+        <textarea name="address" value={address} onChange={(e) => setAddress(e.target.value)} rows={3} required className="w-full rounded-xl border border-[#e8e4d4] px-4 py-2 bg-white text-sm focus:border-[#2d6a4f] outline-none resize-none" />
       </div>
 
       <div className="grid grid-cols-2 gap-4">
