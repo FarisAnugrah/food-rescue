@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import { logout } from "@/lib/auth-actions";
 import ListingCard from "@/components/listing-card";
+import NotificationBell from "@/components/notification-bell";
 import type { Listing } from "@food-rescue/shared";
 
 const CATEGORIES = ["Semua", "Bakery", "Restoran", "Japanese", "Western", "Healthy"];
@@ -38,6 +39,7 @@ export default function ListingsClient({ initialListings, user }: { initialListi
             <Link href="/orders" className="rounded-full px-4 py-2 text-sm font-medium text-[#1b4332] hover:bg-[#d8f3dc] transition-colors">
               My Orders
             </Link>
+            <NotificationBell />
             <div className="h-4 w-px bg-[#e8e4d4] mx-1" />
             <Link href="/dashboard" title="Dashboard">
               <div className="w-8 h-8 rounded-full bg-[#2d6a4f] text-white flex items-center justify-center text-sm font-bold shadow-sm hover:scale-105 transition-transform cursor-pointer">
