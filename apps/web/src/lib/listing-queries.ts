@@ -36,6 +36,35 @@ export async function getActiveListings() {
   return { data: null, error: error?.message };
 }
 
+export async function getMerchantReviewsForConsumer(merchantId: string) {
+  const supabase = await createClient();
+  
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return { data: [] };
+
+  const { data } = await supabase
+    .from("reviews")
+    .select(`
+      id,
+      rating,
+      comment,
+      created_at,
+      users ( name )
+    `)
+    .eq("merchant_id", merchantId)
+    .order("created_at", { ascending: false })
+    .limit(5);
+
+  const formatted = (data || []).map((r: any) => ({
+    id: r.id,
+    rating: r.rating,
+    comment: r.comment,
+    created_at: r.created_at,
+    user_name: r.users?.name || "Anonim",
+  }));
+
+  return { data: formatted };
+}
+
 export async function getListingByIdQuery(id: string) {
   const supabase = await createClient();
   
@@ -49,8 +78,10 @@ export async function getListingByIdQuery(id: string) {
     .select(`
       *,
       merchants (
+        id,
         store_name,
-        address
+        address,
+        rating
       )
     `)
     .eq("id", id)
@@ -59,8 +90,10 @@ export async function getListingByIdQuery(id: string) {
   if (data) {
     const transformed = {
       ...data,
-      merchant_name: data.merchants?.store_name,
-      merchant_address: data.merchants?.address,
+      merchant_id: data.merchants?.id,
+      merchant_name: data.merchants?.store_name || "Unknown Merchant",
+      merchant_address: data.merchants?.address || "-",
+      merchant_rating: data.merchants?.rating || 0,
     };
     return { data: transformed, error: null };
   }

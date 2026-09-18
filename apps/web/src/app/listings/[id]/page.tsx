@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { formatCurrency, calculateDiscount } from "@food-rescue/shared";
-import { getListingByIdQuery } from "@/lib/listing-queries";
-import { Image as ImageIcon } from "lucide-react";
+import { getListingByIdQuery, getMerchantReviewsForConsumer } from "@/lib/listing-queries";
+import { Image as ImageIcon, Star } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +11,8 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
   const { data: listing } = await getListingByIdQuery(id);
 
   if (!listing) notFound();
+
+  const { data: reviews } = await getMerchantReviewsForConsumer(listing.merchant_id);
 
   const discount = calculateDiscount(listing.original_price, listing.discounted_price);
   const remaining = listing.quantity - listing.quantity_sold;
@@ -31,7 +33,11 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
       <div className="mx-auto max-w-4xl px-6 py-10">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2">
           <div className="overflow-hidden rounded-2xl bg-[#f0ede0] aspect-square flex items-center justify-center relative">
-            <ImageIcon className="w-16 h-16 text-[#aaa]" />
+            {listing.photo_url ? (
+              <img src={listing.photo_url} alt={listing.title} className="w-full h-full object-cover" />
+            ) : (
+              <ImageIcon className="w-16 h-16 text-[#aaa]" />
+            )}
             <span className="absolute top-4 left-4 rounded-full bg-[#2d6a4f] px-3 py-1.5 text-sm font-bold text-white">
               -{discount}%
             </span>
@@ -46,8 +52,14 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
             <div>
               <span className="text-sm font-semibold text-[#52b788]">{listing.category}</span>
               <h1 className="mt-1 text-2xl font-bold text-[#1b4332]">{listing.title}</h1>
-              <p className="mt-1 text-sm text-[#888]">{listing.merchant_name}</p>
-              <p className="text-xs text-[#aaa]">{listing.merchant_address}</p>
+              <div className="mt-2 flex items-center gap-2">
+                <p className="text-sm font-bold text-[#1b4332]">{listing.merchant_name}</p>
+                <div className="flex items-center gap-1 rounded-full bg-[#fefae0] px-2 py-0.5 text-xs font-bold text-[#92400e]">
+                  <Star className="w-3 h-3 fill-[#92400e]" />
+                  <span>{listing.merchant_rating || "Baru"}</span>
+                </div>
+              </div>
+              <p className="text-xs text-[#aaa] mt-1">{listing.merchant_address}</p>
             </div>
 
             <p className="text-sm leading-relaxed text-[#555]">{listing.description}</p>
@@ -96,6 +108,35 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
               Bayar saat checkout via e-wallet atau QRIS
             </p>
           </div>
+        </div>
+
+        {/* Reviews Section */}
+        <div className="mt-16 pt-10 border-t border-[#e8e4d4]">
+          <h2 className="text-xl font-bold text-[#1b4332] mb-6">Ulasan Pembeli ({reviews.length})</h2>
+          
+          {reviews.length === 0 ? (
+            <div className="rounded-2xl border border-[#e8e4d4] bg-white p-8 text-center text-[#888]">
+              Belum ada ulasan untuk merchant ini. Jadilah yang pertama!
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {reviews.map((r: any) => (
+                <div key={r.id} className="rounded-2xl border border-[#e8e4d4] bg-white p-5 flex flex-col gap-2">
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-[#1b4332]">{r.user_name}</span>
+                    <div className="flex items-center gap-1">
+                      <Star className="w-4 h-4 fill-[#f59e0b] text-[#f59e0b]" />
+                      <span className="text-sm font-bold text-[#1b4332]">{r.rating}/5</span>
+                    </div>
+                  </div>
+                  {r.comment && <p className="text-sm text-[#555] italic">"{r.comment}"</p>}
+                  <span className="text-xs text-[#aaa] mt-1">
+                    {new Date(r.created_at).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
