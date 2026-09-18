@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
+import { logout } from "@/lib/auth-actions";
 import ListingCard from "@/components/listing-card";
 import type { Listing } from "@food-rescue/shared";
 
@@ -31,10 +32,15 @@ export default function ListingsClient({ initialListings }: { initialListings: (
           <Link href="/" className="text-xl font-bold tracking-tight text-[#1b4332]">
             food<span className="text-[#2d6a4f]">rescue</span>
           </Link>
-          <div className="flex gap-2">
-            <Link href="/dashboard" className="rounded-full px-4 py-2 text-sm font-medium text-[#1b4332] hover:bg-[#d8f3dc] transition-colors">
-              Dashboard
+          <div className="flex gap-2 items-center">
+            <Link href="/orders" className="rounded-full px-4 py-2 text-sm font-medium text-[#1b4332] hover:bg-[#d8f3dc] transition-colors">
+              My Orders
             </Link>
+            <form action={logout}>
+              <button type="submit" className="rounded-full border border-[#e8e4d4] px-4 py-2 text-sm font-medium text-[#555] hover:bg-[#f0ede0] transition-colors">
+                Logout
+              </button>
+            </form>
           </div>
         </div>
       </nav>

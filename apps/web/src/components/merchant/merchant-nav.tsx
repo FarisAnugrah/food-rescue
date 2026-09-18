@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { logout } from "@/lib/auth-actions";
 
 const NAV_ITEMS = [
   { href: "/merchant", label: "Overview" },
@@ -29,6 +30,11 @@ export default function MerchantNav({ active }: { active: string }) {
               {item.label}
             </Link>
           ))}
+          <form action={logout}>
+            <button type="submit" className="ml-2 rounded-full border border-[#e8e4d4] px-4 py-2 text-sm font-medium text-[#555] hover:bg-[#f0ede0] transition-colors">
+              Logout
+            </button>
+          </form>
         </div>
       </div>
     </nav>
