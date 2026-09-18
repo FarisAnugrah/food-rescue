@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { formatCurrency, formatWeight } from "@food-rescue/shared";
 import MerchantNav from "@/components/merchant/merchant-nav";
-import { Medal } from "lucide-react";
+import { Medal, Star } from "lucide-react";
 import { getMerchantAnalytics } from "@/lib/analytics-queries";
 
 export default function AnalyticsClient() {
@@ -103,6 +103,33 @@ export default function AnalyticsClient() {
                   Terus lanjutkan untuk naik level.
                 </p>
               </div>
+            </div>
+
+            <div className="mt-8">
+              <h2 className="text-lg font-bold text-[#1b4332] mb-4">Ulasan Konsumen Terakhir</h2>
+              {(!data?.reviews || data.reviews.length === 0) ? (
+                <div className="rounded-2xl border border-[#e8e4d4] bg-white p-8 text-center text-[#888]">
+                  Belum ada ulasan yang masuk.
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {data.reviews.map((r: any) => (
+                    <div key={r.id} className="rounded-2xl border border-[#e8e4d4] bg-white p-5 flex flex-col gap-2">
+                      <div className="flex justify-between items-center">
+                        <span className="font-bold text-[#1b4332]">{r.user_name}</span>
+                        <div className="flex items-center gap-1">
+                          <Star className="w-4 h-4 fill-[#f59e0b] text-[#f59e0b]" />
+                          <span className="text-sm font-bold text-[#1b4332]">{r.rating}/5</span>
+                        </div>
+                      </div>
+                      {r.comment && <p className="text-sm text-[#555] italic">"{r.comment}"</p>}
+                      <span className="text-xs text-[#aaa] mt-2">
+                        {new Date(r.created_at).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </>
         )}
