@@ -1,6 +1,7 @@
 import { formatCurrency } from "@food-rescue/shared";
 import MerchantNav from "@/components/merchant/merchant-nav";
 import { getMerchantOrders } from "@/lib/order-queries";
+import { verifyOrder } from "@/lib/order-actions";
 
 export const dynamic = "force-dynamic";
 
@@ -52,9 +53,14 @@ export default async function MerchantOrders() {
                       <p className="text-xs text-[#aaa]">Kode QR</p>
                       <p className="font-mono text-sm font-bold text-[#1b4332]">{o.qr_code}</p>
                     </div>
-                    <button className="rounded-full bg-[#2d6a4f] px-4 py-2 text-xs font-bold text-white hover:bg-[#1b4332] transition-colors">
-                      Scan QR
-                    </button>
+                    <form action={async () => {
+                      "use server";
+                      await verifyOrder(o.id);
+                    }}>
+                      <button type="submit" className="rounded-full bg-[#2d6a4f] px-4 py-2 text-xs font-bold text-white hover:bg-[#1b4332] transition-colors">
+                        Verifikasi (Selesai)
+                      </button>
+                    </form>
                   </div>
                 </div>
               ))}
