@@ -29,7 +29,7 @@
 - [x] Impact counter: global stats on home screen
 
 ## Phase 3: Enhanced Features
-- [ ] Consumer: Personal impact dashboard & badges
+- [x] Consumer: Personal impact dashboard & badges
 - [x] Merchant: Analytics dashboard (revenue, impact, rating)
 - [x] Merchant: Food Waste Warrior badge system
 - [x] Push notifications (order, pickup reminder, weekly summary)

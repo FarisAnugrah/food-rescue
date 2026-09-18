@@ -1,34 +1,16 @@
 -- Fungsi untuk mengecek dan mengubah status order menjadi expired
 CREATE OR REPLACE FUNCTION public.auto_expire_orders()
 RETURNS void AS $$
-DECLARE
-  expired_order RECORD;
 BEGIN
-  -- Looping semua order yang masih paid/pending tapi waktu pickup sudah lewat
-  FOR expired_order IN 
-    SELECT o.id, o.listing_id, o.quantity 
-    FROM public.orders o
-    JOIN public.listings l ON o.listing_id = l.id
-    WHERE o.status IN ('pending', 'paid') 
-    -- Expired jika waktu sekarang sudah melebihi 1 jam dari batas akhir pickup
-    AND NOW() > (l.pickup_end + interval '1 hour')
-  LOOP
-    -- 1. Ubah status order jadi expired
-    UPDATE public.orders 
-    SET status = 'expired'::order_status 
-    WHERE id = expired_order.id;
-
-    -- 2. Kembalikan stok (quantity_sold berkurang), 
-    -- dan ubah status listing kalau tadinya sold_out jadi active (meski sudah lewat waktu, 
-    -- ini murni untuk konsistensi akuntansi data stok)
-    UPDATE public.listings
-    SET quantity_sold = GREATEST(0, quantity_sold - expired_order.quantity),
-        status = CASE 
-                   WHEN status = 'sold_out' THEN 'active'::listing_status
-                   ELSE status
-                 END
-    WHERE id = expired_order.listing_id;
-  END LOOP;
+  -- Looping semua order yang masih paid/pending tapi waktu pickup sudah lewat 10 menit
+  -- Uang hangus: kita TIDAK mengembalikan stok / mengurangi quantity_sold
+  -- Merchant tetap bisa klaim revenue dari order 'expired' yang sudah dibayar
+  UPDATE public.orders o
+  SET status = 'expired'::order_status 
+  FROM public.listings l
+  WHERE o.listing_id = l.id
+    AND o.status IN ('pending', 'paid') 
+    AND NOW() > (l.pickup_end + interval '10 minutes');
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
