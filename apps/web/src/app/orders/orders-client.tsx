@@ -25,11 +25,15 @@ const STATUS_LABELS: Record<string, string> = {
 
 export default function OrdersClient({ initialOrders }: { initialOrders: any[] }) {
   const [tab, setTab] = useState<"active" | "history">("active");
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 5;
 
   const activeOrders = initialOrders.filter((o) => ["pending", "paid"].includes(o.status));
   const historyOrders = initialOrders.filter((o) => !["pending", "paid"].includes(o.status));
 
-  const displayedOrders = tab === "active" ? activeOrders : historyOrders;
+  const sourceOrders = tab === "active" ? activeOrders : historyOrders;
+  const displayedOrders = sourceOrders.slice(0, page * itemsPerPage);
+  const hasMore = displayedOrders.length < sourceOrders.length;
 
   return (
     <div className="min-h-screen bg-[#fafaf7]">
@@ -59,16 +63,16 @@ export default function OrdersClient({ initialOrders }: { initialOrders: any[] }
           
           <div className="flex bg-[#f0ede0] p-1 rounded-2xl w-fit">
             <button
-              onClick={() => setTab("active")}
-              className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+              onClick={() => { setTab("active"); setPage(1); }}
+              className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-all ${
                 tab === "active" ? "bg-white text-[#1b4332] shadow-sm" : "text-[#888] hover:text-[#555]"
               }`}
             >
               Aktif ({activeOrders.length})
             </button>
             <button
-              onClick={() => setTab("history")}
-              className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+              onClick={() => { setTab("history"); setPage(1); }}
+              className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-all ${
                 tab === "history" ? "bg-white text-[#1b4332] shadow-sm" : "text-[#888] hover:text-[#555]"
               }`}
             >
@@ -108,6 +112,17 @@ export default function OrdersClient({ initialOrders }: { initialOrders: any[] }
             </Link>
           ))}
         </div>
+
+        {hasMore && (
+          <div className="mt-6 flex justify-center">
+            <button 
+              onClick={() => setPage(p => p + 1)}
+              className="rounded-full border border-[#e8e4d4] px-6 py-2.5 text-sm font-bold text-[#555] hover:bg-[#e8e4d4] transition-colors"
+            >
+              Tampilkan Lebih Banyak
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

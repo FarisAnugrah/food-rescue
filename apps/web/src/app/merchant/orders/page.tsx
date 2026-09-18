@@ -3,22 +3,9 @@ import MerchantNav from "@/components/merchant/merchant-nav";
 import { getMerchantOrders } from "@/lib/order-queries";
 import { verifyOrder } from "@/lib/order-actions";
 import MerchantScanner from "./merchant-scanner";
+import MerchantOrderHistory from "./merchant-order-history";
 
 export const dynamic = "force-dynamic";
-
-const STATUS_STYLES: Record<string, string> = {
-  paid: "bg-[#fefae0] text-[#92400e]",
-  picked_up: "bg-[#d8f3dc] text-[#2d6a4f]",
-  expired: "bg-gray-100 text-gray-400",
-  cancelled: "bg-red-50 text-red-500",
-};
-
-const STATUS_LABELS: Record<string, string> = {
-  paid: "Menunggu Pickup",
-  picked_up: "Selesai",
-  expired: "Expired",
-  cancelled: "Dibatalkan",
-};
 
 export default async function MerchantOrders() {
   const { data: orders } = await getMerchantOrders();
@@ -75,37 +62,9 @@ export default async function MerchantOrders() {
         )}
 
         {done.length > 0 && (
-          <>
-            <h2 className="text-sm font-semibold uppercase tracking-widest text-[#aaa] mb-4">
-              Riwayat
-            </h2>
-            <div className="overflow-hidden rounded-2xl border border-[#e8e4d4] bg-white">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-[#e8e4d4] text-left text-xs text-[#888] uppercase tracking-wider">
-                    <th className="px-5 py-4">Konsumen</th>
-                    <th className="px-5 py-4">Item</th>
-                    <th className="px-5 py-4">Total</th>
-                    <th className="px-5 py-4">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {done.map((o) => (
-                    <tr key={o.id} className="border-b border-[#f0ede0] last:border-0">
-                      <td className="px-5 py-4 font-medium text-[#1b4332]">{o.consumer_name}</td>
-                      <td className="px-5 py-4 text-[#555]">{o.listing_title}</td>
-                      <td className="px-5 py-4 font-bold text-[#1b4332]">{formatCurrency(o.total_price)}</td>
-                      <td className="px-5 py-4">
-                        <span className={`rounded-full px-3 py-1 text-xs font-semibold ${STATUS_STYLES[o.status]}`}>
-                          {STATUS_LABELS[o.status]}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </>
+          <div className="mt-8">
+            <MerchantOrderHistory doneOrders={done} />
+          </div>
         )}
       </div>
     </div>
