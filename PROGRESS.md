@@ -32,8 +32,8 @@
 - [ ] Consumer: Personal impact dashboard & badges
 - [x] Merchant: Analytics dashboard (revenue, impact, rating)
 - [x] Merchant: Food Waste Warrior badge system
-- [ ] Push notifications (order, pickup reminder, weekly summary)
-- [ ] Review & rating system
+- [x] Push notifications (order, pickup reminder, weekly summary)
+- [x] Review & rating system
 - [x] Admin: Impact dashboard & merchant leaderboard
 
 ## Phase 4: Launch

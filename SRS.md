@@ -41,13 +41,15 @@ Marketplace platform yang menghubungkan merchant HOREKA (Hotel, Restoran, Kateri
 - Real-time global impact counter on home screen.
 - Weekly impact summary notifications.
 
-## 3. Non-Functional Requirements
+## 3. Non-Functional & Business Requirements
 - **Performance:** API response <200ms, app load <2s on 4G.
 - **Scalability:** Handle 500 concurrent users (MVP), horizontally scalable.
 - **Security:** Encrypted passwords (bcrypt), secure payment tokens, HTTPS only.
 - **Availability:** 99.9% uptime.
 - **Food Safety:** Pickup window max 4 jam dari posting, auto-expire listings.
 - **Localization:** Bahasa Indonesia primary, English secondary.
+- **Order Policy:** Uang hangus (non-refundable) jika user gagal pickup melewati batas waktu + 10 menit grace period.
+- **Liability:** Platform memiliki Terms of Service (TOS) yang melepas tanggung jawab langsung atas keracunan/kualitas makanan; komplain diproses via admin dispute.
 
 ## 4. Tech Stack
 | Layer | Technology |

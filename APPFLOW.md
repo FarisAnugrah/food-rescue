@@ -117,8 +117,8 @@ Web Dashboard
 
 ```
 PENDING → PAID → PICKED_UP
-                └── (tidak pickup dalam window) → EXPIRED (auto)
-PAID → CANCELLED (refund)
+                └── (tidak pickup melewati batas window + grace period 10 menit) → EXPIRED (auto)
+PAID → CANCELLED (refund via admin dispute only)
 ```
 
 ---
@@ -129,7 +129,10 @@ PAID → CANCELLED (refund)
 
 ---
 
-## Food Safety Rules
+## Policies & Food Safety Rules
+- **No-Show Policy:** Jika konsumen tidak mengambil pesanan (scan QR) sampai batas waktu pickup + toleransi 10 menit, order otomatis EXPIRED. Uang hangus (non-refundable) dan disalurkan ke merchant.
+- **Refund Policy:** Refund hanya berlaku jika merchant batal menyediakan makanan atau makanan terbukti tidak layak/basi (via admin dispute).
+- **Disclaimer Liability:** Platform bertindak sebagai perantara. Risiko keamanan makanan (alergi, kualitas) menjadi tanggung jawab penuh merchant dan pembeli (Terms of Service).
 - Makanan harus masih layak konsumsi (belum expired)
 - Non-halal items harus diberi label jelas
 - Merchant wajib packing food-grade (wadah tertutup)
