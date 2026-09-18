@@ -6,16 +6,20 @@ import { getConsumerOrderById } from "@/lib/order-queries";
 import { PackageOpen, CheckCircle } from "lucide-react";
 import QRCode from "react-qr-code";
 
+import { simulatePaymentSuccess } from "@/lib/order-actions";
+
 export const dynamic = "force-dynamic";
 
 const STATUS_STYLES: Record<string, string> = {
+  pending: "bg-orange-50 text-orange-600",
   paid: "bg-[#fefae0] text-[#92400e]",
   picked_up: "bg-[#d8f3dc] text-[#2d6a4f]",
-  expired: "bg-gray-100 text-gray-400",
-  cancelled: "bg-red-50 text-red-500",
+  expired: "bg-gray-100 text-gray-500",
+  cancelled: "bg-red-50 text-red-600",
 };
 
 const STATUS_LABELS: Record<string, string> = {
+  pending: "Menunggu Bayar",
   paid: "Siap Pickup",
   picked_up: "Selesai",
   expired: "Expired",
@@ -94,6 +98,21 @@ export default async function OrderDetailPage({ params, searchParams }: { params
               <QRCode value={order.qr_code} size={192} style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
             </div>
             <p className="font-mono text-lg font-bold text-[#1b4332]">{order.qr_code}</p>
+          </div>
+        )}
+
+        {order.status === "pending" && (
+          <div className="rounded-2xl bg-orange-50 border border-orange-100 p-6 flex flex-col items-center gap-4 text-center">
+            <h3 className="font-bold text-orange-800">Selesaikan Pembayaran</h3>
+            <p className="text-sm text-orange-700">Waktu Anda terbatas! Segera selesaikan pembayaran sebelum expired.</p>
+            <form action={async () => {
+              "use server";
+              await simulatePaymentSuccess(order.id);
+            }} className="w-full">
+              <button type="submit" className="w-full rounded-full bg-orange-600 py-3 text-sm font-bold text-white hover:bg-orange-700 transition-colors">
+                Simulasi: Lanjut Bayar
+              </button>
+            </form>
           </div>
         )}
 
