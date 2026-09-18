@@ -46,7 +46,7 @@ export default function ListingsClient({ initialListings, user }: { initialListi
             </Link>
             <NotificationBell />
             <div className="h-4 w-px bg-[#e8e4d4] mx-1" />
-            <Link href="/dashboard" title="Dashboard">
+            <Link href="/profile" title="Profil Saya">
               <div className="w-8 h-8 rounded-full bg-[#2d6a4f] text-white flex items-center justify-center text-sm font-bold shadow-sm hover:scale-105 transition-transform cursor-pointer">
                 {userInitial}
               </div>
