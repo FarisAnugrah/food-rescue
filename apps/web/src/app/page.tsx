@@ -47,7 +47,17 @@ export default async function Home() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
+  let role = "guest";
+  if (user) {
+    const { data: profile } = await supabase.from("users").select("role").eq("id", user.id).single();
+    role = profile?.role || "consumer";
+  }
+
   const userInitial = user?.user_metadata?.name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || "U";
+  
+  // Dynamic variables based on role
+  const dashboardLink = role === "merchant" ? "/merchant" : role === "admin" ? "/admin" : "/listings";
+  const dashboardLabel = role === "merchant" ? "Toko Saya" : role === "admin" ? "Admin" : "Mulai Belanja";
 
   return (
     <div className="flex flex-col min-h-screen bg-[#fafaf7]">
@@ -67,13 +77,13 @@ export default async function Home() {
           <div className="flex gap-2">
             {user ? (
               <Link
-                href="/dashboard"
+                href={dashboardLink}
                 className="flex items-center gap-2 rounded-full border border-[#e8e4d4] pl-2 pr-4 py-1.5 text-sm font-medium text-[#1b4332] hover:bg-[#d8f3dc] transition-colors bg-white"
               >
                 <div className="w-6 h-6 rounded-full bg-[#2d6a4f] text-white flex items-center justify-center text-xs font-bold">
                   {userInitial}
                 </div>
-                Dashboard
+                {dashboardLabel}
               </Link>
             ) : (
               <>
@@ -106,18 +116,27 @@ export default async function Home() {
             <br />
             <span className="text-[#52b788]">Bukan Sampah.</span>
           </h1>
-          <p className="max-w-md text-lg text-[#555] leading-relaxed">
-            Beli makanan surplus dari restoran & toko di sekitarmu dengan diskon hingga 70%.
-            Kurangi food waste, bantu lingkungan, hemat uang.
-          </p>
-          <div className="flex flex-wrap gap-3 pt-2">
+        <p className="max-w-md text-lg text-[#555] leading-relaxed">
+          Beli makanan surplus dari restoran & toko di sekitarmu dengan diskon hingga 70%.
+          Kurangi food waste, bantu lingkungan, hemat uang.
+        </p>
+        <div className="flex flex-wrap gap-3 pt-2">
+          {user ? (
+             <Link
+               href={dashboardLink}
+               className="rounded-full bg-[#2d6a4f] px-7 py-3.5 text-sm font-semibold text-white hover:bg-[#1b4332] transition-colors"
+             >
+               {role === "merchant" ? "Buka Dashboard Toko" : role === "admin" ? "Buka Panel Admin" : "Lanjutkan Belanja"}
+             </Link>
+          ) : (
             <Link
               href="/auth/register"
               className="rounded-full bg-[#2d6a4f] px-7 py-3.5 text-sm font-semibold text-white hover:bg-[#1b4332] transition-colors"
             >
               Mulai Selamatkan Makanan
             </Link>
-            <a
+          )}
+          <a
               href="#cara-kerja"
               className="rounded-full border border-[#c8c4b4] px-7 py-3.5 text-sm font-semibold text-[#1b4332] hover:bg-[#f0ede0] transition-colors"
             >
