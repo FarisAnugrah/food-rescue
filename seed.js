@@ -60,6 +60,11 @@ async function runSeed() {
     console.log("Creating Listings...");
     const today = new Date().toISOString().split('T')[0];
     
+    // Buat tanggal kemarin untuk test auto-expire
+    const yesterdayDate = new Date();
+    yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+    const yesterday = yesterdayDate.toISOString().split('T')[0];
+    
     const { data: listings, error: lErr } = await supabase.from('listings').insert([
       {
         merchant_id: merchant.id, title: 'Surprise Bag — Roti & Pastry', category: 'Bakery',
@@ -72,6 +77,12 @@ async function runSeed() {
         is_halal: true, original_price: 50000, discounted_price: 15000, weight_kg: 0.8, quantity: 5,
         quantity_sold: 5, pickup_start: `${today}T10:00:00Z`, pickup_end: `${today}T14:00:00Z`,
         type: 'specific', status: 'sold_out'
+      },
+      {
+        merchant_id: merchant.id, title: 'Nasi Kuning Sisa Kemarin (Test Expire)', category: 'Restoran',
+        is_halal: true, original_price: 30000, discounted_price: 10000, weight_kg: 0.5, quantity: 5,
+        quantity_sold: 1, pickup_start: `${yesterday}T16:00:00Z`, pickup_end: `${yesterday}T19:00:00Z`,
+        type: 'specific', status: 'active'
       }
     ]).select('id');
     if (lErr) throw lErr;
@@ -86,6 +97,11 @@ async function runSeed() {
       {
         user_id: cUser.user.id, listing_id: listings[1].id, quantity: 2, total_price: 30000,
         total_weight_kg: 1.6, qr_code: 'FR-SEED-002', status: 'picked_up', picked_up_at: new Date().toISOString()
+      },
+      {
+        // Order ini sengaja dibikin untuk testing Auto-Expire (karena nempel sama listing kemarin)
+        user_id: cUser.user.id, listing_id: listings[2].id, quantity: 1, total_price: 10000,
+        total_weight_kg: 0.5, qr_code: 'FR-SEED-003', status: 'paid'
       }
     ]).select('id');
     if (oErr) throw oErr;
