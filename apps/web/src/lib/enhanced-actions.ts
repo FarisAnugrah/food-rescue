@@ -28,22 +28,29 @@ export async function getConsumerImpact() {
   return { data: { total_kg, total_co2, total_orders }, error: null };
 }
 
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
+
 export async function submitReview(formData: FormData) {
   const supabase = await createClient();
   
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
     return;
   }
 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return;
 
+  const adminSupabase = createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY
+  );
+
   const order_id = formData.get("order_id") as string;
   const merchant_id = formData.get("merchant_id") as string;
   const rating = parseInt(formData.get("rating") as string);
   const comment = formData.get("comment") as string;
 
-  const { error } = await supabase
+  const { error } = await adminSupabase
     .from("reviews")
     .insert({
       order_id,
@@ -53,17 +60,20 @@ export async function submitReview(formData: FormData) {
       comment
     });
 
-  if (error) return;
+  if (error) {
+    console.error("Review error:", error);
+    return;
+  }
 
   // Recalculate merchant rating
-  const { data: reviews } = await supabase
+  const { data: reviews } = await adminSupabase
     .from("reviews")
     .select("rating")
     .eq("merchant_id", merchant_id);
 
   if (reviews && reviews.length > 0) {
     const avgRating = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
-    await supabase
+    await adminSupabase
       .from("merchants")
       .update({ rating: parseFloat(avgRating.toFixed(1)) })
       .eq("id", merchant_id);

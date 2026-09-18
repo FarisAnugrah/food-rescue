@@ -61,7 +61,8 @@ export async function getConsumerOrderById(id: string) {
       listings (
         title,
         merchant_id
-      )
+      ),
+      reviews ( id )
     `)
     .eq("id", id)
     .single();
@@ -71,6 +72,7 @@ export async function getConsumerOrderById(id: string) {
       ...data,
       listing_title: data.listings?.title,
       merchant_id: data.listings?.merchant_id,
+      has_review: data.reviews && data.reviews.length > 0,
     };
     return { data: transformed, error: null };
   }

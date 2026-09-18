@@ -8,6 +8,8 @@ import QRCode from "react-qr-code";
 
 import { simulatePaymentSuccess } from "@/lib/order-actions";
 
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
+
 export const dynamic = "force-dynamic";
 
 const STATUS_STYLES: Record<string, string> = {
@@ -32,6 +34,16 @@ export default async function OrderDetailPage({ params, searchParams }: { params
 
   const { data: order } = await getConsumerOrderById(id);
   if (!order) notFound();
+
+  let hasReviewed = false;
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    const adminSupabase = createSupabaseClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY
+    );
+    const { data: reviewCheck } = await adminSupabase.from("reviews").select("id").eq("order_id", id).single();
+    if (reviewCheck) hasReviewed = true;
+  }
 
   if (success === "true") {
     return (
@@ -59,8 +71,7 @@ export default async function OrderDetailPage({ params, searchParams }: { params
     );
   }
 
-  // Check if review exists (simulated via status for now, ideally check DB)
-  const canReview = order.status === "picked_up";
+  const canReview = order.status === "picked_up" && !hasReviewed;
 
   return (
     <div className="min-h-screen bg-[#fafaf7]">
