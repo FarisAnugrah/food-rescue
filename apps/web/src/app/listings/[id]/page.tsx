@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { formatCurrency, calculateDiscount } from "@food-rescue/shared";
 import { getListingByIdQuery } from "@/lib/listing-queries";
+import { Image as ImageIcon } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -30,7 +31,7 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
       <div className="mx-auto max-w-4xl px-6 py-10">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2">
           <div className="overflow-hidden rounded-2xl bg-[#f0ede0] aspect-square flex items-center justify-center relative">
-            <span className="text-sm text-[#aaa]">[ foto ]</span>
+            <ImageIcon className="w-16 h-16 text-[#aaa]" />
             <span className="absolute top-4 left-4 rounded-full bg-[#2d6a4f] px-3 py-1.5 text-sm font-bold text-white">
               -{discount}%
             </span>

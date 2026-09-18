@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { formatWeight } from "@food-rescue/shared";
 import { getConsumerImpact } from "@/lib/enhanced-actions";
+import { Award, ShoppingBag, Leaf, Utensils } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -33,8 +34,10 @@ export default async function ImpactDashboard() {
 
         <div className="mb-8 rounded-3xl bg-gradient-to-br from-[#1b4332] to-[#2d6a4f] p-8 text-center text-white relative overflow-hidden shadow-xl">
           <div className="absolute top-[-20%] right-[-10%] w-64 h-64 rounded-full bg-[#52b788] opacity-20 blur-3xl" />
-          <h2 className="text-lg text-[#95d5b2] mb-2 font-medium">Badge Saat Ini</h2>
-          <div className="text-6xl mb-4">🏆</div>
+          <h2 className="text-lg text-[#95d5b2] mb-4 font-medium">Badge Saat Ini</h2>
+          <div className="mx-auto w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm mb-4">
+            <Award className="w-8 h-8 text-[#d8f3dc]" />
+          </div>
           <p className="text-3xl font-bold mb-2">{badge}</p>
           <p className="text-sm text-[#95d5b2] max-w-md mx-auto">
             Luar biasa! Kamu telah membuktikan bahwa tindakan kecil bisa membawa dampak besar.
@@ -43,17 +46,23 @@ export default async function ImpactDashboard() {
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-3 mb-10">
           <div className="rounded-2xl bg-white border border-[#e8e4d4] p-6 text-center">
-            <div className="w-12 h-12 mx-auto rounded-full bg-[#d8f3dc] text-2xl flex items-center justify-center mb-4">🍱</div>
+            <div className="w-12 h-12 mx-auto rounded-full bg-[#d8f3dc] flex items-center justify-center mb-4">
+              <Utensils className="w-6 h-6 text-[#2d6a4f]" />
+            </div>
             <p className="text-sm text-[#888]">Makanan Diselamatkan</p>
             <p className="mt-1 text-3xl font-bold text-[#1b4332]">{formatWeight(i.total_kg)}</p>
           </div>
           <div className="rounded-2xl bg-white border border-[#e8e4d4] p-6 text-center">
-            <div className="w-12 h-12 mx-auto rounded-full bg-[#fefae0] text-2xl flex items-center justify-center mb-4">🌱</div>
+            <div className="w-12 h-12 mx-auto rounded-full bg-[#fefae0] flex items-center justify-center mb-4">
+              <Leaf className="w-6 h-6 text-[#92400e]" />
+            </div>
             <p className="text-sm text-[#888]">CO₂ Dicegah</p>
             <p className="mt-1 text-3xl font-bold text-[#2d6a4f]">{formatWeight(i.total_co2)}</p>
           </div>
           <div className="rounded-2xl bg-white border border-[#e8e4d4] p-6 text-center">
-            <div className="w-12 h-12 mx-auto rounded-full bg-[#e8e4d4] text-2xl flex items-center justify-center mb-4">🛍️</div>
+            <div className="w-12 h-12 mx-auto rounded-full bg-[#e8e4d4] flex items-center justify-center mb-4">
+              <ShoppingBag className="w-6 h-6 text-[#555]" />
+            </div>
             <p className="text-sm text-[#888]">Total Order</p>
             <p className="mt-1 text-3xl font-bold text-[#1b4332]">{i.total_orders}</p>
           </div>

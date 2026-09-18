@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { formatCurrency, formatWeight } from "@food-rescue/shared";
 import { getConsumerOrders } from "@/lib/order-queries";
+import { PackageOpen } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -51,8 +52,8 @@ export default async function OrdersPage() {
               className="rounded-2xl bg-white border border-[#e8e4d4] p-5 flex items-center justify-between hover:border-[#2d6a4f] hover:shadow-sm transition-all"
             >
               <div className="flex gap-4 items-start">
-                <div className="h-14 w-14 shrink-0 rounded-xl bg-[#f0ede0] flex items-center justify-center text-xl">
-                  🍱
+                <div className="h-14 w-14 shrink-0 rounded-xl bg-[#f0ede0] flex items-center justify-center">
+                  <PackageOpen className="w-7 h-7 text-[#92400e]" />
                 </div>
                 <div>
                   <p className="font-bold text-[#1b4332] text-sm">{o.listing_title}</p>

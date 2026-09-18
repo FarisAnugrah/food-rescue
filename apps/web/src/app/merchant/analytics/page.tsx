@@ -1,6 +1,7 @@
 import { formatCurrency, formatWeight } from "@food-rescue/shared";
 import MerchantNav from "@/components/merchant/merchant-nav";
 import { DUMMY_MERCHANT_STATS } from "@/lib/dummy-merchant";
+import { Medal } from "lucide-react";
 
 const stats = DUMMY_MERCHANT_STATS;
 
@@ -56,8 +57,8 @@ export default function MerchantAnalytics() {
         </div>
 
         <div className="mt-8 rounded-2xl bg-[#d8f3dc] border border-[#b7e4c7] p-6 flex items-center gap-6">
-          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[#2d6a4f] text-2xl">
-            🏆
+          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[#2d6a4f]">
+            <Medal className="w-8 h-8 text-[#d8f3dc]" />
           </div>
           <div>
             <h3 className="font-bold text-[#1b4332]">Food Waste Warrior</h3>
