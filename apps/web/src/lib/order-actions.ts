@@ -75,6 +75,15 @@ export async function createOrder(listingId: string, quantity: number, totalPric
   }
 }
 
+export async function simulatePaymentSuccess(orderId: string) {
+  const supabase = await createClient();
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+    await supabase.from("orders").update({ status: "paid" }).eq("id", orderId);
+    revalidatePath("/orders");
+    revalidatePath(`/orders/${orderId}`);
+  }
+}
+
 export async function verifyOrder(orderId: string) {
   const supabase = await createClient();
   
