@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { logout } from "@/lib/auth-actions";
 import ProfileForm from "./profile-form";
 import NotificationBell from "@/components/notification-bell";
+import { Award } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -54,7 +55,10 @@ export default async function ConsumerProfilePage() {
           <h2 className="font-bold text-[#1b4332] mb-4">Pusat Bantuan & Aksi</h2>
           <div className="flex flex-col gap-3">
             <Link href="/impact" className="rounded-xl border border-[#e8e4d4] p-4 flex justify-between items-center hover:border-[#2d6a4f] hover:bg-[#e8f5e9] transition-colors">
-              <span className="font-semibold text-[#1b4332]">🏆 Lihat Impact & Badge Saya</span>
+              <span className="font-semibold text-[#1b4332] flex items-center gap-2">
+                <Award className="w-5 h-5 text-[#2d6a4f]" />
+                Lihat Impact & Badge Saya
+              </span>
               <span className="text-[#2d6a4f]">→</span>
             </Link>
             

@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { updateMerchantProfile } from "@/lib/merchant-actions";
 
+import { MapPin } from "lucide-react";
+
 export default function ProfileForm({ merchant }: { merchant: any }) {
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState({ text: "", type: "" });
@@ -132,8 +134,8 @@ export default function ProfileForm({ merchant }: { merchant: any }) {
         </div>
       </div>
       
-      <button type="button" onClick={getLocation} className="w-fit text-sm font-semibold text-[#2d6a4f] hover:underline flex items-center gap-1 mt-[-8px]">
-        📍 Deteksi Lokasi Otomatis
+      <button type="button" onClick={getLocation} className="w-fit text-sm font-semibold text-[#2d6a4f] hover:underline flex items-center gap-1.5 mt-[-8px]">
+        <MapPin className="w-4 h-4" /> Deteksi Lokasi Otomatis
       </button>
 
       <div className="pt-2">

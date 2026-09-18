@@ -153,13 +153,13 @@ export default async function OrderDetailPage({ params, searchParams }: { params
             <form action={submitReview} className="flex flex-col gap-3">
               <input type="hidden" name="order_id" value={order.id} />
               <input type="hidden" name="merchant_id" value={order.merchant_id || "dummy_merchant"} />
-              <select name="rating" required className="rounded-xl border border-[#e8e4d4] px-4 py-3 text-sm focus:border-[#2d6a4f] focus:outline-none">
+              <select name="rating" required className="w-full rounded-xl border border-[#e8e4d4] px-4 py-3 text-sm focus:border-[#2d6a4f] outline-none bg-white transition-colors">
                 <option value="">Pilih Rating</option>
-                <option value="5">⭐⭐⭐⭐⭐ Sangat Bagus</option>
-                <option value="4">⭐⭐⭐⭐ Bagus</option>
-                <option value="3">⭐⭐⭐ Cukup</option>
-                <option value="2">⭐⭐ Kurang</option>
-                <option value="1">⭐ Buruk</option>
+                <option value="5">5 Bintang (Sangat Bagus)</option>
+                <option value="4">4 Bintang (Bagus)</option>
+                <option value="3">3 Bintang (Cukup)</option>
+                <option value="2">2 Bintang (Kurang)</option>
+                <option value="1">1 Bintang (Buruk)</option>
               </select>
               <textarea name="comment" placeholder="Tulis komentar opsional..." rows={2} className="rounded-xl border border-[#e8e4d4] px-4 py-3 text-sm focus:border-[#2d6a4f] focus:outline-none resize-none" />
               <button type="submit" className="rounded-xl bg-[#2d6a4f] py-3 text-sm font-bold text-white hover:bg-[#1b4332] transition-colors mt-2">
