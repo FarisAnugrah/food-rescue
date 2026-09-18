@@ -35,21 +35,27 @@ export default function AnalyticsClient() {
       <MerchantNav active="/merchant/analytics" />
 
       <div className="mx-auto max-w-6xl px-6 py-10">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
           <div>
             <h1 className="text-3xl font-bold text-[#1b4332] mb-2">Analytics</h1>
             <p className="text-[#888]">Lihat dampak & performa tokomu</p>
           </div>
           
-          <select 
-            value={filter}
-            onChange={(e) => setFilter(e.target.value as any)}
-            className="rounded-xl border border-[#e8e4d4] bg-white px-4 py-2 text-sm font-medium text-[#1b4332] focus:border-[#2d6a4f] focus:outline-none"
-          >
-            <option value="week">7 Hari Terakhir</option>
-            <option value="month">30 Hari Terakhir</option>
-            <option value="all">Semua Waktu</option>
-          </select>
+          <div className="flex bg-[#f0ede0] p-1 rounded-2xl w-fit">
+            {(["week", "month", "all"] as const).map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                  filter === f
+                    ? "bg-white text-[#1b4332] shadow-sm"
+                    : "text-[#888] hover:text-[#555]"
+                }`}
+              >
+                {filterLabels[f]}
+              </button>
+            ))}
+          </div>
         </div>
 
         {loading ? (
