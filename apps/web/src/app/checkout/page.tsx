@@ -6,6 +6,7 @@ import Link from "next/link";
 import { formatCurrency, calculateDiscount } from "@food-rescue/shared";
 import { getListingByIdAction } from "@/lib/listing-actions";
 import { createOrder } from "@/lib/order-actions";
+import { PackageOpen } from "lucide-react";
 
 const PAYMENT_METHODS = [
   { id: "gopay", label: "GoPay" },
@@ -86,7 +87,7 @@ function CheckoutContent() {
       <div className="mx-auto max-w-2xl px-6 py-10 flex flex-col gap-6">
         <div className="rounded-2xl bg-white border border-[#e8e4d4] p-5 flex gap-4 items-start">
           <div className="h-20 w-20 shrink-0 rounded-xl bg-[#f0ede0] flex items-center justify-center">
-            <span className="text-2xl">🍱</span>
+            <PackageOpen className="w-8 h-8 text-[#92400e]" />
           </div>
           <div className="flex-1">
             <span className="text-xs font-semibold text-[#52b788]">{listing.category} · -{discount}%</span>

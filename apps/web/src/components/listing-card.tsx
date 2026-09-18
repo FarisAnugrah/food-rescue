@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { formatCurrency, calculateDiscount } from "@food-rescue/shared";
 import type { Listing } from "@food-rescue/shared";
+import { Image as ImageIcon } from "lucide-react";
 
 interface Props {
   listing: Listing & { merchant_name: string; merchant_address: string };
@@ -19,7 +20,7 @@ export default function ListingCard({ listing }: Props) {
       className={`group flex flex-col overflow-hidden rounded-2xl border border-[#e8e4d4] bg-white transition-all hover:border-[#2d6a4f] hover:shadow-lg ${isSoldOut ? "opacity-60" : ""}`}
     >
       <div className="relative aspect-[16/10] bg-[#f0ede0] flex items-center justify-center">
-        <span className="text-sm text-[#aaa]">[ foto ]</span>
+        <ImageIcon className="w-10 h-10 text-[#aaa]" />
         <span className="absolute top-3 left-3 rounded-full bg-[#2d6a4f] px-3 py-1 text-xs font-bold text-white">
           -{discount}%
         </span>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { formatCurrency, formatWeight } from "@food-rescue/shared";
 import { submitReview } from "@/lib/enhanced-actions";
 import { getConsumerOrderById } from "@/lib/order-queries";
+import { PackageOpen, QrCode, CheckCircle } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -30,12 +31,14 @@ export default async function OrderDetailPage({ params, searchParams }: { params
   if (success === "true") {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-[#fafaf7] px-6 text-center">
-        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#d8f3dc] text-4xl">✓</div>
+        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#d8f3dc]">
+          <CheckCircle className="w-10 h-10 text-[#2d6a4f]" />
+        </div>
         <h1 className="text-2xl font-bold text-[#1b4332]">Pembayaran Berhasil!</h1>
         <p className="text-[#888] max-w-sm">Tunjukkan QR code di bawah ke merchant saat pickup.</p>
         <div className="rounded-2xl bg-white border border-[#e8e4d4] p-8 flex flex-col items-center gap-4">
           <div className="h-48 w-48 rounded-xl bg-[#f0ede0] flex items-center justify-center">
-            <span className="text-sm text-[#aaa]">[ QR Code ]</span>
+             <QrCode className="w-24 h-24 text-[#aaa]" />
           </div>
           <p className="font-mono text-lg font-bold text-[#1b4332]">{order.qr_code}</p>
         </div>
@@ -71,7 +74,9 @@ export default async function OrderDetailPage({ params, searchParams }: { params
         </div>
 
         <div className="rounded-2xl bg-white border border-[#e8e4d4] p-5 flex gap-4">
-          <div className="h-16 w-16 shrink-0 rounded-xl bg-[#f0ede0] flex items-center justify-center text-2xl">🍱</div>
+          <div className="h-16 w-16 shrink-0 rounded-xl bg-[#f0ede0] flex items-center justify-center">
+            <PackageOpen className="w-8 h-8 text-[#92400e]" />
+          </div>
           <div>
             <h2 className="font-bold text-[#1b4332]">{order.listing_title}</h2>
             <p className="text-sm text-[#888]">{order.quantity} bag · {formatWeight(order.total_weight_kg)}</p>
@@ -85,7 +90,7 @@ export default async function OrderDetailPage({ params, searchParams }: { params
           <div className="rounded-2xl bg-[#fefae0] border border-[#e8e4d4] p-6 flex flex-col items-center gap-4">
             <p className="text-sm font-medium text-[#1b4332]">Tunjukkan QR ini ke merchant</p>
             <div className="h-48 w-48 rounded-xl bg-white border border-[#e8e4d4] flex items-center justify-center">
-              <span className="text-sm text-[#aaa]">[ QR Code ]</span>
+              <QrCode className="w-24 h-24 text-[#aaa]" />
             </div>
             <p className="font-mono text-lg font-bold text-[#1b4332]">{order.qr_code}</p>
           </div>

@@ -5,6 +5,7 @@ import MerchantNav from "@/components/merchant/merchant-nav";
 import { createClient } from "@/lib/supabase/server";
 import { DUMMY_MERCHANT_STATS, DUMMY_MERCHANT_ORDERS } from "@/lib/dummy-merchant";
 import { DUMMY_LISTINGS } from "@/lib/dummy-data";
+import { Star } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -91,11 +92,11 @@ export default async function MerchantDashboard() {
             { label: "Makanan Diselamatkan", value: formatWeight(stats.total_kg_saved), color: "#2d6a4f" },
             { label: "CO₂ Dicegah", value: formatWeight(stats.total_co2_prevented), color: "#52b788" },
             { label: "Revenue Tambahan", value: formatCurrency(stats.total_revenue), color: "#1b4332" },
-            { label: "Rating", value: `${stats.rating} ⭐`, color: "#2d6a4f" },
-          ].map((s) => (
-            <div key={s.label} className="rounded-2xl bg-white border border-[#e8e4d4] p-5">
+            { label: "Rating", value: <div className="flex items-center gap-1">{stats.rating} <Star className="w-5 h-5 fill-[#2d6a4f] text-[#2d6a4f]" /></div>, color: "#2d6a4f" },
+          ].map((s, idx) => (
+            <div key={idx} className="rounded-2xl bg-white border border-[#e8e4d4] p-5">
               <p className="text-xs text-[#888]">{s.label}</p>
-              <p className="mt-1 text-2xl font-bold" style={{ color: s.color }}>{s.value}</p>
+              <div className="mt-1 text-2xl font-bold" style={{ color: s.color }}>{s.value}</div>
             </div>
           ))}
         </div>
