@@ -6,6 +6,25 @@ import { updateMerchantProfile } from "@/lib/merchant-actions";
 export default function ProfileForm({ merchant }: { merchant: any }) {
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState({ text: "", type: "" });
+  const [coords, setCoords] = useState({ lat: merchant.lat || "", lng: merchant.lng || "" });
+
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setCoords({
+            lat: position.coords.latitude.toString(),
+            lng: position.coords.longitude.toString(),
+          });
+        },
+        (error) => {
+          alert("Gagal mendapatkan lokasi. Pastikan izin lokasi diberikan.");
+        }
+      );
+    } else {
+      alert("Browser tidak mendukung Geolocation.");
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -65,13 +84,17 @@ export default function ProfileForm({ merchant }: { merchant: any }) {
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-semibold text-[#1b4332] mb-1">Latitude</label>
-          <input name="lat" type="number" step="any" defaultValue={merchant.lat} className="w-full rounded-xl border border-[#e8e4d4] px-4 py-2 bg-white text-sm focus:border-[#2d6a4f] outline-none" />
+          <input name="lat" type="number" step="any" value={coords.lat} onChange={(e) => setCoords({...coords, lat: e.target.value})} className="w-full rounded-xl border border-[#e8e4d4] px-4 py-2 bg-white text-sm focus:border-[#2d6a4f] outline-none" />
         </div>
         <div>
           <label className="block text-sm font-semibold text-[#1b4332] mb-1">Longitude</label>
-          <input name="lng" type="number" step="any" defaultValue={merchant.lng} className="w-full rounded-xl border border-[#e8e4d4] px-4 py-2 bg-white text-sm focus:border-[#2d6a4f] outline-none" />
+          <input name="lng" type="number" step="any" value={coords.lng} onChange={(e) => setCoords({...coords, lng: e.target.value})} className="w-full rounded-xl border border-[#e8e4d4] px-4 py-2 bg-white text-sm focus:border-[#2d6a4f] outline-none" />
         </div>
       </div>
+      
+      <button type="button" onClick={getLocation} className="w-fit text-sm font-medium text-[#2d6a4f] hover:underline flex items-center gap-1">
+        📍 Deteksi Lokasi Otomatis
+      </button>
 
       <button type="submit" disabled={loading} className="w-full rounded-xl bg-[#2d6a4f] py-3 mt-4 text-sm font-bold text-white hover:bg-[#1b4332] disabled:opacity-50 transition-colors">
         {loading ? "Menyimpan..." : "Simpan Profil"}

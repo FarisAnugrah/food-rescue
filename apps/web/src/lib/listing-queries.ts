@@ -14,7 +14,9 @@ export async function getActiveListings() {
       *,
       merchants (
         store_name,
-        address
+        address,
+        lat,
+        lng
       )
     `)
     .eq("status", "active")
@@ -25,6 +27,8 @@ export async function getActiveListings() {
       ...d,
       merchant_name: d.merchants?.store_name || "Unknown Merchant",
       merchant_address: d.merchants?.address || "-",
+      lat: d.merchants?.lat,
+      lng: d.merchants?.lng,
     }));
     return { data: transformed, error: null };
   }

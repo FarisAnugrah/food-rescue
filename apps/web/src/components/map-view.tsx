@@ -26,10 +26,11 @@ export default function MapView({ listings }: { listings: any[] }) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {listings.map((l) => {
-          // If the listing doesn't have lat/lng (dummy data), we give it a random coordinate near Jakarta for demo purposes.
-          const lat = l.merchants?.lat || (-6.2088 + (Math.random() - 0.5) * 0.1);
-          const lng = l.merchants?.lng || (106.8456 + (Math.random() - 0.5) * 0.1);
+        {listings.map((l, index) => {
+          // If the listing doesn't have lat/lng, we use a stable pseudo-random coordinate near Jakarta based on index
+          // so it doesn't move around on every re-render.
+          const lat = l.lat || (-6.2088 + (index * 0.01));
+          const lng = l.lng || (106.8456 + (index * 0.01));
 
           return (
             <Marker key={l.id} position={[lat, lng]}>
