@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ScrollToTop } from "@/components/scroll-to-top";
+import { createClient } from "@/lib/supabase/server";
 
 const STATS = [
   { value: "185", label: "Merchant Aktif", suffix: "+" },
@@ -40,7 +41,14 @@ const TESTIMONIALS = [
   },
 ];
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  const userInitial = user?.user_metadata?.name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || "U";
+
   return (
     <div className="flex flex-col min-h-screen bg-[#fafaf7]">
       <ScrollToTop />
@@ -57,18 +65,32 @@ export default function Home() {
             <a href="#merchant" className="hover:text-[#2d6a4f] transition-colors">Untuk Merchant</a>
           </div>
           <div className="flex gap-2">
-            <Link
-              href="/auth/login"
-              className="rounded-full px-4 py-2 text-sm font-medium text-[#1b4332] hover:bg-[#d8f3dc] transition-colors"
-            >
-              Masuk
-            </Link>
-            <Link
-              href="/auth/register"
-              className="rounded-full bg-[#2d6a4f] px-5 py-2 text-sm font-medium text-white hover:bg-[#1b4332] transition-colors"
-            >
-              Daftar Gratis
-            </Link>
+            {user ? (
+              <Link
+                href="/dashboard"
+                className="flex items-center gap-2 rounded-full border border-[#e8e4d4] pl-2 pr-4 py-1.5 text-sm font-medium text-[#1b4332] hover:bg-[#d8f3dc] transition-colors bg-white"
+              >
+                <div className="w-6 h-6 rounded-full bg-[#2d6a4f] text-white flex items-center justify-center text-xs font-bold">
+                  {userInitial}
+                </div>
+                Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/auth/login"
+                  className="rounded-full px-4 py-2 text-sm font-medium text-[#1b4332] hover:bg-[#d8f3dc] transition-colors"
+                >
+                  Masuk
+                </Link>
+                <Link
+                  href="/auth/register"
+                  className="rounded-full bg-[#2d6a4f] px-5 py-2 text-sm font-medium text-white hover:bg-[#1b4332] transition-colors"
+                >
+                  Daftar Gratis
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </nav>

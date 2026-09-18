@@ -8,10 +8,12 @@ import type { Listing } from "@food-rescue/shared";
 
 const CATEGORIES = ["Semua", "Bakery", "Restoran", "Japanese", "Western", "Healthy"];
 
-export default function ListingsClient({ initialListings }: { initialListings: (Listing & { merchant_name: string; merchant_address: string })[] }) {
+export default function ListingsClient({ initialListings, user }: { initialListings: (Listing & { merchant_name: string; merchant_address: string })[], user?: any }) {
   const [category, setCategory] = useState("Semua");
   const [halalOnly, setHalalOnly] = useState(false);
   const [search, setSearch] = useState("");
+
+  const userInitial = user?.user_metadata?.name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || "U";
 
   const filtered = useMemo(() => {
     return initialListings.filter((l) => {
@@ -36,8 +38,14 @@ export default function ListingsClient({ initialListings }: { initialListings: (
             <Link href="/orders" className="rounded-full px-4 py-2 text-sm font-medium text-[#1b4332] hover:bg-[#d8f3dc] transition-colors">
               My Orders
             </Link>
+            <div className="h-4 w-px bg-[#e8e4d4] mx-1" />
+            <Link href="/dashboard" title="Dashboard">
+              <div className="w-8 h-8 rounded-full bg-[#2d6a4f] text-white flex items-center justify-center text-sm font-bold shadow-sm hover:scale-105 transition-transform cursor-pointer">
+                {userInitial}
+              </div>
+            </Link>
             <form action={logout}>
-              <button type="submit" className="rounded-full border border-[#e8e4d4] px-4 py-2 text-sm font-medium text-[#555] hover:bg-[#f0ede0] transition-colors">
+              <button type="submit" className="text-xs text-[#888] hover:text-[#e63946] ml-2 transition-colors">
                 Logout
               </button>
             </form>
