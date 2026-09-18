@@ -34,51 +34,49 @@ export default function ProfileForm({ userProfile }: { userProfile: any }) {
         </div>
       )}
 
-      <div className="flex items-center gap-4 mb-4">
-        {userProfile.avatar_url ? (
-          <img src={userProfile.avatar_url} alt="Avatar" className="w-16 h-16 rounded-full object-cover border border-[#e8e4d4]" />
-        ) : (
-          <div className="w-16 h-16 rounded-full bg-[#f0ede0] flex items-center justify-center text-[#2d6a4f]">
-             <User className="w-8 h-8" />
+      <div className="flex flex-col gap-6">
+        <div className="flex items-center gap-4">
+          {userProfile.avatar_url ? (
+            <img src={userProfile.avatar_url} alt="Avatar" className="w-16 h-16 rounded-full object-cover bg-gray-100" />
+          ) : (
+            <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
+               <User className="w-8 h-8" />
+            </div>
+          )}
+          <div className="flex-1">
+            <label className="block text-sm font-medium text-gray-900 mb-1">Ubah Foto</label>
+            <input name="avatar" type="file" accept="image/*" className="text-sm text-gray-600 file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:bg-gray-100 file:text-gray-900 hover:file:bg-gray-200 cursor-pointer" />
           </div>
-        )}
-        <div className="flex-1">
-          <label className="block text-sm font-semibold text-[#1b4332] mb-1">Ganti Foto (Opsional)</label>
-          <input name="avatar" type="file" accept="image/*" className="w-full text-sm text-[#555] file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[#e8f5e9] file:text-[#2d6a4f] hover:file:bg-[#d8f3dc] cursor-pointer" />
         </div>
-      </div>
 
-      <div>
-        <label className="block text-sm font-semibold text-[#1b4332] mb-1">Nama Lengkap</label>
-        <input name="name" defaultValue={userProfile.name} required className="w-full rounded-xl border border-[#e8e4d4] px-4 py-2.5 bg-white text-sm focus:border-[#2d6a4f] outline-none" />
-      </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-900 mb-1">Nama Lengkap</label>
+          <input name="name" defaultValue={userProfile.name} required className="w-full border-b border-gray-300 py-2 text-gray-900 focus:border-black outline-none bg-transparent" />
+        </div>
 
-      <div>
-        <label className="block text-sm font-semibold text-[#1b4332] mb-1">Email</label>
-        <input defaultValue={userProfile.email} disabled className="w-full rounded-xl border border-[#e8e4d4] px-4 py-2.5 bg-gray-50 text-sm text-gray-500 outline-none cursor-not-allowed" />
-      </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-900 mb-1">Email</label>
+          <input defaultValue={userProfile.email} disabled className="w-full border-b border-gray-200 py-2 text-gray-500 outline-none bg-transparent cursor-not-allowed" />
+        </div>
 
-      <div className="pt-4 border-t border-[#e8e4d4]">
-        <h3 className="font-semibold text-[#1b4332] mb-3">Preferensi Notifikasi</h3>
-        <label className="flex items-center justify-between cursor-pointer mb-3">
-          <div>
-            <p className="text-sm font-medium text-[#333]">Reminder Pickup</p>
-            <p className="text-xs text-[#888]">Diingatkan 30 menit sebelum toko tutup</p>
+        <div className="pt-6 mt-2 border-t border-gray-200">
+          <h3 className="font-medium text-gray-900 mb-4">Notifikasi</h3>
+          <div className="space-y-4">
+            <label className="flex items-center justify-between cursor-pointer">
+              <span className="text-gray-700">Reminder Pickup</span>
+              <input type="checkbox" checked={notifPickup} onChange={(e) => setNotifPickup(e.target.checked)} className="accent-black w-4 h-4" />
+            </label>
+            <label className="flex items-center justify-between cursor-pointer">
+              <span className="text-gray-700">Promo & Surprise Bag</span>
+              <input type="checkbox" checked={notifPromo} onChange={(e) => setNotifPromo(e.target.checked)} className="accent-black w-4 h-4" />
+            </label>
           </div>
-          <input type="checkbox" checked={notifPickup} onChange={(e) => setNotifPickup(e.target.checked)} className="accent-[#2d6a4f] w-5 h-5" />
-        </label>
-        <label className="flex items-center justify-between cursor-pointer">
-          <div>
-            <p className="text-sm font-medium text-[#333]">Promo & Surprise Bag Baru</p>
-            <p className="text-xs text-[#888]">Info diskon dari merchant favoritmu</p>
-          </div>
-          <input type="checkbox" checked={notifPromo} onChange={(e) => setNotifPromo(e.target.checked)} className="accent-[#2d6a4f] w-5 h-5" />
-        </label>
-      </div>
+        </div>
 
-      <button type="submit" disabled={loading} className="w-full rounded-full bg-[#2d6a4f] py-3.5 mt-2 text-sm font-bold text-white hover:bg-[#1b4332] disabled:opacity-50 transition-colors">
-        {loading ? "Menyimpan..." : "Simpan Perubahan"}
-      </button>
+        <button type="submit" disabled={loading} className="w-fit bg-black text-white px-6 py-2 rounded font-medium hover:bg-gray-800 disabled:opacity-50 mt-4">
+          {loading ? "Menyimpan..." : "Simpan Perubahan"}
+        </button>
+      </div>
     </form>
   );
 }
