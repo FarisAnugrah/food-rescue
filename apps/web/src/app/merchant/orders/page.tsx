@@ -2,6 +2,7 @@ import { formatCurrency } from "@food-rescue/shared";
 import MerchantNav from "@/components/merchant/merchant-nav";
 import { getMerchantOrders } from "@/lib/order-queries";
 import { verifyOrder } from "@/lib/order-actions";
+import MerchantScanner from "./merchant-scanner";
 
 export const dynamic = "force-dynamic";
 
@@ -30,8 +31,13 @@ export default async function MerchantOrders() {
       <MerchantNav active="/merchant/orders" />
 
       <div className="mx-auto max-w-6xl px-6 py-10">
-        <h1 className="text-3xl font-bold text-[#1b4332] mb-2">Orders</h1>
-        <p className="text-[#888] mb-8">Scan QR saat konsumen pickup</p>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-[#1b4332] mb-2">Orders</h1>
+            <p className="text-[#888]">Scan QR saat konsumen pickup</p>
+          </div>
+          <MerchantScanner />
+        </div>
 
         {pending.length > 0 && (
           <>

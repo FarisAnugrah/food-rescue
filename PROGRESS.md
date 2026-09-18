@@ -24,9 +24,10 @@
 - [x] Consumer: Listing detail (halal label, weight, pickup window)
 - [x] Consumer: Checkout & Payment integration (UI only)
 - [x] Consumer: QR code generation after payment
-- [x] Merchant: Scan QR & verify pickup
+- [x] Merchant: Scan QR & verify pickup (UI + Scanner API)
 - [x] Impact tracking: kg food saved, CO2 prevented per order
 - [x] Impact counter: global stats on home screen
+- [x] Cron: Auto-expire orders (10 min grace period)
 
 ## Phase 3: Enhanced Features
 - [x] Consumer: Personal impact dashboard & badges

@@ -89,6 +89,27 @@ export async function simulatePaymentSuccess(orderId: string) {
   }
 }
 
+export async function verifyOrderByQr(qrCode: string) {
+  const supabase = await createClient();
+  
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return { error: "Development mode" };
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: "Unauthorized" };
+
+  // Cari order berdasarkan QR Code
+  const { data: order, error: searchError } = await supabase
+    .from("orders")
+    .select("id, status")
+    .eq("qr_code", qrCode)
+    .single();
+
+  if (searchError || !order) return { error: "QR Code tidak valid atau tidak ditemukan" };
+  if (order.status !== "paid") return { error: `Order tidak valid (Status: ${order.status})` };
+
+  return verifyOrder(order.id);
+}
+
 export async function verifyOrder(orderId: string) {
   const supabase = await createClient();
   
