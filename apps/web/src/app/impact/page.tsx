@@ -2,6 +2,7 @@ import Link from "next/link";
 import { formatWeight } from "@food-rescue/shared";
 import { getConsumerImpact } from "@/lib/enhanced-actions";
 import { Award, ShoppingBag, Leaf, Utensils } from "lucide-react";
+import NotificationBell from "@/components/notification-bell";
 
 export const dynamic = "force-dynamic";
 
@@ -21,9 +22,12 @@ export default async function ImpactDashboard() {
           <Link href="/" className="text-xl font-bold tracking-tight text-[#1b4332]">
             food<span className="text-[#2d6a4f]">rescue</span>
           </Link>
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <Link href="/listings" className="rounded-full px-4 py-2 text-sm font-medium text-[#555] hover:bg-[#d8f3dc] transition-colors">Browse</Link>
             <Link href="/orders" className="rounded-full px-4 py-2 text-sm font-medium text-[#555] hover:bg-[#d8f3dc] transition-colors">My Orders</Link>
+            <div className="ml-1">
+              <NotificationBell />
+            </div>
           </div>
         </div>
       </nav>

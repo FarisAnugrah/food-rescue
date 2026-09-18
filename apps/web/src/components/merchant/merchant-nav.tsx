@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { logout } from "@/lib/auth-actions";
+import NotificationBell from "@/components/notification-bell";
 
 const NAV_ITEMS = [
   { href: "/merchant", label: "Overview" },
@@ -30,11 +31,14 @@ export default function MerchantNav({ active }: { active: string }) {
               {item.label}
             </Link>
           ))}
-          <form action={logout}>
-            <button type="submit" className="ml-2 rounded-full border border-[#e8e4d4] px-4 py-2 text-sm font-medium text-[#555] hover:bg-[#f0ede0] transition-colors">
-              Logout
-            </button>
-          </form>
+          <div className="ml-2 flex items-center gap-2 border-l border-[#e8e4d4] pl-3">
+            <NotificationBell />
+            <form action={logout}>
+              <button type="submit" className="text-xs font-medium text-[#888] hover:text-[#e63946] transition-colors px-2">
+                Logout
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </nav>

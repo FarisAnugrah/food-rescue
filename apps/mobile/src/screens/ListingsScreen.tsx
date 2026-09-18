@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import type { Listing } from "@food-rescue/shared";
 import { formatCurrency, calculateDiscount } from "@food-rescue/shared";
 
@@ -49,7 +50,13 @@ export default function ListingsScreen({ onSelect }: Props) {
 
   return (
     <View style={s.container}>
-      <Text style={s.heading}>Rescue Makanan</Text>
+      <View style={s.header}>
+        <Text style={s.heading}>Rescue Makanan</Text>
+        <TouchableOpacity style={s.bellBtn}>
+          <Ionicons name="notifications-outline" size={24} color="#1b4332" />
+          <View style={s.redDot} />
+        </TouchableOpacity>
+      </View>
 
       <TextInput
         style={s.search}
@@ -116,7 +123,10 @@ export default function ListingsScreen({ onSelect }: Props) {
 
 const s = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fafaf7", paddingTop: 60 },
-  heading: { fontSize: 24, fontWeight: "bold", color: "#1b4332", paddingHorizontal: 20, marginBottom: 12 },
+  header: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingHorizontal: 20, marginBottom: 12 },
+  heading: { fontSize: 24, fontWeight: "bold", color: "#1b4332" },
+  bellBtn: { position: "relative", padding: 4 },
+  redDot: { position: "absolute", top: 4, right: 6, width: 8, height: 8, borderRadius: 4, backgroundColor: "#e63946", borderWidth: 1, borderColor: "#fff" },
   search: { marginHorizontal: 20, borderWidth: 1, borderColor: "#e8e4d4", borderRadius: 20, paddingHorizontal: 16, paddingVertical: 10, fontSize: 14, backgroundColor: "#fff", marginBottom: 12 },
   cats: { paddingHorizontal: 20, gap: 8, marginBottom: 16, height: 40 },
   cat: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, borderWidth: 1, borderColor: "#e8e4d4", backgroundColor: "#fff" },

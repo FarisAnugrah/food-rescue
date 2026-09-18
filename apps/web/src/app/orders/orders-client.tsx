@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { formatCurrency, formatWeight } from "@food-rescue/shared";
 import { PackageOpen } from "lucide-react";
+import NotificationBell from "@/components/notification-bell";
 import type { Order } from "@food-rescue/shared";
 
 const STATUS_STYLES: Record<string, string> = {
@@ -37,9 +38,12 @@ export default function OrdersClient({ initialOrders }: { initialOrders: any[] }
           <Link href="/" className="text-xl font-bold tracking-tight text-[#1b4332]">
             food<span className="text-[#2d6a4f]">rescue</span>
           </Link>
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <Link href="/listings" className="rounded-full px-4 py-2 text-sm font-medium text-[#555] hover:bg-[#d8f3dc] transition-colors">Browse</Link>
             <Link href="/orders" className="rounded-full bg-[#2d6a4f] px-4 py-2 text-sm font-medium text-white">My Orders</Link>
+            <div className="ml-1">
+              <NotificationBell />
+            </div>
           </div>
         </div>
       </nav>
