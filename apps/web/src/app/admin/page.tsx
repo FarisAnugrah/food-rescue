@@ -1,11 +1,17 @@
 import Link from "next/link";
 import { formatCurrency, formatWeight } from "@food-rescue/shared";
 import AdminNav from "@/components/admin/admin-nav";
-import { DUMMY_PLATFORM_STATS, DUMMY_PENDING_MERCHANTS } from "@/lib/dummy-admin";
+import { getAdminDashboardStats, getPendingMerchants } from "@/lib/admin-queries";
+import AdminActionButtons from "./admin-action-buttons";
 
-const s = DUMMY_PLATFORM_STATS;
+export const dynamic = "force-dynamic";
 
-export default function AdminDashboard() {
+export default async function AdminDashboard() {
+  const { data: stats } = await getAdminDashboardStats();
+  const { data: pendingMerchants } = await getPendingMerchants();
+
+  const s = stats || { total_merchants: 0, total_consumers: 0, total_kg_saved: 0, total_co2_prevented: 0, total_orders: 0, total_revenue: 0, pending_merchants: 0, flagged_listings: 0 };
+
   return (
     <div className="min-h-screen bg-[#fafaf7]">
       <AdminNav active="/admin" />
@@ -33,13 +39,13 @@ export default function AdminDashboard() {
         <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
           {[
             { label: "Total Orders", value: s.total_orders.toLocaleString() },
-            { label: "Revenue Platform", value: formatCurrency(s.total_revenue) },
+            { label: "Revenue Platform", value: formatCurrency(s.total_revenue), smText: true },
             { label: "Pending Approval", value: s.pending_merchants, warn: true },
             { label: "Flagged Listings", value: s.flagged_listings, warn: true },
           ].map((stat) => (
             <div key={stat.label} className="rounded-2xl bg-white border border-[#e8e4d4] p-5">
               <p className="text-xs text-[#888]">{stat.label}</p>
-              <p className={`mt-1 text-2xl font-bold ${"warn" in stat && stat.warn ? "text-[#92400e]" : "text-[#1b4332]"}`}>
+              <p className={`mt-1 font-bold ${stat.smText ? "text-lg" : "text-2xl"} ${"warn" in stat && stat.warn && stat.value > 0 ? "text-[#92400e]" : "text-[#1b4332]"}`}>
                 {stat.value}
               </p>
             </div>
@@ -49,26 +55,26 @@ export default function AdminDashboard() {
         <div className="mt-10">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-[#1b4332]">Menunggu Approval</h2>
-            <Link href="/admin/merchants" className="text-sm text-[#2d6a4f] font-medium hover:underline">Lihat semua</Link>
           </div>
-          <div className="flex flex-col gap-3">
-            {DUMMY_PENDING_MERCHANTS.map((m) => (
-              <div key={m.id} className="rounded-xl bg-white border border-[#e8e4d4] p-4 flex items-center justify-between">
-                <div>
-                  <p className="font-bold text-[#1b4332] text-sm">{m.store_name}</p>
-                  <p className="text-xs text-[#888]">{m.owner_name} · {m.address}</p>
+          
+          {pendingMerchants.length === 0 ? (
+            <div className="rounded-xl border border-[#e8e4d4] bg-white p-8 text-center text-[#888]">
+              Tidak ada merchant yang menunggu approval.
+            </div>
+          ) : (
+            <div className="flex flex-col gap-3">
+              {pendingMerchants.map((m: any) => (
+                <div key={m.id} className="rounded-xl bg-white border border-[#e8e4d4] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div>
+                    <p className="font-bold text-[#1b4332] text-sm">{m.store_name}</p>
+                    <p className="text-xs text-[#888] mt-0.5">{m.users?.name} ({m.users?.email})</p>
+                    <p className="text-xs text-[#aaa] mt-1">{m.address}</p>
+                  </div>
+                  <AdminActionButtons merchantId={m.id} userId={m.user_id} />
                 </div>
-                <div className="flex gap-2">
-                  <button className="rounded-full bg-[#2d6a4f] px-4 py-1.5 text-xs font-bold text-white hover:bg-[#1b4332] transition-colors">
-                    Approve
-                  </button>
-                  <button className="rounded-full border border-red-200 px-4 py-1.5 text-xs font-bold text-red-500 hover:bg-red-50 transition-colors">
-                    Reject
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

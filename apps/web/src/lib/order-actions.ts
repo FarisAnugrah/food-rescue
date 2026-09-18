@@ -4,6 +4,8 @@ import { createClient } from "./supabase/server";
 import { revalidatePath } from "next/cache";
 import { Invoice } from "./xendit";
 
+import { createNotification } from "./notification-actions";
+
 export async function createOrder(listingId: string, quantity: number, totalPrice: number, totalWeightKg: number) {
   const supabase = await createClient();
   
@@ -84,6 +86,16 @@ export async function simulatePaymentSuccess(orderId: string) {
       process.env.SUPABASE_SERVICE_ROLE_KEY
     );
     await adminSupabase.from("orders").update({ status: "paid" }).eq("id", orderId);
+    
+    // Notify Merchant
+    const { data: order } = await adminSupabase.from("orders").select("quantity, listings(merchant_id, title)").eq("id", orderId).single();
+    if (order && order.listings) {
+      const { data: merchant } = await adminSupabase.from("merchants").select("user_id").eq("id", (order.listings as any).merchant_id).single();
+      if (merchant) {
+        await createNotification(merchant.user_id, `Pesanan baru masuk: ${(order.listings as any).title} (${order.quantity} porsi). Segera siapkan!`, "order_new", "Order Baru");
+      }
+    }
+
     revalidatePath("/orders");
     revalidatePath(`/orders/${orderId}`);
   }
@@ -128,7 +140,7 @@ export async function verifyOrder(orderId: string) {
       picked_up_at: new Date().toISOString()
     })
     .eq("id", orderId)
-    .select("id, total_weight_kg")
+    .select("id, total_weight_kg, user_id, listings(title)")
     .single();
 
   if (error) return { error: error.message };
@@ -142,6 +154,14 @@ export async function verifyOrder(orderId: string) {
       food_kg: order.total_weight_kg,
       co2_kg: co2Prevented
     });
+
+  // Notify Consumer
+  await createNotification(
+    order.user_id, 
+    `Terima kasih telah menyelamatkan makanan dari ${(order.listings as any).title}! Jangan lupa berikan ulasan.`,
+    "order_completed",
+    "Pesanan Selesai"
+  );
 
   revalidatePath("/merchant/orders");
   revalidatePath("/merchant/analytics");

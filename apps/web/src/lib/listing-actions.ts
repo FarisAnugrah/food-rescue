@@ -15,11 +15,12 @@ export async function createListing(formData: FormData) {
 
   const { data: merchant } = await supabase
     .from("merchants")
-    .select("id")
+    .select("id, verified")
     .eq("user_id", user.id)
     .single();
 
   if (!merchant) return { error: "Merchant profile not found" };
+  if (!merchant.verified) return { error: "Toko Anda belum diverifikasi oleh Admin. Tidak dapat memposting." };
 
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;

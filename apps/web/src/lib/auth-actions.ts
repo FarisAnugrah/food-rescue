@@ -54,6 +54,7 @@ export async function register(formData: FormData) {
         description: "",
         address: "Belum diset",
         phone: "-",
+        verified: false,
       });
     }
   }
