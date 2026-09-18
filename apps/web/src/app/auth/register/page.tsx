@@ -117,7 +117,7 @@ export default function RegisterPage() {
 
           <form action={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-[#1b4332] mb-1.5">Nama Lengkap</label>
+              <label className="block text-sm font-medium text-[#1b4332] mb-1.5">Nama Lengkap / Nama Toko</label>
               <input
                 name="name"
                 type="text"
@@ -125,6 +125,20 @@ export default function RegisterPage() {
                 required
                 className="w-full rounded-xl border border-[#e8e4d4] px-4 py-3.5 text-sm focus:border-[#2d6a4f] focus:outline-none focus:ring-1 focus:ring-[#2d6a4f] transition-all bg-white"
               />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-[#1b4332] mb-1.5">Daftar Sebagai</label>
+              <div className="flex gap-3">
+                <label className="flex flex-1 items-center gap-2 rounded-xl border border-[#e8e4d4] px-4 py-3.5 bg-white cursor-pointer hover:border-[#2d6a4f] transition-all">
+                  <input type="radio" name="role" value="consumer" defaultChecked className="accent-[#2d6a4f]" />
+                  <span className="text-sm font-medium text-[#1b4332]">Konsumen</span>
+                </label>
+                <label className="flex flex-1 items-center gap-2 rounded-xl border border-[#e8e4d4] px-4 py-3.5 bg-white cursor-pointer hover:border-[#2d6a4f] transition-all">
+                  <input type="radio" name="role" value="merchant" className="accent-[#2d6a4f]" />
+                  <span className="text-sm font-medium text-[#1b4332]">Merchant</span>
+                </label>
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-[#1b4332] mb-1.5">Email</label>
