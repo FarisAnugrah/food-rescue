@@ -54,7 +54,7 @@ export default async function OrderDetailPage({ params, searchParams }: { params
         <h1 className="text-2xl font-bold text-[#1b4332]">Pembayaran Berhasil!</h1>
         <p className="text-[#888] max-w-sm">Tunjukkan QR code di bawah ke merchant saat pickup.</p>
         <div className="rounded-2xl bg-white border border-[#e8e4d4] p-8 flex flex-col items-center gap-4">
-          <div className="p-4 border-4 border-[#2d6a4f] rounded-xl bg-white inline-flex items-center justify-center">
+          <div className="p-4 border-4 border-[#2d6a4f] rounded-xl bg-white flex items-center justify-center mx-auto w-fit">
              <QRCode value={order.qr_code} size={192} style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
           </div>
           <p className="font-mono text-lg font-bold text-[#1b4332]">{order.qr_code}</p>
@@ -105,7 +105,7 @@ export default async function OrderDetailPage({ params, searchParams }: { params
         {order.status === "paid" && (
           <div className="rounded-2xl bg-[#fefae0] border border-[#e8e4d4] p-6 flex flex-col items-center gap-4">
             <p className="text-sm font-medium text-[#1b4332]">Tunjukkan QR ini ke merchant</p>
-            <div className="p-4 border-4 border-[#2d6a4f] rounded-xl bg-white inline-flex items-center justify-center">
+            <div className="p-4 border-4 border-[#2d6a4f] rounded-xl bg-white flex items-center justify-center mx-auto w-fit">
               <QRCode value={order.qr_code} size={192} style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
             </div>
             <p className="font-mono text-lg font-bold text-[#1b4332]">{order.qr_code}</p>

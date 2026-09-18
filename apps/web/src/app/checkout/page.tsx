@@ -110,7 +110,7 @@ function CheckoutContent() {
           </div>
           <p className="text-sm text-[#888] mb-6">Buka aplikasi e-wallet atau m-banking Anda untuk memindai QR code ini.</p>
           
-          <div className="p-4 border-4 border-[#2d6a4f] rounded-xl mb-6 bg-white inline-flex items-center justify-center">
+          <div className="p-4 border-4 border-[#2d6a4f] rounded-xl mb-6 bg-white flex items-center justify-center mx-auto w-fit">
             <div className={`w-48 h-48 flex items-center justify-center ${timeLeft === 0 ? "opacity-20" : ""}`}>
               <QRCode value={`FR-QRIS-${qrisOrder}-${total}`} size={192} style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
             </div>
