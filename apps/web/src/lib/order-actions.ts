@@ -47,8 +47,8 @@ export async function createOrder(listingId: string, quantity: number, totalPric
   try {
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
     
-    // Kalau Key Xendit tidak diset dengan benar (masih dummy default), kita bypass pembayarannya
-    if (!process.env.XENDIT_SECRET_KEY || process.env.XENDIT_SECRET_KEY.includes("xnd_development_...")) {
+    // Kita hapus proteksi dummy key agar Xendit benar-benar terpanggil
+    if (!process.env.XENDIT_SECRET_KEY) {
       return { data: order.id, invoiceUrl: null, error: null };
     }
 
