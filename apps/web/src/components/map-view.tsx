@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { useEffect, useRef } from "react";
 import L from "leaflet";
-import Link from "next/link";
 import { formatCurrency } from "@food-rescue/shared";
 
 // Fix Leaflet missing marker icons
@@ -15,38 +13,68 @@ L.Icon.Default.mergeOptions({
 });
 
 export default function MapView({ listings }: { listings: any[] }) {
-  // Default to Jakarta
-  const center: [number, number] = [-6.2088, 106.8456];
+  const mapRef = useRef<HTMLDivElement>(null);
+  const mapInstanceRef = useRef<L.Map | null>(null);
+
+  useEffect(() => {
+    if (!mapRef.current) return;
+
+    // Initialize map only once
+    if (!mapInstanceRef.current) {
+      mapInstanceRef.current = L.map(mapRef.current).setView([-6.2088, 106.8456], 12);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap'
+      }).addTo(mapInstanceRef.current);
+    }
+
+    const map = mapInstanceRef.current;
+
+    // Clear existing markers to prevent duplicates on re-render
+    map.eachLayer((layer) => {
+      if (layer instanceof L.Marker) {
+        map.removeLayer(layer);
+      }
+    });
+
+    // Add markers
+    listings.forEach((l, index) => {
+      const lat = l.lat || (-6.2088 + (index * 0.01));
+      const lng = l.lng || (106.8456 + (index * 0.01));
+
+      const popupContent = `
+        <div style="display:flex;flex-direction:column;gap:4px;min-width:180px;">
+          <strong style="color:#1b4332;font-size:14px;">${l.title}</strong>
+          <span style="color:#888;font-size:12px;">${l.merchant_name}</span>
+          <span style="color:#2d6a4f;font-weight:bold;">${formatCurrency(l.discounted_price)}</span>
+          <a href="/listings/${l.id}" style="margin-top:8px;text-align:center;border-radius:6px;background-color:#2d6a4f;color:white;padding:6px;font-size:12px;font-weight:bold;text-decoration:none;">
+            Lihat Detail
+          </a>
+        </div>
+      `;
+
+      L.marker([lat, lng]).addTo(map).bindPopup(popupContent);
+    });
+
+    return () => {
+      // We don't necessarily want to destroy the map on every re-render,
+      // but if the component unmounts, we should clean it up.
+    };
+  }, [listings]);
+
+  // Clean up on unmount completely
+  useEffect(() => {
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
+    };
+  }, []);
 
   return (
-    <div className="w-full h-[600px] rounded-2xl overflow-hidden border border-[#e8e4d4] z-0">
-      <MapContainer center={center} zoom={12} scrollWheelZoom={false} className="h-full w-full">
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        {listings.map((l, index) => {
-          // If the listing doesn't have lat/lng, we use a stable pseudo-random coordinate near Jakarta based on index
-          // so it doesn't move around on every re-render.
-          const lat = l.lat || (-6.2088 + (index * 0.01));
-          const lng = l.lng || (106.8456 + (index * 0.01));
-
-          return (
-            <Marker key={l.id} position={[lat, lng]}>
-              <Popup>
-                <div className="flex flex-col gap-1 min-w-[200px]">
-                  <span className="font-bold text-[#1b4332] text-base">{l.title}</span>
-                  <span className="text-xs text-[#888]">{l.merchant_name}</span>
-                  <span className="font-bold text-[#2d6a4f]">{formatCurrency(l.discounted_price)}</span>
-                  <Link href={`/listings/${l.id}`} className="mt-2 text-center rounded-lg bg-[#2d6a4f] py-1.5 text-xs font-bold text-white hover:bg-[#1b4332]">
-                    Lihat Detail
-                  </Link>
-                </div>
-              </Popup>
-            </Marker>
-          );
-        })}
-      </MapContainer>
+    <div className="w-full h-[600px] rounded-2xl overflow-hidden border border-[#e8e4d4] z-0 relative">
+      <div ref={mapRef} className="absolute inset-0 w-full h-full" />
     </div>
   );
 }
