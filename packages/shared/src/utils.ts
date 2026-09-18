@@ -5,11 +5,8 @@ export function calculateCO2(foodKg: number): number {
 }
 
 export function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-  }).format(amount);
+  // Manual formatting to prevent SSR hydration mismatch between Node and Browser
+  return `Rp ${amount.toLocaleString("id-ID")}`;
 }
 
 export function formatWeight(kg: number): string {
