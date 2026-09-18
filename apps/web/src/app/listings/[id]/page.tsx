@@ -17,6 +17,8 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
   const discount = calculateDiscount(listing.original_price, listing.discounted_price);
   const remaining = listing.quantity - listing.quantity_sold;
   const isSoldOut = listing.status === "sold_out";
+  const isExpired = listing.status === "expired" || new Date(listing.pickup_end) < new Date();
+  
   const pickupStart = new Date(listing.pickup_start).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
   const pickupEnd = new Date(listing.pickup_end).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
 
@@ -75,8 +77,8 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
               </div>
               <div className="flex justify-between">
                 <span className="text-[#888]">Sisa tersedia</span>
-                <span className={`font-medium ${remaining <= 2 ? "text-red-500" : "text-[#2d6a4f]"}`}>
-                  {isSoldOut ? "Habis" : `${remaining} bag`}
+                <span className={`font-medium ${remaining <= 2 && !isExpired ? "text-red-500" : "text-[#2d6a4f]"}`}>
+                  {isExpired ? "Expired" : isSoldOut ? "Habis" : `${remaining} bag`}
                 </span>
               </div>
             </div>
@@ -91,7 +93,11 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
               </span>
             </div>
 
-            {isSoldOut ? (
+            {isExpired ? (
+              <button disabled className="w-full rounded-full bg-gray-300 py-4 text-sm font-bold text-gray-500 cursor-not-allowed">
+                Waktu Pengambilan Telah Berakhir
+              </button>
+            ) : isSoldOut ? (
               <button disabled className="w-full rounded-full bg-[#2d6a4f] py-4 text-sm font-bold text-white opacity-40 cursor-not-allowed">
                 Sold Out
               </button>

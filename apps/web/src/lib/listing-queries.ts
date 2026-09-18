@@ -20,6 +20,7 @@ export async function getActiveListings() {
       )
     `)
     .eq("status", "active")
+    .gte("pickup_end", new Date().toISOString())
     .order("created_at", { ascending: false });
 
   if (data) {
