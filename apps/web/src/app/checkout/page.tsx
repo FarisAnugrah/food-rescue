@@ -95,7 +95,7 @@ function CheckoutContent() {
     const s = (timeLeft % 60).toString().padStart(2, "0");
 
     return (
-      <div className="min-h-screen bg-[#fafaf7] flex flex-col items-center pt-20 px-4">
+      <div className="min-h-screen bg-[#fafaf7] flex flex-col items-center justify-center px-4 pb-20">
         <div className="bg-white p-8 rounded-2xl border border-[#e8e4d4] flex flex-col items-center w-full max-w-sm text-center shadow-sm relative overflow-hidden">
           {timeLeft === 0 && (
             <div className="absolute inset-0 bg-white/90 backdrop-blur-sm z-10 flex flex-col items-center justify-center">
