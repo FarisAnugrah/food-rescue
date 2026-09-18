@@ -7,6 +7,7 @@ import { register, loginWithGoogle } from "@/lib/auth-actions";
 export default function RegisterPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [role, setRole] = useState<"consumer" | "merchant">("consumer");
 
   async function handleSubmit(formData: FormData) {
     setLoading(true);
@@ -117,11 +118,13 @@ export default function RegisterPage() {
 
           <form action={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-[#1b4332] mb-1.5">Nama Lengkap / Nama Toko</label>
+              <label className="block text-sm font-medium text-[#1b4332] mb-1.5">
+                {role === "consumer" ? "Nama Lengkap" : "Nama Toko / Restoran"}
+              </label>
               <input
                 name="name"
                 type="text"
-                placeholder="Andi Pratama"
+                placeholder={role === "consumer" ? "Andi Pratama" : "Bakery Makmur"}
                 required
                 className="w-full rounded-xl border border-[#e8e4d4] px-4 py-3.5 text-sm focus:border-[#2d6a4f] focus:outline-none focus:ring-1 focus:ring-[#2d6a4f] transition-all bg-white"
               />
@@ -131,11 +134,11 @@ export default function RegisterPage() {
               <label className="block text-sm font-medium text-[#1b4332] mb-1.5">Daftar Sebagai</label>
               <div className="flex gap-3">
                 <label className="flex flex-1 items-center gap-2 rounded-xl border border-[#e8e4d4] px-4 py-3.5 bg-white cursor-pointer hover:border-[#2d6a4f] transition-all">
-                  <input type="radio" name="role" value="consumer" defaultChecked className="accent-[#2d6a4f]" />
+                  <input type="radio" name="role" value="consumer" checked={role === "consumer"} onChange={() => setRole("consumer")} className="accent-[#2d6a4f]" />
                   <span className="text-sm font-medium text-[#1b4332]">Konsumen</span>
                 </label>
                 <label className="flex flex-1 items-center gap-2 rounded-xl border border-[#e8e4d4] px-4 py-3.5 bg-white cursor-pointer hover:border-[#2d6a4f] transition-all">
-                  <input type="radio" name="role" value="merchant" className="accent-[#2d6a4f]" />
+                  <input type="radio" name="role" value="merchant" checked={role === "merchant"} onChange={() => setRole("merchant")} className="accent-[#2d6a4f]" />
                   <span className="text-sm font-medium text-[#1b4332]">Merchant</span>
                 </label>
               </div>
