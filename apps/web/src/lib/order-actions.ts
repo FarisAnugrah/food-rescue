@@ -75,10 +75,15 @@ export async function createOrder(listingId: string, quantity: number, totalPric
   }
 }
 
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
+
 export async function simulatePaymentSuccess(orderId: string) {
-  const supabase = await createClient();
-  if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
-    await supabase.from("orders").update({ status: "paid" }).eq("id", orderId);
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    const adminSupabase = createSupabaseClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY
+    );
+    await adminSupabase.from("orders").update({ status: "paid" }).eq("id", orderId);
     revalidatePath("/orders");
     revalidatePath(`/orders/${orderId}`);
   }

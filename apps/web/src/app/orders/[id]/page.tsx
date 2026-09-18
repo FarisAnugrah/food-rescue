@@ -3,7 +3,8 @@ import Link from "next/link";
 import { formatCurrency, formatWeight } from "@food-rescue/shared";
 import { submitReview } from "@/lib/enhanced-actions";
 import { getConsumerOrderById } from "@/lib/order-queries";
-import { PackageOpen, QrCode, CheckCircle } from "lucide-react";
+import { PackageOpen, CheckCircle } from "lucide-react";
+import QRCode from "react-qr-code";
 
 export const dynamic = "force-dynamic";
 
@@ -38,7 +39,7 @@ export default async function OrderDetailPage({ params, searchParams }: { params
         <p className="text-[#888] max-w-sm">Tunjukkan QR code di bawah ke merchant saat pickup.</p>
         <div className="rounded-2xl bg-white border border-[#e8e4d4] p-8 flex flex-col items-center gap-4">
           <div className="p-4 border-4 border-[#2d6a4f] rounded-xl bg-white inline-block">
-             <img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${order.qr_code}`} alt="QR Code Pickup" className="w-48 h-48" />
+             <QRCode value={order.qr_code} size={192} style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
           </div>
           <p className="font-mono text-lg font-bold text-[#1b4332]">{order.qr_code}</p>
         </div>
@@ -90,7 +91,7 @@ export default async function OrderDetailPage({ params, searchParams }: { params
           <div className="rounded-2xl bg-[#fefae0] border border-[#e8e4d4] p-6 flex flex-col items-center gap-4">
             <p className="text-sm font-medium text-[#1b4332]">Tunjukkan QR ini ke merchant</p>
             <div className="p-4 border-4 border-[#2d6a4f] rounded-xl bg-white inline-block">
-              <img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${order.qr_code}`} alt="QR Code Pickup" className="w-48 h-48" />
+              <QRCode value={order.qr_code} size={192} style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
             </div>
             <p className="font-mono text-lg font-bold text-[#1b4332]">{order.qr_code}</p>
           </div>
