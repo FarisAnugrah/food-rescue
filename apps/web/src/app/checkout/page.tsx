@@ -149,8 +149,8 @@ function CheckoutContent() {
         
         {/* Detail */}
         <div className="rounded-2xl bg-white border border-[#e8e4d4] p-5 flex gap-5 items-start">
-          {listing.image_url ? (
-            <img src={listing.image_url} alt={listing.title} className="h-20 w-20 shrink-0 rounded-xl object-cover border border-[#e8e4d4]" />
+          {listing.photo_url ? (
+            <img src={listing.photo_url} alt={listing.title} className="h-20 w-20 shrink-0 rounded-xl object-cover border border-[#e8e4d4]" />
           ) : (
             <div className="h-20 w-20 shrink-0 rounded-xl bg-[#f0ede0] flex items-center justify-center">
               <PackageOpen className="w-8 h-8 text-[#92400e]" />

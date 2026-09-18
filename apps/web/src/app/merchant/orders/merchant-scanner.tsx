@@ -64,7 +64,7 @@ export default function MerchantScanner() {
                     if (r && r.length > 0) handleScan(r[0].rawValue);
                   }} 
                   onError={(err) => console.log(err)}
-                  components={{ audio: false, zoom: false }}
+                  components={{ zoom: false }}
                 />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center bg-white p-6 text-center">

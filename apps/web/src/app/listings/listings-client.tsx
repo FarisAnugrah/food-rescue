@@ -7,12 +7,17 @@ import ListingCard from "@/components/listing-card";
 import NotificationBell from "@/components/notification-bell";
 import type { Listing } from "@food-rescue/shared";
 
+import dynamic from "next/dynamic";
+
+const MapView = dynamic(() => import("@/components/map-view"), { ssr: false, loading: () => <div className="w-full h-[600px] bg-gray-100 animate-pulse rounded-2xl border border-[#e8e4d4]" /> });
+
 const CATEGORIES = ["Semua", "Bakery", "Restoran", "Japanese", "Western", "Healthy"];
 
 export default function ListingsClient({ initialListings, user }: { initialListings: (Listing & { merchant_name: string; merchant_address: string })[], user?: any }) {
   const [category, setCategory] = useState("Semua");
   const [halalOnly, setHalalOnly] = useState(false);
   const [search, setSearch] = useState("");
+  const [viewMode, setViewMode] = useState<"list" | "map">("list");
 
   const userInitial = user?.user_metadata?.name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || "U";
 
@@ -78,16 +83,30 @@ export default function ListingsClient({ initialListings, user }: { initialListi
             ))}
           </div>
 
-          <div className="flex gap-3 items-center">
-            <label className="flex items-center gap-2 text-sm text-[#555] cursor-pointer">
+          <div className="flex gap-4 items-center">
+            <label className="flex items-center gap-2 text-sm font-medium text-[#555] cursor-pointer bg-white border border-[#e8e4d4] px-4 py-2 rounded-full hover:border-[#2d6a4f] transition-colors">
               <input
                 type="checkbox"
                 checked={halalOnly}
                 onChange={(e) => setHalalOnly(e.target.checked)}
                 className="accent-[#2d6a4f]"
               />
-              Halal only
+              Halal
             </label>
+            <div className="flex bg-white border border-[#e8e4d4] rounded-full p-1">
+              <button 
+                onClick={() => setViewMode("list")}
+                className={`px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${viewMode === "list" ? "bg-[#e8f5e9] text-[#2d6a4f]" : "text-[#888] hover:text-[#2d6a4f]"}`}
+              >
+                List
+              </button>
+              <button 
+                onClick={() => setViewMode("map")}
+                className={`px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${viewMode === "map" ? "bg-[#e8f5e9] text-[#2d6a4f]" : "text-[#888] hover:text-[#2d6a4f]"}`}
+              >
+                Map
+              </button>
+            </div>
             <input
               type="text"
               placeholder="Cari..."
@@ -98,30 +117,38 @@ export default function ListingsClient({ initialListings, user }: { initialListi
           </div>
         </div>
 
-        {active.length > 0 && (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {active.map((l) => (
-              <ListingCard key={l.id} listing={l} />
-            ))}
+        {viewMode === "map" ? (
+          <div className="mb-10 relative z-0">
+            <MapView listings={active} />
           </div>
-        )}
-
-        {soldOut.length > 0 && (
+        ) : (
           <>
-            <h2 className="mt-12 mb-4 text-lg font-semibold text-[#aaa]">Sold Out</h2>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {soldOut.map((l) => (
-                <ListingCard key={l.id} listing={l} />
-              ))}
-            </div>
-          </>
-        )}
+            {active.length > 0 && (
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {active.map((l) => (
+                  <ListingCard key={l.id} listing={l} />
+                ))}
+              </div>
+            )}
 
-        {filtered.length === 0 && (
-          <div className="py-20 text-center text-[#aaa]">
-            <p className="text-lg">Tidak ada listing ditemukan.</p>
-            <p className="mt-1 text-sm">Coba ubah filter atau kata kunci pencarian.</p>
-          </div>
+            {soldOut.length > 0 && (
+              <>
+                <h2 className="mt-12 mb-4 text-lg font-semibold text-[#aaa]">Sold Out</h2>
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {soldOut.map((l) => (
+                    <ListingCard key={l.id} listing={l} />
+                  ))}
+                </div>
+              </>
+            )}
+
+            {filtered.length === 0 && (
+              <div className="py-20 text-center text-[#aaa]">
+                <p className="text-lg">Tidak ada listing ditemukan.</p>
+                <p className="mt-1 text-sm">Coba ubah filter atau kata kunci pencarian.</p>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

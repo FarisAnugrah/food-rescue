@@ -41,6 +41,12 @@ export default function NewListingPage() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {error && <div className="text-red-500 text-sm bg-red-50 p-3 rounded-xl">{error}</div>}
+
+          <div className="space-y-1.5">
+            <label className="text-sm font-semibold text-[#1b4332]">Foto Makanan / Box</label>
+            <input name="photo" type="file" accept="image/*" className="w-full rounded-xl border border-[#e8e4d4] px-4 py-3 bg-white text-sm" />
+          </div>
+
           <div className="flex gap-3">
             {(["surprise_bag", "specific"] as const).map((t) => (
               <button

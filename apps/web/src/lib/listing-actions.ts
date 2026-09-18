@@ -38,6 +38,21 @@ export async function createListing(formData: FormData) {
   const pickup_end = new Date(`${today}T${endTime}:00`).toISOString();
 
   const type = formData.get("type") as any || "surprise_bag";
+  
+  let photo_url = null;
+  const file = formData.get("photo") as File;
+  if (file && file.size > 0) {
+    const ext = file.name.split('.').pop();
+    const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${ext}`;
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from("listings")
+      .upload(fileName, file);
+      
+    if (!uploadError && uploadData) {
+      const { data: publicUrlData } = supabase.storage.from("listings").getPublicUrl(fileName);
+      photo_url = publicUrlData.publicUrl;
+    }
+  }
 
   const { error } = await supabase
     .from("listings")
@@ -51,10 +66,11 @@ export async function createListing(formData: FormData) {
       discounted_price,
       weight_kg,
       quantity,
+      quantity_sold: 0,
       pickup_start,
       pickup_end,
       type,
-      status: "active"
+      photo_url
     });
 
   if (error) {
