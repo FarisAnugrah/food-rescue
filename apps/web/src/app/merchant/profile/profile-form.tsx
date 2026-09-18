@@ -70,56 +70,58 @@ export default function ProfileForm({ merchant }: { merchant: any }) {
 
       <div className="flex items-center gap-4">
         {merchant.photo_url ? (
-          <img src={merchant.photo_url} alt="Logo" className="w-16 h-16 rounded object-cover bg-gray-100" />
+          <img src={merchant.photo_url} alt="Logo" className="w-16 h-16 rounded-xl object-cover border border-[#e8e4d4]" />
         ) : (
-          <div className="w-16 h-16 rounded bg-gray-100 flex items-center justify-center text-gray-400">
+          <div className="w-16 h-16 rounded-xl bg-[#f0ede0] flex items-center justify-center text-[#2d6a4f] text-sm font-bold">
             Logo
           </div>
         )}
         <div className="flex-1">
-          <label className="block text-sm font-medium text-gray-900 mb-1">Upload Logo</label>
-          <input name="photo" type="file" accept="image/*" className="text-sm text-gray-600 file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:bg-gray-100 file:text-gray-900 hover:file:bg-gray-200 cursor-pointer" />
+          <label className="block text-sm font-semibold text-[#1b4332] mb-1">Upload Logo</label>
+          <input name="photo" type="file" accept="image/*" className="w-full text-sm text-[#555] file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[#e8f5e9] file:text-[#2d6a4f] hover:file:bg-[#d8f3dc] cursor-pointer" />
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-900 mb-1">Nama Toko</label>
-        <input name="store_name" defaultValue={merchant.store_name} required className="w-full border-b border-gray-300 py-2 text-gray-900 focus:border-black outline-none bg-transparent" />
+        <label className="block text-sm font-semibold text-[#1b4332] mb-1.5">Nama Toko</label>
+        <input name="store_name" defaultValue={merchant.store_name} required className="w-full rounded-xl border border-[#e8e4d4] px-4 py-2.5 text-sm focus:border-[#2d6a4f] outline-none transition-colors" />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-900 mb-1">Deskripsi Singkat</label>
-        <textarea name="description" defaultValue={merchant.description} rows={2} className="w-full border-b border-gray-300 py-2 text-gray-900 focus:border-black outline-none bg-transparent resize-none" />
+        <label className="block text-sm font-semibold text-[#1b4332] mb-1.5">Deskripsi Singkat</label>
+        <textarea name="description" defaultValue={merchant.description} rows={2} className="w-full rounded-xl border border-[#e8e4d4] px-4 py-2.5 text-sm focus:border-[#2d6a4f] outline-none transition-colors resize-none" />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-900 mb-1">Telepon / WA</label>
-        <input name="phone" defaultValue={merchant.phone} className="w-full border-b border-gray-300 py-2 text-gray-900 focus:border-black outline-none bg-transparent" />
+        <label className="block text-sm font-semibold text-[#1b4332] mb-1.5">Telepon / WA</label>
+        <input name="phone" defaultValue={merchant.phone} className="w-full rounded-xl border border-[#e8e4d4] px-4 py-2.5 text-sm focus:border-[#2d6a4f] outline-none transition-colors" />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-900 mb-1">Alamat Lengkap</label>
-        <textarea name="address" value={address} onChange={(e) => setAddress(e.target.value)} rows={2} required className="w-full border-b border-gray-300 py-2 text-gray-900 focus:border-black outline-none bg-transparent resize-none" />
+        <label className="block text-sm font-semibold text-[#1b4332] mb-1.5">Alamat Lengkap</label>
+        <textarea name="address" value={address} onChange={(e) => setAddress(e.target.value)} rows={2} required className="w-full rounded-xl border border-[#e8e4d4] px-4 py-2.5 text-sm focus:border-[#2d6a4f] outline-none transition-colors resize-none" />
       </div>
 
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-900 mb-1">Latitude</label>
-          <input name="lat" type="number" step="any" value={coords.lat} onChange={(e) => setCoords({...coords, lat: e.target.value})} className="w-full border-b border-gray-300 py-2 text-gray-900 focus:border-black outline-none bg-transparent" />
+          <label className="block text-sm font-semibold text-[#1b4332] mb-1.5">Latitude</label>
+          <input name="lat" type="number" step="any" value={coords.lat} onChange={(e) => setCoords({...coords, lat: e.target.value})} className="w-full rounded-xl border border-[#e8e4d4] px-4 py-2.5 text-sm focus:border-[#2d6a4f] outline-none transition-colors" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-900 mb-1">Longitude</label>
-          <input name="lng" type="number" step="any" value={coords.lng} onChange={(e) => setCoords({...coords, lng: e.target.value})} className="w-full border-b border-gray-300 py-2 text-gray-900 focus:border-black outline-none bg-transparent" />
+          <label className="block text-sm font-semibold text-[#1b4332] mb-1.5">Longitude</label>
+          <input name="lng" type="number" step="any" value={coords.lng} onChange={(e) => setCoords({...coords, lng: e.target.value})} className="w-full rounded-xl border border-[#e8e4d4] px-4 py-2.5 text-sm focus:border-[#2d6a4f] outline-none transition-colors" />
         </div>
       </div>
       
-      <button type="button" onClick={getLocation} className="w-fit text-sm text-black underline font-medium mt-[-10px]">
-        Deteksi Lokasi GPS
+      <button type="button" onClick={getLocation} className="w-fit text-sm font-semibold text-[#2d6a4f] hover:underline flex items-center gap-1 mt-[-8px]">
+        📍 Deteksi Lokasi Otomatis
       </button>
 
-      <button type="submit" disabled={loading} className="w-fit bg-black text-white px-6 py-2 rounded font-medium hover:bg-gray-800 disabled:opacity-50 mt-4">
-        {loading ? "Menyimpan..." : "Simpan Profil"}
-      </button>
+      <div className="pt-2">
+        <button type="submit" disabled={loading} className="w-full rounded-full bg-[#2d6a4f] py-3.5 text-sm font-bold text-white hover:bg-[#1b4332] disabled:opacity-50 transition-colors">
+          {loading ? "Menyimpan..." : "Simpan Profil"}
+        </button>
+      </div>
     </form>
   );
 }

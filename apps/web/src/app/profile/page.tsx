@@ -24,34 +24,42 @@ export default async function ConsumerProfilePage() {
   if (profile.role === "merchant") redirect("/merchant/profile");
 
   return (
-    <div className="min-h-screen bg-white">
-      <nav className="border-b border-gray-200">
-        <div className="mx-auto flex max-w-2xl items-center justify-between px-4 py-3">
-          <Link href="/listings" className="text-lg font-bold text-gray-900 tracking-tight">
-            Food Rescue
+    <div className="min-h-screen bg-[#fafaf7]">
+      <nav className="sticky top-0 z-20 bg-[#fafaf7]/90 backdrop-blur border-b border-[#e8e4d4]">
+        <div className="mx-auto flex max-w-2xl items-center justify-between px-6 py-4">
+          <Link href="/listings" className="text-xl font-bold tracking-tight text-[#1b4332]">
+            food<span className="text-[#2d6a4f]">rescue</span>
           </Link>
-          <div className="flex gap-4 items-center text-sm font-medium text-gray-600">
-            <Link href="/listings" className="hover:text-black">Beranda</Link>
-            <Link href="/orders" className="hover:text-black">Order</Link>
-            <NotificationBell />
+          <div className="flex gap-4 items-center text-sm font-medium text-[#555]">
+            <Link href="/listings" className="hover:text-[#2d6a4f] transition-colors">Beranda</Link>
+            <Link href="/orders" className="hover:text-[#2d6a4f] transition-colors">Order</Link>
+            <div className="pl-4 border-l border-[#e8e4d4]">
+              <NotificationBell />
+            </div>
           </div>
         </div>
       </nav>
 
-      <div className="mx-auto max-w-2xl px-4 py-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-6">Profil</h1>
+      <div className="mx-auto max-w-2xl px-6 py-10 flex flex-col gap-6">
+        <div>
+          <h1 className="text-2xl font-bold text-[#1b4332]">Profil Saya</h1>
+          <p className="text-[#888]">Atur detail akun dan preferensi notifikasimu.</p>
+        </div>
 
-        <ProfileForm userProfile={profile} />
+        <div className="rounded-2xl bg-white border border-[#e8e4d4] p-6 shadow-sm">
+          <ProfileForm userProfile={profile} />
+        </div>
 
-        <div className="mt-8 border-t border-gray-200 pt-8">
-          <h2 className="text-sm font-semibold text-gray-900 mb-4 uppercase tracking-wider">Aksi Lainnya</h2>
-          <div className="space-y-4">
-            <Link href="/impact" className="block text-gray-600 hover:text-black">
-              Lihat Impact & Badge Saya
+        <div className="rounded-2xl bg-white border border-[#e8e4d4] p-6 shadow-sm">
+          <h2 className="font-bold text-[#1b4332] mb-4">Pusat Bantuan & Aksi</h2>
+          <div className="flex flex-col gap-3">
+            <Link href="/impact" className="rounded-xl border border-[#e8e4d4] p-4 flex justify-between items-center hover:border-[#2d6a4f] hover:bg-[#e8f5e9] transition-colors">
+              <span className="font-semibold text-[#1b4332]">🏆 Lihat Impact & Badge Saya</span>
+              <span className="text-[#2d6a4f]">→</span>
             </Link>
             
-            <form action={logout}>
-              <button type="submit" className="text-red-600 hover:text-red-800 text-left w-full">
+            <form action={logout} className="w-full">
+              <button type="submit" className="w-full rounded-xl border border-red-200 bg-red-50 py-3 font-bold text-red-600 hover:bg-red-100 transition-colors mt-2">
                 Logout
               </button>
             </form>
