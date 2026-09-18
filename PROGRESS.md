@@ -16,18 +16,18 @@
 - [x] Setup Xendit payment integration (Checkout & Webhooks)
 
 ## Phase 2: MVP Development
-- [x] Authentication (Email/password, Google OAuth, role-based)
-- [x] Merchant: Registration & document submission
+- [x] Authentication (Email/password, Google OAuth, strict role-based routing)
+- [x] Merchant: Registration & document submission (KTP & Owner Name verification)
 - [x] Admin: Merchant verification & approval
-- [x] Merchant: Create/manage listings (surprise bag + specific items)
+- [x] Merchant: Create/manage listings (surprise bag + specific items, with real image upload)
 - [x] Consumer: Browse/search listings (map + list + filters)
-- [x] Consumer: Listing detail (halal label, weight, pickup window)
-- [x] Consumer: Checkout & Payment integration (UI only)
+- [x] Consumer: Listing detail (halal label, weight, pickup window, merchant rating & reviews)
+- [x] Consumer: Checkout & Payment integration (QRIS rendering & time limits)
 - [x] Consumer: QR code generation after payment
 - [x] Merchant: Scan QR & verify pickup (UI + Scanner API)
 - [x] Impact tracking: kg food saved, CO2 prevented per order
 - [x] Impact counter: global stats on home screen
-- [x] Cron: Auto-expire orders (10 min grace period)
+- [x] Cron: Auto-expire orders & listings (10 min grace period)
 
 ## Phase 3: Enhanced Features
 - [x] Consumer: Personal impact dashboard & badges
