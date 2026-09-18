@@ -29,6 +29,7 @@ function CheckoutContent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [qrisOrder, setQrisOrder] = useState<string | null>(null);
+  const [qrisString, setQrisString] = useState<string | null>(null);
   const [timeLeft, setTimeLeft] = useState(900); // 15 menit
 
   useEffect(() => {
@@ -69,7 +70,7 @@ function CheckoutContent() {
     setLoading(true);
     setError("");
     
-    const { data: orderId, invoiceUrl, error: err } = await createOrder(listing.id, qty, total, weightTotal);
+    const { data: orderId, invoiceUrl, qrisString: qrStringData, error: err } = await createOrder(listing.id, qty, total, weightTotal, method);
     
     if (err) {
       setError(err);
@@ -79,6 +80,7 @@ function CheckoutContent() {
 
     if (method === "qris") {
       setQrisOrder(orderId);
+      setQrisString(qrStringData || `FR-QRIS-${orderId}-${total}`);
       setLoading(false);
       return;
     }
@@ -112,7 +114,7 @@ function CheckoutContent() {
           
           <div className="p-4 border-4 border-[#2d6a4f] rounded-xl mb-6 bg-white flex items-center justify-center mx-auto w-fit">
             <div className={`w-48 h-48 flex items-center justify-center ${timeLeft === 0 ? "opacity-20" : ""}`}>
-              <QRCode value={`FR-QRIS-${qrisOrder}-${total}`} size={192} style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
+              <QRCode value={qrisString || `FR-QRIS-${qrisOrder}-${total}`} size={192} style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
             </div>
           </div>
           

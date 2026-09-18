@@ -6,7 +6,7 @@ import { Invoice } from "./xendit";
 
 import { createNotification } from "./notification-actions";
 
-export async function createOrder(listingId: string, quantity: number, totalPrice: number, totalWeightKg: number) {
+export async function createOrder(listingId: string, quantity: number, totalPrice: number, totalWeightKg: number, method: string = "gopay") {
   const supabase = await createClient();
   
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.XENDIT_SECRET_KEY) {
@@ -49,7 +49,38 @@ export async function createOrder(listingId: string, quantity: number, totalPric
     
     // Kita hapus proteksi dummy key agar Xendit benar-benar terpanggil
     if (!process.env.XENDIT_SECRET_KEY) {
-      return { data: order.id, invoiceUrl: null, error: null };
+      return { data: order.id, invoiceUrl: null, qrisString: null, error: null };
+    }
+
+    if (method === "qris") {
+      try {
+        const xenditToken = Buffer.from(`${process.env.XENDIT_SECRET_KEY}:`).toString('base64');
+        const qrRes = await fetch("https://api.xendit.co/qr_codes", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Basic ${xenditToken}`
+          },
+          body: JSON.stringify({
+            reference_id: order.id,
+            type: "DYNAMIC",
+            amount: totalPrice,
+            currency: "IDR"
+          })
+        });
+
+        if (!qrRes.ok) {
+          throw new Error("Gagal memanggil API Xendit QRIS");
+        }
+
+        const qrData = await qrRes.json();
+        return { data: order.id, invoiceUrl: null, qrisString: qrData.qr_string, error: null };
+      } catch (qrErr: any) {
+        console.error("Xendit QR Error:", qrErr);
+        await supabase.from("orders").delete().eq("id", order.id);
+        await supabase.rpc('increment_sold', { x_listing_id: listingId, x_qty: -quantity });
+        return { data: null, invoiceUrl: null, qrisString: null, error: "Gagal membuat QRIS" };
+      }
     }
 
     const invoice = await Invoice.createInvoice({
@@ -68,12 +99,13 @@ export async function createOrder(listingId: string, quantity: number, totalPric
       }
     });
 
-    return { data: order.id, invoiceUrl: invoice.invoiceUrl, error: null };
+    return { data: order.id, invoiceUrl: invoice.invoiceUrl, qrisString: null, error: null };
   } catch (err: any) {
     // Revert if payment creation fails
+    console.error("Xendit Invoice Error:", err);
     await supabase.from("orders").delete().eq("id", order.id);
     await supabase.rpc('increment_sold', { x_listing_id: listingId, x_qty: -quantity });
-    return { data: null, invoiceUrl: null, error: "Gagal membuat pembayaran" };
+    return { data: null, invoiceUrl: null, qrisString: null, error: "Gagal membuat pembayaran" };
   }
 }
 

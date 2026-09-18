@@ -18,11 +18,20 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { id, external_id, status } = body;
+    
+    // Xendit QRIS Webhook sends 'reference_id' instead of 'external_id' 
+    // and status is implicitly paid if the webhook triggers for QR code payment
+    const external_id = body.external_id || body.data?.reference_id || body.reference_id;
+    const status = body.status || body.data?.status || "PAID"; // QR callback usually means it's paid
+    const amount = body.amount || body.data?.amount;
+
+    if (!external_id) {
+      return NextResponse.json({ error: "Missing ID" }, { status: 400 });
+    }
 
     const supabase = getServiceSupabase();
 
-    if (status === "PAID" || status === "SETTLED") {
+    if (status === "PAID" || status === "SETTLED" || status === "COMPLETED") {
       await supabase
         .from("orders")
         .update({ status: "paid" })
@@ -33,13 +42,13 @@ export async function POST(req: Request) {
         .from("payments")
         .insert({
           order_id: external_id,
-          amount: body.amount,
-          method: body.payment_method || "xendit",
+          amount: amount || 0,
+          method: body.payment_method || body.event || "xendit",
           status: "success",
-          midtrans_ref: id // we repurpose this column for xendit invoice id
+          midtrans_ref: body.id || body.qr_id // we repurpose this column for xendit invoice id
         });
         
-    } else if (status === "EXPIRED") {
+    } else if (status === "EXPIRED" || status === "FAILED") {
       await supabase
         .from("orders")
         .update({ status: "expired" })
