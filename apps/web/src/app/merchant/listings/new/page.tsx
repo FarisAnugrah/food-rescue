@@ -39,7 +39,8 @@ export default function NewListingPage() {
         <h1 className="text-3xl font-bold text-[#1b4332]">Listing Baru</h1>
         <p className="mt-1 text-[#888] mb-8">Posting surplus makananmu</p>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="rounded-2xl bg-white border border-[#e8e4d4] p-6 sm:p-8 shadow-sm">
+          <form onSubmit={handleSubmit} className="space-y-6">
           {error && <div className="text-red-500 text-sm bg-red-50 p-3 rounded-xl">{error}</div>}
 
           <div className="space-y-1.5">
@@ -165,6 +166,7 @@ export default function NewListingPage() {
             </button>
           </div>
         </form>
+        </div>
       </div>
     </div>
   );

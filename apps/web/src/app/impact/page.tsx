@@ -38,10 +38,10 @@ export default async function ImpactDashboard() {
         <h1 className="text-3xl font-bold text-[#1b4332] mb-2">My Impact</h1>
         <p className="text-[#888] mb-8">Dampak positifmu untuk lingkungan</p>
 
-        <div className="mb-8 rounded-3xl bg-gradient-to-br from-[#1b4332] to-[#2d6a4f] p-8 text-center text-white relative overflow-hidden shadow-xl">
-          <div className="absolute top-[-20%] right-[-10%] w-64 h-64 rounded-full bg-[#52b788] opacity-20 blur-3xl" />
-          <h2 className="text-lg text-[#95d5b2] mb-4 font-medium">Badge Saat Ini</h2>
-          <div className="mx-auto w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm mb-4">
+        <div className="mb-8 rounded-2xl bg-[#1b4332] border border-[#2d6a4f] p-8 text-center text-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#52b788] opacity-10 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/3" />
+          <h2 className="text-sm font-semibold text-[#95d5b2] mb-4 uppercase tracking-widest">Badge Saat Ini</h2>
+          <div className="mx-auto w-16 h-16 bg-[#2d6a4f] rounded-full flex items-center justify-center mb-4">
             <Award className="w-8 h-8 text-[#d8f3dc]" />
           </div>
           <p className="text-3xl font-bold mb-2">{badge}</p>
