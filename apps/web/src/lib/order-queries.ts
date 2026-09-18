@@ -1,7 +1,19 @@
 import { createClient } from "./supabase/server";
 
+// Helper function to lazily trigger expiration
+async function triggerAutoExpire(supabase: any) {
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+    try {
+      await supabase.rpc("auto_expire_orders");
+    } catch (e) {
+      // ignore
+    }
+  }
+}
+
 export async function getConsumerOrders() {
   const supabase = await createClient();
+  await triggerAutoExpire(supabase);
   
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
     const { DUMMY_MERCHANT_ORDERS } = await import("./dummy-merchant");
@@ -68,6 +80,7 @@ export async function getConsumerOrderById(id: string) {
 
 export async function getMerchantOrders() {
   const supabase = await createClient();
+  await triggerAutoExpire(supabase);
   
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
     const { DUMMY_MERCHANT_ORDERS } = await import("./dummy-merchant");
