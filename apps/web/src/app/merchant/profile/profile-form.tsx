@@ -83,6 +83,25 @@ export default function ProfileForm({ merchant }: { merchant: any }) {
       </div>
 
       <div>
+        <label className="block text-sm font-semibold text-[#1b4332] mb-1.5">Nama Pemilik</label>
+        <input name="owner_name" defaultValue={merchant.owner_name} placeholder="Sesuai KTP" required className="w-full rounded-xl border border-[#e8e4d4] px-4 py-2.5 text-sm focus:border-[#2d6a4f] outline-none transition-colors" />
+      </div>
+
+      <div className="flex items-center gap-4">
+        {merchant.ktp_url ? (
+          <img src={merchant.ktp_url} alt="KTP" className="w-24 h-16 rounded-xl object-cover border border-[#e8e4d4]" />
+        ) : (
+          <div className="w-24 h-16 rounded-xl bg-[#f0ede0] flex items-center justify-center text-[#2d6a4f] text-sm font-bold">
+            KTP
+          </div>
+        )}
+        <div className="flex-1">
+          <label className="block text-sm font-semibold text-[#1b4332] mb-1">Upload KTP (Untuk Verifikasi)</label>
+          <input name="ktp" type="file" accept="image/*" className="w-full text-sm text-[#555] file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[#e8f5e9] file:text-[#2d6a4f] hover:file:bg-[#d8f3dc] cursor-pointer" />
+        </div>
+      </div>
+
+      <div>
         <label className="block text-sm font-semibold text-[#1b4332] mb-1.5">Nama Toko</label>
         <input name="store_name" defaultValue={merchant.store_name} required className="w-full rounded-xl border border-[#e8e4d4] px-4 py-2.5 text-sm focus:border-[#2d6a4f] outline-none transition-colors" />
       </div>

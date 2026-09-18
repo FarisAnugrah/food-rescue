@@ -43,6 +43,8 @@ export async function getPendingMerchants() {
       id,
       user_id,
       store_name,
+      owner_name,
+      ktp_url,
       address,
       created_at,
       users ( name, email )

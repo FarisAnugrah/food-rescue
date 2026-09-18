@@ -10,6 +10,7 @@ export async function updateMerchantProfile(formData: FormData) {
   if (!user) return { error: "Unauthorized" };
 
   const store_name = formData.get("store_name") as string;
+  const owner_name = formData.get("owner_name") as string;
   const description = formData.get("description") as string;
   const phone = formData.get("phone") as string;
   const address = formData.get("address") as string;
@@ -17,12 +18,14 @@ export async function updateMerchantProfile(formData: FormData) {
   const lng = parseFloat(formData.get("lng") as string) || 0;
 
   let photo_url = undefined;
+  let ktp_url = undefined;
+
   const file = formData.get("photo") as File;
   if (file && file.size > 0) {
     const ext = file.name.split('.').pop();
     const fileName = `merchant-${user.id}-${Date.now()}.${ext}`;
     const { data: uploadData, error: uploadError } = await supabase.storage
-      .from("listings") // reuse listings bucket for simplicity
+      .from("listings")
       .upload(fileName, file);
       
     if (!uploadError && uploadData) {
@@ -31,8 +34,23 @@ export async function updateMerchantProfile(formData: FormData) {
     }
   }
 
-  const updates: any = { store_name, description, phone, address, lat, lng };
+  const ktpFile = formData.get("ktp") as File;
+  if (ktpFile && ktpFile.size > 0) {
+    const ext = ktpFile.name.split('.').pop();
+    const fileName = `ktp-${user.id}-${Date.now()}.${ext}`;
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from("listings")
+      .upload(fileName, ktpFile);
+      
+    if (!uploadError && uploadData) {
+      const { data: publicUrlData } = supabase.storage.from("listings").getPublicUrl(fileName);
+      ktp_url = publicUrlData.publicUrl;
+    }
+  }
+
+  const updates: any = { store_name, owner_name, description, phone, address, lat, lng };
   if (photo_url) updates.photo_url = photo_url;
+  if (ktp_url) updates.ktp_url = ktp_url;
 
   const { error } = await supabase
     .from("merchants")

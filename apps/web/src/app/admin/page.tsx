@@ -67,8 +67,13 @@ export default async function AdminDashboard() {
                 <div key={m.id} className="rounded-xl bg-white border border-[#e8e4d4] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div>
                     <p className="font-bold text-[#1b4332] text-sm">{m.store_name}</p>
-                    <p className="text-xs text-[#888] mt-0.5">{m.users?.name} ({m.users?.email})</p>
+                    <p className="text-xs text-[#888] mt-0.5">Pemilik: {m.owner_name || m.users?.name} ({m.users?.email})</p>
                     <p className="text-xs text-[#aaa] mt-1">{m.address}</p>
+                    {m.ktp_url && (
+                      <a href={m.ktp_url} target="_blank" rel="noreferrer" className="inline-block mt-2 text-xs font-bold text-[#2d6a4f] hover:underline">
+                        Lihat KTP
+                      </a>
+                    )}
                   </div>
                   <AdminActionButtons merchantId={m.id} userId={m.user_id} />
                 </div>
