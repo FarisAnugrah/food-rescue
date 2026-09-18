@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { register, loginWithGoogle } from "@/lib/auth-actions";
+import { Percent, Leaf, PackageOpen, BadgeDollarSign, HeartHandshake } from "lucide-react";
 
 export default function RegisterPage() {
   const [error, setError] = useState("");
@@ -37,14 +38,14 @@ export default function RegisterPage() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[70%] h-[70%] rounded-full bg-[#52b788] opacity-30 blur-[100px]"></div>
 
         {/* Decorative Floating Badges */}
-        <div className="absolute top-[20%] xl:top-[25%] right-[10%] rotate-12 rounded-full bg-[#d8f3dc] px-4 py-2 text-xs font-bold text-[#1b4332] shadow-xl z-0 hidden sm:block">
-          -70% Off
+        <div className="absolute top-[20%] xl:top-[25%] right-[10%] rotate-12 rounded-full bg-[#d8f3dc] px-4 py-2 flex items-center gap-1.5 text-xs font-bold text-[#1b4332] shadow-xl z-0 hidden sm:flex">
+          <Percent className="w-3.5 h-3.5" /> 70% Off
         </div>
-        <div className="absolute top-[50%] xl:top-[55%] right-[5%] -rotate-6 rounded-full bg-[#fefae0] px-4 py-2 text-xs font-bold text-[#92400e] shadow-xl z-0 hidden sm:block">
-          🌱 Eco Friendly
+        <div className="absolute top-[50%] xl:top-[55%] right-[5%] -rotate-6 rounded-full bg-[#fefae0] px-4 py-2 flex items-center gap-1.5 text-xs font-bold text-[#92400e] shadow-xl z-0 hidden sm:flex">
+          <Leaf className="w-3.5 h-3.5" /> Eco Friendly
         </div>
-        <div className="absolute top-[65%] xl:top-[70%] right-[12%] rotate-3 rounded-full bg-white/20 backdrop-blur-md px-4 py-2 text-xs font-bold text-white shadow-xl z-0 hidden sm:block">
-          🍱 Surprise Bag
+        <div className="absolute top-[65%] xl:top-[70%] right-[12%] rotate-3 rounded-full bg-white/20 backdrop-blur-md px-4 py-2 flex items-center gap-1.5 text-xs font-bold text-white shadow-xl z-0 hidden sm:flex">
+          <PackageOpen className="w-3.5 h-3.5" /> Surprise Bag
         </div>
 
         {/* Header */}
@@ -65,7 +66,9 @@ export default function RegisterPage() {
         {/* Info Cards (Zig-zag) */}
         <div className="relative z-10 flex-1 flex flex-col justify-center gap-4 xl:gap-5 my-8">
           <div className="self-start rounded-2xl bg-[#2d6a4f]/40 backdrop-blur-md border border-[#52b788]/30 p-4 xl:p-5 flex gap-4 items-start w-full max-w-[320px] transform -rotate-1 hover:rotate-0 transition-all shadow-lg">
-            <div className="w-10 h-10 shrink-0 rounded-full bg-[#52b788] flex items-center justify-center text-lg">💰</div>
+            <div className="w-10 h-10 shrink-0 rounded-full bg-[#52b788] flex items-center justify-center text-lg">
+              <BadgeDollarSign className="w-5 h-5 text-white" />
+            </div>
             <div>
               <h3 className="font-bold text-white text-sm">Hemat hingga 70%</h3>
               <p className="text-[#95d5b2] text-xs mt-1 leading-relaxed">Dapatkan makanan berkualitas dari brand favorit dengan harga jauh lebih murah.</p>
@@ -73,7 +76,9 @@ export default function RegisterPage() {
           </div>
           
           <div className="self-center xl:ml-12 rounded-2xl bg-[#2d6a4f]/40 backdrop-blur-md border border-[#52b788]/30 p-4 xl:p-5 flex gap-4 items-start w-full max-w-[320px] transform rotate-2 hover:rotate-0 transition-all shadow-lg">
-            <div className="w-10 h-10 shrink-0 rounded-full bg-[#52b788] flex items-center justify-center text-lg">🌱</div>
+            <div className="w-10 h-10 shrink-0 rounded-full bg-[#52b788] flex items-center justify-center text-lg">
+              <Leaf className="w-5 h-5 text-[#fefae0]" />
+            </div>
             <div>
               <h3 className="font-bold text-white text-sm">Kurangi Emisi CO₂</h3>
               <p className="text-[#95d5b2] text-xs mt-1 leading-relaxed">Setiap 1kg makanan yang diselamatkan mencegah 2.5kg CO₂ terbuang ke atmosfer.</p>
@@ -81,7 +86,9 @@ export default function RegisterPage() {
           </div>
 
           <div className="self-start xl:ml-4 rounded-2xl bg-[#2d6a4f]/40 backdrop-blur-md border border-[#52b788]/30 p-4 xl:p-5 flex gap-4 items-start w-full max-w-[320px] transform -rotate-2 hover:rotate-0 transition-all shadow-lg">
-            <div className="w-10 h-10 shrink-0 rounded-full bg-[#52b788] flex items-center justify-center text-lg">🤝</div>
+            <div className="w-10 h-10 shrink-0 rounded-full bg-[#52b788] flex items-center justify-center text-lg">
+              <HeartHandshake className="w-5 h-5 text-white" />
+            </div>
             <div>
               <h3 className="font-bold text-white text-sm">Bantu Komunitas Lokal</h3>
               <p className="text-[#95d5b2] text-xs mt-1 leading-relaxed">Dukung merchant lokal mengurangi kerugian akibat makanan yang tidak terjual.</p>

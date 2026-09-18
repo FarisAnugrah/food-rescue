@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { login, loginWithGoogle } from "@/lib/auth-actions";
+import { User, Store, GraduationCap, Percent, Leaf, PackageOpen } from "lucide-react";
 
 export default function LoginPage() {
   const [error, setError] = useState("");
@@ -36,14 +37,14 @@ export default function LoginPage() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[70%] h-[70%] rounded-full bg-[#52b788] opacity-30 blur-[100px]"></div>
 
         {/* Decorative Floating Badges */}
-        <div className="absolute top-[20%] xl:top-[25%] right-[10%] rotate-12 rounded-full bg-[#d8f3dc] px-4 py-2 text-xs font-bold text-[#1b4332] shadow-xl z-0 hidden sm:block">
-          -70% Off
+        <div className="absolute top-[20%] xl:top-[25%] right-[10%] rotate-12 rounded-full bg-[#d8f3dc] px-4 py-2 flex items-center gap-1.5 text-xs font-bold text-[#1b4332] shadow-xl z-0 hidden sm:flex">
+          <Percent className="w-3.5 h-3.5" /> 70% Off
         </div>
-        <div className="absolute top-[50%] xl:top-[55%] right-[5%] -rotate-6 rounded-full bg-[#fefae0] px-4 py-2 text-xs font-bold text-[#92400e] shadow-xl z-0 hidden sm:block">
-          🌱 Eco Friendly
+        <div className="absolute top-[50%] xl:top-[55%] right-[5%] -rotate-6 rounded-full bg-[#fefae0] px-4 py-2 flex items-center gap-1.5 text-xs font-bold text-[#92400e] shadow-xl z-0 hidden sm:flex">
+          <Leaf className="w-3.5 h-3.5" /> Eco Friendly
         </div>
-        <div className="absolute top-[65%] xl:top-[70%] right-[12%] rotate-3 rounded-full bg-white/20 backdrop-blur-md px-4 py-2 text-xs font-bold text-white shadow-xl z-0 hidden sm:block">
-          🍱 Surprise Bag
+        <div className="absolute top-[65%] xl:top-[70%] right-[12%] rotate-3 rounded-full bg-white/20 backdrop-blur-md px-4 py-2 flex items-center gap-1.5 text-xs font-bold text-white shadow-xl z-0 hidden sm:flex">
+          <PackageOpen className="w-3.5 h-3.5" /> Surprise Bag
         </div>
 
         {/* Header */}
@@ -65,7 +66,9 @@ export default function LoginPage() {
         <div className="relative z-10 flex-1 flex flex-col justify-center gap-4 xl:gap-5 my-8">
           <div className="self-start rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-4 xl:p-5 w-full max-w-[280px] transform -rotate-2 hover:rotate-0 transition-all shadow-lg">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-8 h-8 rounded-full bg-[#52b788] flex items-center justify-center text-sm shrink-0">👤</div>
+              <div className="w-8 h-8 rounded-full bg-[#52b788] flex items-center justify-center text-sm shrink-0">
+                <User className="w-4 h-4 text-white" />
+              </div>
               <div>
                 <p className="text-sm font-bold text-white leading-none">Rendra A.</p>
                 <p className="text-xs text-[#95d5b2] mt-1">Consumer</p>
@@ -78,7 +81,9 @@ export default function LoginPage() {
           
           <div className="self-end xl:self-center xl:ml-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-4 xl:p-5 w-full max-w-[280px] transform rotate-3 hover:rotate-0 transition-all shadow-lg">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-8 h-8 rounded-full bg-[#fefae0] flex items-center justify-center text-sm shrink-0">🏪</div>
+              <div className="w-8 h-8 rounded-full bg-[#fefae0] flex items-center justify-center text-sm shrink-0">
+                <Store className="w-4 h-4 text-[#92400e]" />
+              </div>
               <div>
                 <p className="text-sm font-bold text-white leading-none">Bakery Makmur</p>
                 <p className="text-xs text-[#95d5b2] mt-1">Merchant</p>
@@ -91,7 +96,9 @@ export default function LoginPage() {
 
           <div className="self-start xl:ml-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-4 xl:p-5 w-full max-w-[280px] transform -rotate-1 hover:rotate-0 transition-all shadow-lg">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-8 h-8 rounded-full bg-[#d8f3dc] flex items-center justify-center text-sm shrink-0">👩🏻‍🎓</div>
+              <div className="w-8 h-8 rounded-full bg-[#d8f3dc] flex items-center justify-center text-sm shrink-0">
+                <GraduationCap className="w-4 h-4 text-[#1b4332]" />
+              </div>
               <div>
                 <p className="text-sm font-bold text-white leading-none">Siti N.</p>
                 <p className="text-xs text-[#95d5b2] mt-1">Mahasiswi</p>
