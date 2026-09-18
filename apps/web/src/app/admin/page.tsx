@@ -3,10 +3,15 @@ import { formatCurrency, formatWeight } from "@food-rescue/shared";
 import AdminNav from "@/components/admin/admin-nav";
 import { getAdminDashboardStats, getPendingMerchants } from "@/lib/admin-queries";
 import AdminActionButtons from "./admin-action-buttons";
+import { requireRole } from "@/lib/auth-checks";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+    await requireRole(["admin"]);
+  }
+
   const { data: stats } = await getAdminDashboardStats();
   const { data: pendingMerchants } = await getPendingMerchants();
 

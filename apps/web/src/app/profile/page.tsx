@@ -6,23 +6,24 @@ import ProfileForm from "./profile-form";
 import NotificationBell from "@/components/notification-bell";
 import { Award } from "lucide-react";
 
+import { requireRole } from "@/lib/auth-checks";
+
 export const dynamic = "force-dynamic";
 
 export default async function ConsumerProfilePage() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) redirect("/auth/login");
-
-  const { data: profile } = await supabase
-    .from("users")
-    .select("*")
-    .eq("id", user.id)
-    .single();
-
-  if (!profile) redirect("/auth/login");
+  let profile = null;
   
-  if (profile.role === "merchant") redirect("/merchant/profile");
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+    const auth = await requireRole(["consumer"]);
+    profile = auth.profile;
+  } else {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) redirect("/auth/login");
+    const { data } = await supabase.from("users").select("*").eq("id", user.id).single();
+    profile = data;
+    if (!profile) redirect("/auth/login");
+  }
 
   return (
     <div className="min-h-screen bg-[#fafaf7]">
