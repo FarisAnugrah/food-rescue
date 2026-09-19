@@ -54,3 +54,23 @@ export async function getPendingMerchants() {
 
   return { data: data || [] };
 }
+
+export async function getVerifiedMerchants() {
+  const supabase = await createClient();
+  
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return { data: [] };
+
+  const { data } = await supabase
+    .from("merchants")
+    .select(`
+      id,
+      store_name,
+      address,
+      rating,
+      total_kg_saved
+    `)
+    .eq("verified", true)
+    .order("created_at", { ascending: false });
+
+  return { data: data || [] };
+}

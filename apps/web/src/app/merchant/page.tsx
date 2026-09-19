@@ -3,8 +3,6 @@ import Link from "next/link";
 import { formatCurrency, formatWeight } from "@food-rescue/shared";
 import MerchantNav from "@/components/merchant/merchant-nav";
 import { createClient } from "@/lib/supabase/server";
-import { DUMMY_MERCHANT_STATS, DUMMY_MERCHANT_ORDERS } from "@/lib/dummy-merchant";
-import { DUMMY_LISTINGS } from "@/lib/dummy-data";
 import { Star } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -38,22 +36,28 @@ export default async function MerchantDashboard() {
     }
   }
 
-  // --- Fetch data Merchant asli ---
-  let stats = DUMMY_MERCHANT_STATS;
-  let recentOrders = DUMMY_MERCHANT_ORDERS.filter((o) => o.status === "paid");
-  let activeListings = DUMMY_LISTINGS.filter((l) => l.status === "active").slice(0, 3);
-  let storeName = "Toko Baru";
+  let stats = {
+    total_kg_saved: 0,
+    total_co2_prevented: 0,
+    total_revenue: 0,
+    total_orders: 0,
+    rating: 0,
+    active_listings: 0,
+  };
+  let recentOrders: any[] = [];
+  let activeListings: any[] = [];
+  let storeName = user.user_metadata?.name || "Toko Baru";
 
   if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
     const { data: merchantData } = await supabase.from("merchants").select("*").eq("user_id", user.id).single();
     if (merchantData) {
       storeName = merchantData.store_name;
       stats = {
-        total_kg_saved: merchantData.total_kg_saved,
-        total_co2_prevented: merchantData.total_kg_saved * 2.5,
-        total_revenue: 0, // Placeholder
-        total_orders: 0, // Placeholder
-        rating: merchantData.rating,
+        total_kg_saved: merchantData.total_kg_saved || 0,
+        total_co2_prevented: (merchantData.total_kg_saved || 0) * 2.5,
+        total_revenue: 0, // Placeholder for MVP
+        total_orders: 0, // Placeholder for MVP
+        rating: merchantData.rating || 0,
         active_listings: 0,
       };
 
