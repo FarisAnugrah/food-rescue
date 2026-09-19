@@ -116,7 +116,31 @@ export default async function OrderDetailPage({ params, searchParams }: { params
           <div className="rounded-2xl bg-orange-50 border border-orange-100 p-6 flex flex-col items-center gap-4 text-center">
             <h3 className="font-bold text-orange-800">Menunggu Pembayaran</h3>
             <p className="text-sm text-orange-700">Order Anda sudah tercatat namun statusnya belum lunas.</p>
-            <p className="text-xs text-orange-600/70 mt-[-8px]">Silakan selesaikan pembayaran di aplikasi terkait.</p>
+            
+            {order.payment_method === "qris" && order.payment_link && (
+              <div className="mt-4 p-4 border-4 border-orange-200 rounded-xl bg-white flex items-center justify-center mx-auto w-fit">
+                <QRCode value={order.payment_link} size={160} style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
+              </div>
+            )}
+            
+            {order.payment_method === "va_bca" && order.va_number && (
+              <div className="mt-4 bg-white p-4 rounded-xl border border-orange-200 w-full max-w-xs">
+                <p className="text-xs text-orange-800 uppercase tracking-widest font-semibold mb-1">Nomor VA BCA</p>
+                <p className="text-xl font-mono font-bold text-orange-900 tracking-wider">{order.va_number}</p>
+              </div>
+            )}
+            
+            {order.payment_method === "gopay" && order.payment_link && (
+              <a href={order.payment_link} className="mt-4 w-full max-w-xs rounded-full bg-[#00AED6] py-3 text-sm font-bold text-white hover:bg-[#0092B3] transition-colors block text-center">
+                Buka Aplikasi Gojek
+              </a>
+            )}
+
+            {order.payment_method === "ovo" && (
+               <p className="mt-2 text-sm font-bold text-[#4C2A86]">Cek aplikasi OVO Anda</p>
+            )}
+
+            <p className="text-xs text-orange-600/70 mt-2">Segera selesaikan sebelum expired.</p>
           </div>
         )}
 

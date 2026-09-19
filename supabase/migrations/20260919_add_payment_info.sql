@@ -1,0 +1,3 @@
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS payment_method VARCHAR;
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS payment_link TEXT;
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS va_number VARCHAR;

@@ -33,7 +33,8 @@ export async function createOrder(listingId: string, quantity: number, totalPric
       total_price: totalPrice,
       total_weight_kg: totalWeightKg,
       qr_code: qrCode,
-      status: "pending" 
+      status: "pending",
+      payment_method: method
     })
     .select("id")
     .single();
@@ -78,6 +79,11 @@ export async function createOrder(listingId: string, quantity: number, totalPric
         }
 
         const qrData = await qrRes.json();
+        
+        await supabase.from("orders").update({
+          payment_link: qrData.qr_string
+        }).eq("id", order.id);
+
         return { data: order.id, invoiceUrl: null, qrisString: qrData.qr_string, vaNumber: null, gopayUrl: null, error: null };
       } catch (qrErr: any) {
         console.error("Xendit QR Error:", qrErr);
@@ -114,11 +120,17 @@ export async function createOrder(listingId: string, quantity: number, totalPric
 
         if (!resVA.ok) throw new Error("Gagal memanggil API Xendit VA");
         const dataVA = await resVA.json();
+        const vNumber = dataVA.payment_method.virtual_account.channel_properties.virtual_account_number;
+        
+        await supabase.from("orders").update({
+          va_number: vNumber
+        }).eq("id", order.id);
+
         return { 
           data: order.id, 
           invoiceUrl: null, 
           qrisString: null, 
-          vaNumber: dataVA.payment_method.virtual_account.channel_properties.virtual_account_number, 
+          vaNumber: vNumber, 
           gopayUrl: null, 
           error: null 
         };
@@ -159,6 +171,11 @@ export async function createOrder(listingId: string, quantity: number, totalPric
         if (!resEw.ok) throw new Error("Gagal memanggil API Xendit GoPay");
         const dataEw = await resEw.json();
         const actionUrl = dataEw.actions?.find((a: any) => a.action === "AUTH")?.url;
+        
+        await supabase.from("orders").update({
+          payment_link: actionUrl
+        }).eq("id", order.id);
+
         return { data: order.id, invoiceUrl: null, qrisString: null, vaNumber: null, gopayUrl: actionUrl, error: null };
       } catch (err) {
         await supabase.from("orders").delete().eq("id", order.id);
