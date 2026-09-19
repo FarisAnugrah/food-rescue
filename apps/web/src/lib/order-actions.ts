@@ -41,8 +41,14 @@ export async function createOrder(listingId: string, quantity: number, totalPric
 
   if (error) return { data: null, invoiceUrl: null, error: error.message };
 
+  // We must use admin client to bypass RLS since consumers cannot update listings directly
+  const adminSupabase = createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+
   // 2. Reduce stock temporarily (kalau invoice expired nanti harus dikembalikan)
-  await supabase.rpc('increment_sold', { x_listing_id: listingId, x_qty: quantity });
+  await adminSupabase.rpc('increment_sold', { x_listing_id: listingId, x_qty: quantity });
 
   // 3. Create Xendit Invoice
   try {
@@ -54,11 +60,6 @@ export async function createOrder(listingId: string, quantity: number, totalPric
     }
 
     const xenditToken = Buffer.from(`${process.env.XENDIT_SECRET_KEY}:`).toString('base64');
-
-    const adminSupabase = createSupabaseClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
 
     if (method === "qris") {
       try {
@@ -247,8 +248,8 @@ export async function createOrder(listingId: string, quantity: number, totalPric
   } catch (err: any) {
     // Revert if payment creation fails
     console.error("Xendit Invoice Error:", err);
-    await supabase.from("orders").delete().eq("id", order.id);
-    await supabase.rpc('increment_sold', { x_listing_id: listingId, x_qty: -quantity });
+    await adminSupabase.from("orders").delete().eq("id", order.id);
+    await adminSupabase.rpc('increment_sold', { x_listing_id: listingId, x_qty: -quantity });
     return { data: null, invoiceUrl: null, qrisString: null, error: "Gagal membuat pembayaran" };
   }
 }
