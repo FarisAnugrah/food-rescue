@@ -136,7 +136,7 @@ function CheckoutContent() {
     }
   }
 
-  if (qrisOrder) {
+  if (qrisString) {
     const m = Math.floor(timeLeft / 60).toString().padStart(2, "0");
     const s = (timeLeft % 60).toString().padStart(2, "0");
 
@@ -158,7 +158,7 @@ function CheckoutContent() {
           
           <div className="p-4 border-4 border-[#2d6a4f] rounded-xl mb-6 bg-white flex items-center justify-center mx-auto w-fit">
             <div className={`w-48 h-48 flex items-center justify-center ${timeLeft === 0 ? "opacity-20" : ""}`}>
-              <QRCode value={qrisString || `FR-QRIS-${qrisOrder}-${total}`} size={192} style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
+              <QRCode value={qrisString} size={192} style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
             </div>
           </div>
           
@@ -167,7 +167,7 @@ function CheckoutContent() {
           <button
             onClick={async () => {
               setLoading(true);
-              await simulatePaymentSuccess(qrisOrder);
+              if (qrisOrder) await simulatePaymentSuccess(qrisOrder);
               router.push(`/orders/${qrisOrder}?success=true`);
             }}
             disabled={timeLeft === 0 || loading}
