@@ -165,15 +165,11 @@ function CheckoutContent() {
           <p className="font-bold text-2xl text-[#1b4332] mb-6">{formatCurrency(total)}</p>
 
           <button
-            onClick={async () => {
-              setLoading(true);
-              if (qrisOrder) await simulatePaymentSuccess(qrisOrder);
-              router.push(`/orders/${qrisOrder}?success=true`);
-            }}
-            disabled={timeLeft === 0 || loading}
-            className="w-full rounded-full bg-[#2d6a4f] py-4 text-sm font-bold text-white hover:bg-[#1b4332] transition-colors disabled:opacity-50"
+            onClick={() => router.push(`/orders/${qrisOrder}`)}
+            disabled={timeLeft === 0}
+            className="w-full rounded-full bg-white border border-[#e8e4d4] py-4 text-sm font-bold text-[#555] hover:bg-[#f0ede0] transition-colors disabled:opacity-50"
           >
-            {loading ? "Memproses..." : "Simulasi: Saya Sudah Bayar"}
+            Kembali ke Daftar Order
           </button>
         </div>
       </div>
@@ -203,15 +199,11 @@ function CheckoutContent() {
           </div>
           <p className="font-bold text-2xl text-[#1b4332] mb-6">{formatCurrency(total)}</p>
           <button
-            onClick={async () => {
-              setLoading(true);
-              if (qrisOrder) await simulatePaymentSuccess(qrisOrder);
-              router.push(`/orders/${qrisOrder}?success=true`);
-            }}
-            disabled={timeLeft === 0 || loading}
-            className="w-full rounded-full bg-[#2d6a4f] py-4 text-sm font-bold text-white hover:bg-[#1b4332] transition-colors disabled:opacity-50"
+            onClick={() => router.push(`/orders/${qrisOrder}`)}
+            disabled={timeLeft === 0}
+            className="w-full rounded-full bg-white border border-[#e8e4d4] py-4 text-sm font-bold text-[#555] hover:bg-[#f0ede0] transition-colors disabled:opacity-50"
           >
-            {loading ? "Memproses..." : "Simulasi: Saya Sudah Transfer"}
+            Cek Status Pembayaran
           </button>
         </div>
       </div>
@@ -228,14 +220,10 @@ function CheckoutContent() {
             Buka Aplikasi Gojek
           </a>
           <button
-            onClick={async () => {
-              setLoading(true);
-              if (qrisOrder) await simulatePaymentSuccess(qrisOrder);
-              router.push(`/orders/${qrisOrder}?success=true`);
-            }}
+            onClick={() => router.push(`/orders/${qrisOrder}`)}
             className="w-full rounded-full border border-[#e8e4d4] bg-white py-4 text-sm font-bold text-[#555] hover:bg-[#f0ede0] transition-colors"
           >
-            Simulasi: Anggap Sukses
+            Cek Status Pembayaran
           </button>
         </div>
       </div>
@@ -261,15 +249,11 @@ function CheckoutContent() {
           <p className="text-sm text-[#888] mb-6">Kami telah mengirimkan notifikasi pembayaran ke aplikasi OVO di nomor <strong className="text-[#1b4332]">{ovoPhone}</strong>. Silakan buka aplikasi OVO Anda untuk menyetujui transaksi.</p>
           <div className="w-16 h-16 border-4 border-[#4C2A86] border-t-transparent rounded-full animate-spin mb-6 mx-auto" />
           <button
-            onClick={async () => {
-              setLoading(true);
-              if (qrisOrder) await simulatePaymentSuccess(qrisOrder);
-              router.push(`/orders/${qrisOrder}?success=true`);
-            }}
-            disabled={timeLeft === 0 || loading}
-            className="w-full rounded-full bg-[#4C2A86] py-4 text-sm font-bold text-white hover:opacity-90 transition-colors disabled:opacity-50"
+            onClick={() => router.push(`/orders/${qrisOrder}`)}
+            disabled={timeLeft === 0}
+            className="w-full rounded-full border border-[#e8e4d4] bg-white py-4 text-sm font-bold text-[#555] hover:bg-[#f0ede0] transition-colors disabled:opacity-50"
           >
-            {loading ? "Memproses..." : "Simulasi: Sudah Bayar di OVO"}
+            Cek Status Pembayaran
           </button>
         </div>
       </div>

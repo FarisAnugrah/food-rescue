@@ -114,16 +114,9 @@ export default async function OrderDetailPage({ params, searchParams }: { params
 
         {order.status === "pending" && (
           <div className="rounded-2xl bg-orange-50 border border-orange-100 p-6 flex flex-col items-center gap-4 text-center">
-            <h3 className="font-bold text-orange-800">Selesaikan Pembayaran</h3>
-            <p className="text-sm text-orange-700">Waktu Anda terbatas! Segera selesaikan pembayaran sebelum expired.</p>
-            <form action={async () => {
-              "use server";
-              await simulatePaymentSuccess(order.id);
-            }} className="w-full">
-              <button type="submit" className="w-full rounded-full bg-orange-600 py-3 text-sm font-bold text-white hover:bg-orange-700 transition-colors">
-                Simulasi: Lanjut Bayar
-              </button>
-            </form>
+            <h3 className="font-bold text-orange-800">Menunggu Pembayaran</h3>
+            <p className="text-sm text-orange-700">Order Anda sudah tercatat namun statusnya belum lunas.</p>
+            <p className="text-xs text-orange-600/70 mt-[-8px]">Silakan selesaikan pembayaran di aplikasi terkait.</p>
           </div>
         )}
 
