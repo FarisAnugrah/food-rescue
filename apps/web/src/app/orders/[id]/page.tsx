@@ -5,6 +5,7 @@ import { submitReview } from "@/lib/enhanced-actions";
 import { getConsumerOrderById } from "@/lib/order-queries";
 import { PackageOpen, CheckCircle } from "lucide-react";
 import QRCode from "react-qr-code";
+import PaymentTimer from "@/components/orders/payment-timer";
 
 import { simulatePaymentSuccess } from "@/lib/order-actions";
 
@@ -115,8 +116,13 @@ export default async function OrderDetailPage({ params, searchParams }: { params
         {order.status === "pending" && (
           <div className="rounded-2xl bg-orange-50 border border-orange-100 p-6 flex flex-col items-center gap-4 text-center">
             <h3 className="font-bold text-orange-800">Menunggu Pembayaran</h3>
-            <p className="text-sm text-orange-700">Order Anda sudah tercatat namun statusnya belum lunas.</p>
+            <p className="text-sm text-orange-700 mt-[-8px] mb-2">Order Anda sudah tercatat namun statusnya belum lunas.</p>
             
+            <PaymentTimer 
+              createdAt={order.created_at} 
+              durationMinutes={order.payment_method === "va_bca" ? 60 : order.payment_method === "ovo" ? 1 : 15} 
+            />
+
             {order.payment_method === "qris" && order.payment_link && (
               <div className="mt-4 p-4 border-4 border-orange-200 rounded-xl bg-white flex items-center justify-center mx-auto w-fit">
                 <QRCode value={order.payment_link} size={160} style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
