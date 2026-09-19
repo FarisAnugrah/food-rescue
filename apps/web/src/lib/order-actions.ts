@@ -55,6 +55,11 @@ export async function createOrder(listingId: string, quantity: number, totalPric
 
     const xenditToken = Buffer.from(`${process.env.XENDIT_SECRET_KEY}:`).toString('base64');
 
+    const adminSupabase = createSupabaseClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+
     if (method === "qris") {
       try {
         const qrRes = await fetch("https://api.xendit.co/qr_codes", {
@@ -80,15 +85,15 @@ export async function createOrder(listingId: string, quantity: number, totalPric
 
         const qrData = await qrRes.json();
         
-        await supabase.from("orders").update({
+        await adminSupabase.from("orders").update({
           payment_link: qrData.qr_string
         }).eq("id", order.id);
 
         return { data: order.id, invoiceUrl: null, qrisString: qrData.qr_string, vaNumber: null, gopayUrl: null, error: null };
       } catch (qrErr: any) {
         console.error("Xendit QR Error:", qrErr);
-        await supabase.from("orders").delete().eq("id", order.id);
-        await supabase.rpc('increment_sold', { x_listing_id: listingId, x_qty: -quantity });
+        await adminSupabase.from("orders").delete().eq("id", order.id);
+        await adminSupabase.rpc('increment_sold', { x_listing_id: listingId, x_qty: -quantity });
         return { data: null, invoiceUrl: null, qrisString: null, vaNumber: null, gopayUrl: null, error: "Gagal membuat QRIS" };
       }
     }
@@ -122,7 +127,7 @@ export async function createOrder(listingId: string, quantity: number, totalPric
         const dataVA = await resVA.json();
         const vNumber = dataVA.payment_method.virtual_account.channel_properties.virtual_account_number;
         
-        await supabase.from("orders").update({
+        await adminSupabase.from("orders").update({
           va_number: vNumber
         }).eq("id", order.id);
 
@@ -135,9 +140,9 @@ export async function createOrder(listingId: string, quantity: number, totalPric
           error: null 
         };
       } catch (err) {
-        await supabase.from("orders").delete().eq("id", order.id);
-        await supabase.rpc('increment_sold', { x_listing_id: listingId, x_qty: -quantity });
-        return { data: null, invoiceUrl: null, error: "Gagal membuat VA BCA" };
+        await adminSupabase.from("orders").delete().eq("id", order.id);
+        await adminSupabase.rpc('increment_sold', { x_listing_id: listingId, x_qty: -quantity });
+        return { data: null, invoiceUrl: null, qrisString: null, vaNumber: null, gopayUrl: null, error: "Gagal membuat VA BCA" };
       }
     }
 
@@ -172,22 +177,21 @@ export async function createOrder(listingId: string, quantity: number, totalPric
         const dataEw = await resEw.json();
         const actionUrl = dataEw.actions?.find((a: any) => a.action === "AUTH")?.url;
         
-        await supabase.from("orders").update({
+        await adminSupabase.from("orders").update({
           payment_link: actionUrl
         }).eq("id", order.id);
 
         return { data: order.id, invoiceUrl: null, qrisString: null, vaNumber: null, gopayUrl: actionUrl, error: null };
       } catch (err) {
-        await supabase.from("orders").delete().eq("id", order.id);
-        await supabase.rpc('increment_sold', { x_listing_id: listingId, x_qty: -quantity });
-        return { data: null, invoiceUrl: null, error: "Gagal memproses GoPay" };
+        await adminSupabase.from("orders").delete().eq("id", order.id);
+        await adminSupabase.rpc('increment_sold', { x_listing_id: listingId, x_qty: -quantity });
+        return { data: null, invoiceUrl: null, qrisString: null, vaNumber: null, gopayUrl: null, error: "Gagal memproses GoPay" };
       }
     }
 
     if (method === "ovo") {
       try {
         let phone = ovoPhone || "";
-        // OVO requires +62 format strictly.
         if (phone.startsWith("0")) phone = "+62" + phone.slice(1);
         if (!phone.startsWith("+62")) phone = "+62" + phone;
 
@@ -214,20 +218,15 @@ export async function createOrder(listingId: string, quantity: number, totalPric
           })
         });
 
-        if (!resEw.ok) {
-          const errBody = await resEw.json();
-          console.error("OVO Error:", errBody);
-          throw new Error("Gagal memanggil API Xendit OVO");
-        }
+        if (!resEw.ok) throw new Error("Gagal memanggil API Xendit OVO");
         return { data: order.id, invoiceUrl: null, qrisString: null, vaNumber: null, gopayUrl: null, error: null };
       } catch (err) {
-        await supabase.from("orders").delete().eq("id", order.id);
-        await supabase.rpc('increment_sold', { x_listing_id: listingId, x_qty: -quantity });
-        return { data: null, invoiceUrl: null, error: "Gagal memproses OVO. Pastikan nomor HP valid." };
+        await adminSupabase.from("orders").delete().eq("id", order.id);
+        await adminSupabase.rpc('increment_sold', { x_listing_id: listingId, x_qty: -quantity });
+        return { data: null, invoiceUrl: null, qrisString: null, vaNumber: null, gopayUrl: null, error: "Gagal memproses OVO. Pastikan nomor HP valid." };
       }
     }
 
-    // Fallback: Invoice
     const invoice = await Invoice.createInvoice({
       data: {
         externalId: order.id,
@@ -260,7 +259,7 @@ export async function simulatePaymentSuccess(orderId: string) {
   if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
     const adminSupabase = createSupabaseClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.SUPABASE_SERVICE_ROLE_KEY
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
     );
     await adminSupabase.from("orders").update({ status: "paid" }).eq("id", orderId);
     
