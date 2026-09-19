@@ -61,13 +61,14 @@ export default async function MerchantDashboard() {
       const { data: realListings } = await supabase.from("listings").select("*").eq("merchant_id", merchantData.id).eq("status", "active").order("created_at", { ascending: false }).limit(3);
       if (realListings) activeListings = realListings as any;
 
-      // Fetch Real Orders
+      // Fetch Real Orders (Limit to 4 latest)
       const { data: realOrders } = await supabase
         .from("orders")
         .select(`*, users(name), listings!inner(title, merchant_id)`)
         .eq("listings.merchant_id", merchantData.id)
         .eq("status", "paid")
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false })
+        .limit(4);
 
       if (realOrders) {
         recentOrders = realOrders.map((o: any) => ({
