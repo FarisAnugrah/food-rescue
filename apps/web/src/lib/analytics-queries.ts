@@ -6,16 +6,7 @@ export async function getMerchantAnalytics(filter: "week" | "month" | "all" = "a
   const supabase = await createClient();
 
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-    const { DUMMY_MERCHANT_STATS } = await import("./dummy-merchant");
-    const WEEKLY = [
-      { day: "Sen", kg: 12.5 }, { day: "Sel", kg: 18.2 }, { day: "Rab", kg: 15.0 },
-      { day: "Kam", kg: 22.3 }, { day: "Jum", kg: 28.1 }, { day: "Sab", kg: 19.4 }, { day: "Min", kg: 12.0 },
-    ];
-    const DUMMY_REVIEWS = [
-      { id: "r1", rating: 5, comment: "Mantap makanannya masih hangat!", created_at: new Date().toISOString(), user_name: "Budi S." },
-      { id: "r2", rating: 4, comment: "Enak, lumayan buat makan malam", created_at: new Date(Date.now() - 86400000).toISOString(), user_name: "Siti A." },
-    ];
-    return { data: { stats: DUMMY_MERCHANT_STATS, chart: WEEKLY, reviews: DUMMY_REVIEWS }, error: null };
+    return { data: null, error: null };
   }
 
   const { data: { user } } = await supabase.auth.getUser();

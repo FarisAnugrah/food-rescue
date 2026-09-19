@@ -32,7 +32,7 @@ export default async function MerchantOrders() {
               Menunggu Pickup ({pending.length})
             </h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mb-10">
-              {pending.map((o) => (
+              {pending.map((o: any) => (
                 <div key={o.id} className="rounded-2xl bg-white border border-[#e8e4d4] p-5 flex flex-col gap-3">
                   <div className="flex items-start justify-between">
                     <div>

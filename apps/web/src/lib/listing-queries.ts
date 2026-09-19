@@ -4,8 +4,7 @@ export async function getActiveListings() {
   const supabase = await createClient();
   
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-    const { DUMMY_LISTINGS } = await import("./dummy-data");
-    return { data: DUMMY_LISTINGS, error: null };
+    return { data: [], error: null };
   }
 
   const { data, error } = await supabase
@@ -70,8 +69,7 @@ export async function getListingByIdQuery(id: string) {
   const supabase = await createClient();
   
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-    const { DUMMY_LISTINGS } = await import("./dummy-data");
-    return { data: DUMMY_LISTINGS.find((l: any) => l.id === id) || null, error: null };
+    return { data: null, error: null };
   }
 
   const { data, error } = await supabase
@@ -106,8 +104,7 @@ export async function getMerchantListings() {
   const supabase = await createClient();
   
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-    const { DUMMY_LISTINGS } = await import("./dummy-data");
-    return { data: DUMMY_LISTINGS, error: null };
+    return { data: [], error: null };
   }
 
   const { data: { user } } = await supabase.auth.getUser();

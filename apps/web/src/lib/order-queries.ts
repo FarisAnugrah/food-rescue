@@ -16,8 +16,7 @@ export async function getConsumerOrders() {
   await triggerAutoExpire(supabase);
   
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-    const { DUMMY_MERCHANT_ORDERS } = await import("./dummy-merchant");
-    return { data: DUMMY_MERCHANT_ORDERS, error: null };
+    return { data: [], error: null };
   }
 
   const { data: { user } } = await supabase.auth.getUser();
@@ -50,8 +49,7 @@ export async function getConsumerOrderById(id: string) {
   
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
     if (id.startsWith("o-")) return { data: { id, status: "paid", qr_code: "FR-DUMMY", listing_title: "Dummy Order", total_weight_kg: 1.5, quantity: 1, total_price: 25000, created_at: new Date().toISOString() }, error: null };
-    const { DUMMY_MERCHANT_ORDERS } = await import("./dummy-merchant");
-    return { data: DUMMY_MERCHANT_ORDERS.find((o: any) => o.id === id) || null, error: null };
+    return { data: null, error: null };
   }
 
   const { data, error } = await supabase
@@ -85,8 +83,7 @@ export async function getMerchantOrders() {
   await triggerAutoExpire(supabase);
   
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-    const { DUMMY_MERCHANT_ORDERS } = await import("./dummy-merchant");
-    return { data: DUMMY_MERCHANT_ORDERS, error: null };
+    return { data: [], error: null };
   }
 
   const { data: { user } } = await supabase.auth.getUser();

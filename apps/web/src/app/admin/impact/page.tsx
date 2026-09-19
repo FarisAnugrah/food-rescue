@@ -1,25 +1,19 @@
 import { formatWeight, formatCurrency } from "@food-rescue/shared";
 import AdminNav from "@/components/admin/admin-nav";
-import { DUMMY_PLATFORM_STATS } from "@/lib/dummy-admin";
+import { getAdminImpactDashboard } from "@/lib/admin-queries";
 
-const s = DUMMY_PLATFORM_STATS;
+export const dynamic = "force-dynamic";
 
-const MONTHLY = [
-  { month: "Apr", kg: 180 }, { month: "Mei", kg: 240 }, { month: "Jun", kg: 310 },
-  { month: "Jul", kg: 420 }, { month: "Agu", kg: 580 }, { month: "Sep", kg: 426.8 },
-];
+export default async function AdminImpact() {
+  const { data } = await getAdminImpactDashboard();
 
-const TOP_MERCHANTS = [
-  { name: "Sushi Tei Express", kg: 203.1 },
-  { name: "Bakery Makmur", kg: 127.5 },
-  { name: "Warung Bu Sari", kg: 89.2 },
-  { name: "Pizza Place", kg: 74.6 },
-  { name: "Dapur Nusantara", kg: 63.3 },
-];
+  if (!data) return null;
 
-const maxKg = Math.max(...MONTHLY.map((m) => m.kg));
+  const { stats: s, chart: MONTHLY, topMerchants: TOP_MERCHANTS } = data;
+  
+  const maxKg = Math.max(...MONTHLY.map((m: any) => m.kg), 1);
+  const maxTopKg = TOP_MERCHANTS.length > 0 ? TOP_MERCHANTS[0].kg : 1;
 
-export default function AdminImpact() {
   return (
     <div className="min-h-screen bg-[#fafaf7]">
       <AdminNav active="/admin/impact" />
@@ -50,12 +44,12 @@ export default function AdminImpact() {
           <div className="rounded-2xl bg-white border border-[#e8e4d4] p-6">
             <h2 className="text-lg font-bold text-[#1b4332] mb-6">Makanan Diselamatkan per Bulan</h2>
             <div className="flex items-end gap-3 h-48">
-              {MONTHLY.map((d) => (
+              {MONTHLY.map((d: any) => (
                 <div key={d.month} className="flex flex-1 flex-col items-center gap-2">
-                  <span className="text-[10px] font-semibold text-[#1b4332]">{d.kg}</span>
+                  <span className="text-[10px] font-semibold text-[#1b4332]">{d.kg > 0 ? d.kg : ""}</span>
                   <div
                     className="w-full rounded-lg bg-[#52b788] transition-all"
-                    style={{ height: `${(d.kg / maxKg) * 100}%`, minHeight: 8 }}
+                    style={{ height: `${(d.kg / maxKg) * 100}%`, minHeight: d.kg > 0 ? 8 : 4 }}
                   />
                   <span className="text-xs text-[#888]">{d.month}</span>
                 </div>
@@ -66,7 +60,9 @@ export default function AdminImpact() {
           <div className="rounded-2xl bg-white border border-[#e8e4d4] p-6">
             <h2 className="text-lg font-bold text-[#1b4332] mb-6">Top Merchant Rescuers</h2>
             <div className="flex flex-col gap-3">
-              {TOP_MERCHANTS.map((m, i) => (
+              {TOP_MERCHANTS.length === 0 ? (
+                <div className="text-center text-[#888] py-10 text-sm">Belum ada data merchant</div>
+              ) : TOP_MERCHANTS.map((m: any, i: number) => (
                 <div key={m.name} className="flex items-center gap-3">
                   <span className="w-5 text-xs font-bold text-[#aaa]">{i + 1}</span>
                   <div className="flex-1">
@@ -77,7 +73,7 @@ export default function AdminImpact() {
                     <div className="h-1.5 w-full rounded-full bg-[#f0ede0]">
                       <div
                         className="h-1.5 rounded-full bg-[#2d6a4f]"
-                        style={{ width: `${(m.kg / TOP_MERCHANTS[0].kg) * 100}%` }}
+                        style={{ width: `${(m.kg / maxTopKg) * 100}%` }}
                       />
                     </div>
                   </div>
