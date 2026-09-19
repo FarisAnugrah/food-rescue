@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { logout } from "@/lib/auth-actions";
 import ListingCard from "@/components/listing-card";
 import NotificationBell from "@/components/notification-bell";
 import type { Listing } from "@food-rescue/shared";
+import { createClient } from "@supabase/supabase-js";
 
 import dynamic from "next/dynamic";
 
@@ -14,21 +15,61 @@ const MapView = dynamic(() => import("@/components/map-view"), { ssr: false, loa
 const CATEGORIES = ["Semua", "Bakery", "Restoran", "Japanese", "Western", "Healthy"];
 
 export default function ListingsClient({ initialListings, user }: { initialListings: (Listing & { merchant_name: string; merchant_address: string })[], user?: any }) {
+  const [listings, setListings] = useState(initialListings);
   const [category, setCategory] = useState("Semua");
   const [halalOnly, setHalalOnly] = useState(false);
   const [search, setSearch] = useState("");
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
 
+  // Setup Realtime Subscription
+  useEffect(() => {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) return;
+    
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    );
+
+    const channel = supabase
+      .channel("listings_changes")
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "listings" },
+        (payload) => {
+          setListings((prev) => 
+            prev.map((l) => l.id === payload.new.id ? { ...l, ...payload.new } : l)
+          );
+        }
+      )
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "listings" },
+        (payload) => {
+          // Hanya tambahkan jika listing statusnya active
+          if (payload.new.status === "active") {
+            // Karena relasi merchant belum terisi, kita cuma punya merchant_id.
+            // Idealnya fetching ulang, tapi buat realtime cukup kita push dengan data seadanya dulu
+            setListings((prev) => [payload.new as any, ...prev]);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
   const userInitial = user?.user_metadata?.name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || "U";
 
   const filtered = useMemo(() => {
-    return initialListings.filter((l) => {
+    return listings.filter((l) => {
       if (category !== "Semua" && l.category !== category) return false;
       if (halalOnly && !l.is_halal) return false;
       if (search && !l.title.toLowerCase().includes(search.toLowerCase()) && !l.merchant_name.toLowerCase().includes(search.toLowerCase())) return false;
       return true;
     });
-  }, [initialListings, category, halalOnly, search]);
+  }, [listings, category, halalOnly, search]);
 
   const active = filtered.filter((l) => l.status === "active");
   const soldOut = filtered.filter((l) => l.status === "sold_out");
