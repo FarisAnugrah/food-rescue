@@ -26,10 +26,16 @@ function CheckoutContent() {
 
   const [qty, setQty] = useState(1);
   const [method, setMethod] = useState("gopay");
+  const [ovoPhone, setOvoPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
   const [qrisOrder, setQrisOrder] = useState<string | null>(null);
   const [qrisString, setQrisString] = useState<string | null>(null);
+  
+  const [vaNumber, setVaNumber] = useState<string | null>(null);
+  const [gopayUrl, setGopayUrl] = useState<string | null>(null);
+  const [ovoPending, setOvoPending] = useState(false);
   const [timeLeft, setTimeLeft] = useState(900); // 15 menit
 
   useEffect(() => {
@@ -69,8 +75,21 @@ function CheckoutContent() {
   async function handlePay() {
     setLoading(true);
     setError("");
+
+    if (method === "ovo" && (!ovoPhone || ovoPhone.length < 9)) {
+      setError("Masukkan nomor OVO yang valid (contoh: 08123456789).");
+      setLoading(false);
+      return;
+    }
     
-    const { data: orderId, invoiceUrl, qrisString: qrStringData, error: err } = await createOrder(listing.id, qty, total, weightTotal, method);
+    const { data: orderId, invoiceUrl, qrisString: qrStringData, vaNumber: vNum, gopayUrl: gUrl, error: err } = await createOrder(
+      listing.id, 
+      qty, 
+      total, 
+      weightTotal, 
+      method,
+      ovoPhone
+    );
     
     if (err) {
       setError(err);
@@ -81,6 +100,31 @@ function CheckoutContent() {
     if (method === "qris") {
       setQrisOrder(orderId);
       setQrisString(qrStringData || `FR-QRIS-${orderId}-${total}`);
+      setTimeLeft(900);
+      setLoading(false);
+      return;
+    }
+
+    if (method === "va_bca") {
+      setQrisOrder(orderId);
+      setVaNumber(vNum);
+      setTimeLeft(3600);
+      setLoading(false);
+      return;
+    }
+
+    if (method === "gopay") {
+      setQrisOrder(orderId);
+      setGopayUrl(gUrl);
+      setTimeLeft(900);
+      setLoading(false);
+      return;
+    }
+
+    if (method === "ovo") {
+      setQrisOrder(orderId);
+      setOvoPending(true);
+      setTimeLeft(60);
       setLoading(false);
       return;
     }
@@ -130,6 +174,102 @@ function CheckoutContent() {
             className="w-full rounded-full bg-[#2d6a4f] py-4 text-sm font-bold text-white hover:bg-[#1b4332] transition-colors disabled:opacity-50"
           >
             {loading ? "Memproses..." : "Simulasi: Saya Sudah Bayar"}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (vaNumber) {
+    const m = Math.floor(timeLeft / 60).toString().padStart(2, "0");
+    const s = (timeLeft % 60).toString().padStart(2, "0");
+    return (
+      <div className="min-h-screen bg-[#fafaf7] flex flex-col items-center justify-center px-4 pb-20">
+        <div className="bg-white p-8 rounded-2xl border border-[#e8e4d4] flex flex-col items-center w-full max-w-sm text-center shadow-sm relative overflow-hidden">
+          {timeLeft === 0 && (
+            <div className="absolute inset-0 bg-white/90 backdrop-blur-sm z-10 flex flex-col items-center justify-center">
+              <p className="text-xl font-bold text-red-600 mb-2">Kedaluwarsa</p>
+              <button onClick={() => window.location.reload()} className="px-6 py-2 bg-[#2d6a4f] text-white rounded-full text-sm font-bold mt-2">Ulangi Checkout</button>
+            </div>
+          )}
+          <h2 className="font-bold text-xl text-[#1b4332] mb-2">Transfer VA BCA</h2>
+          <div className="bg-orange-50 text-orange-700 px-4 py-1.5 rounded-full text-sm font-bold mb-4 flex items-center gap-2">
+            <Clock className="w-4 h-4" /> Selesaikan dalam {m}:{s}
+          </div>
+          <p className="text-sm text-[#888] mb-4">Transfer tepat sesuai nominal ke nomor Virtual Account di bawah ini:</p>
+          <div className="bg-[#fefae0] p-4 rounded-xl border border-[#e8e4d4] w-full mb-6">
+            <p className="text-xs text-[#888] uppercase tracking-widest font-semibold mb-1">Nomor VA</p>
+            <p className="text-2xl font-mono font-bold text-[#1b4332] tracking-wider">{vaNumber}</p>
+          </div>
+          <p className="font-bold text-2xl text-[#1b4332] mb-6">{formatCurrency(total)}</p>
+          <button
+            onClick={async () => {
+              setLoading(true);
+              if (qrisOrder) await simulatePaymentSuccess(qrisOrder);
+              router.push(`/orders/${qrisOrder}?success=true`);
+            }}
+            disabled={timeLeft === 0 || loading}
+            className="w-full rounded-full bg-[#2d6a4f] py-4 text-sm font-bold text-white hover:bg-[#1b4332] transition-colors disabled:opacity-50"
+          >
+            {loading ? "Memproses..." : "Simulasi: Saya Sudah Transfer"}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (gopayUrl) {
+    return (
+      <div className="min-h-screen bg-[#fafaf7] flex flex-col items-center justify-center px-4 pb-20">
+        <div className="bg-white p-8 rounded-2xl border border-[#e8e4d4] flex flex-col items-center w-full max-w-sm text-center shadow-sm">
+          <h2 className="font-bold text-xl text-[#1b4332] mb-4">Bayar dengan GoPay</h2>
+          <p className="text-sm text-[#888] mb-6">Klik tombol di bawah ini untuk membuka aplikasi Gojek dan menyelesaikan pembayaran.</p>
+          <a href={gopayUrl} className="w-full rounded-full bg-[#00AED6] py-4 text-sm font-bold text-white hover:bg-[#0092B3] transition-colors block text-center mb-4">
+            Buka Aplikasi Gojek
+          </a>
+          <button
+            onClick={async () => {
+              setLoading(true);
+              if (qrisOrder) await simulatePaymentSuccess(qrisOrder);
+              router.push(`/orders/${qrisOrder}?success=true`);
+            }}
+            className="w-full rounded-full border border-[#e8e4d4] bg-white py-4 text-sm font-bold text-[#555] hover:bg-[#f0ede0] transition-colors"
+          >
+            Simulasi: Anggap Sukses
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (ovoPending) {
+    const m = Math.floor(timeLeft / 60).toString().padStart(2, "0");
+    const s = (timeLeft % 60).toString().padStart(2, "0");
+    return (
+      <div className="min-h-screen bg-[#fafaf7] flex flex-col items-center justify-center px-4 pb-20">
+        <div className="bg-white p-8 rounded-2xl border border-[#e8e4d4] flex flex-col items-center w-full max-w-sm text-center shadow-sm relative overflow-hidden">
+          {timeLeft === 0 && (
+            <div className="absolute inset-0 bg-white/90 backdrop-blur-sm z-10 flex flex-col items-center justify-center">
+              <p className="text-xl font-bold text-red-600 mb-2">Waktu Habis</p>
+              <button onClick={() => window.location.reload()} className="px-6 py-2 bg-[#2d6a4f] text-white rounded-full text-sm font-bold mt-2">Coba Lagi</button>
+            </div>
+          )}
+          <h2 className="font-bold text-xl text-[#4C2A86] mb-2">Cek Aplikasi OVO</h2>
+          <div className="bg-orange-50 text-orange-700 px-4 py-1.5 rounded-full text-sm font-bold mb-4 flex items-center gap-2">
+            <Clock className="w-4 h-4" /> Selesaikan dalam {m}:{s}
+          </div>
+          <p className="text-sm text-[#888] mb-6">Kami telah mengirimkan notifikasi pembayaran ke aplikasi OVO di nomor <strong className="text-[#1b4332]">{ovoPhone}</strong>. Silakan buka aplikasi OVO Anda untuk menyetujui transaksi.</p>
+          <div className="w-16 h-16 border-4 border-[#4C2A86] border-t-transparent rounded-full animate-spin mb-6 mx-auto" />
+          <button
+            onClick={async () => {
+              setLoading(true);
+              if (qrisOrder) await simulatePaymentSuccess(qrisOrder);
+              router.push(`/orders/${qrisOrder}?success=true`);
+            }}
+            disabled={timeLeft === 0 || loading}
+            className="w-full rounded-full bg-[#4C2A86] py-4 text-sm font-bold text-white hover:opacity-90 transition-colors disabled:opacity-50"
+          >
+            {loading ? "Memproses..." : "Simulasi: Sudah Bayar di OVO"}
           </button>
         </div>
       </div>
@@ -197,7 +337,7 @@ function CheckoutContent() {
         {/* Pembayaran */}
         <div className="rounded-2xl bg-white border border-[#e8e4d4] p-5">
           <h3 className="font-bold text-[#1b4332] mb-4">Metode Pembayaran</h3>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3 mb-4">
             {PAYMENT_METHODS.map((m) => (
               <button
                 key={m.id}
@@ -212,6 +352,20 @@ function CheckoutContent() {
               </button>
             ))}
           </div>
+
+          {method === "ovo" && (
+            <div className="mt-4 pt-4 border-t border-[#e8e4d4]">
+              <label className="block text-sm font-semibold text-[#1b4332] mb-1.5">Nomor Handphone OVO</label>
+              <input
+                type="text"
+                placeholder="Contoh: 08123456789"
+                value={ovoPhone}
+                onChange={(e) => setOvoPhone(e.target.value)}
+                className="w-full rounded-xl border border-[#e8e4d4] px-4 py-2.5 text-sm focus:border-[#2d6a4f] outline-none transition-colors"
+              />
+              <p className="text-xs text-[#888] mt-1.5">Notifikasi pembayaran akan dikirim ke aplikasi OVO di nomor ini.</p>
+            </div>
+          )}
         </div>
 
         {/* Ringkasan */}

@@ -6,7 +6,7 @@ import { Invoice } from "./xendit";
 
 import { createNotification } from "./notification-actions";
 
-export async function createOrder(listingId: string, quantity: number, totalPrice: number, totalWeightKg: number, method: string = "gopay") {
+export async function createOrder(listingId: string, quantity: number, totalPrice: number, totalWeightKg: number, method: string = "gopay", ovoPhone?: string) {
   const supabase = await createClient();
   
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.XENDIT_SECRET_KEY) {
@@ -49,12 +49,13 @@ export async function createOrder(listingId: string, quantity: number, totalPric
     
     // Kita hapus proteksi dummy key agar Xendit benar-benar terpanggil
     if (!process.env.XENDIT_SECRET_KEY) {
-      return { data: order.id, invoiceUrl: null, qrisString: null, error: null };
+      return { data: order.id, invoiceUrl: null, qrisString: null, vaNumber: null, gopayUrl: null, error: null };
     }
+
+    const xenditToken = Buffer.from(`${process.env.XENDIT_SECRET_KEY}:`).toString('base64');
 
     if (method === "qris") {
       try {
-        const xenditToken = Buffer.from(`${process.env.XENDIT_SECRET_KEY}:`).toString('base64');
         const qrRes = await fetch("https://api.xendit.co/qr_codes", {
           method: "POST",
           headers: {
@@ -77,15 +78,139 @@ export async function createOrder(listingId: string, quantity: number, totalPric
         }
 
         const qrData = await qrRes.json();
-        return { data: order.id, invoiceUrl: null, qrisString: qrData.qr_string, error: null };
+        return { data: order.id, invoiceUrl: null, qrisString: qrData.qr_string, vaNumber: null, gopayUrl: null, error: null };
       } catch (qrErr: any) {
         console.error("Xendit QR Error:", qrErr);
         await supabase.from("orders").delete().eq("id", order.id);
         await supabase.rpc('increment_sold', { x_listing_id: listingId, x_qty: -quantity });
-        return { data: null, invoiceUrl: null, qrisString: null, error: "Gagal membuat QRIS" };
+        return { data: null, invoiceUrl: null, qrisString: null, vaNumber: null, gopayUrl: null, error: "Gagal membuat QRIS" };
       }
     }
 
+    if (method === "va_bca") {
+      try {
+        const resVA = await fetch("https://api.xendit.co/payment_requests", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Basic ${xenditToken}`
+          },
+          body: JSON.stringify({
+            reference_id: order.id,
+            amount: totalPrice,
+            currency: "IDR",
+            payment_method: {
+              type: "VIRTUAL_ACCOUNT",
+              reusability: "ONE_TIME_USE",
+              virtual_account: {
+                channel_code: "BCA",
+                channel_properties: {
+                  customer_name: userData?.name || "Food Rescue User"
+                }
+              }
+            }
+          })
+        });
+
+        if (!resVA.ok) throw new Error("Gagal memanggil API Xendit VA");
+        const dataVA = await resVA.json();
+        return { 
+          data: order.id, 
+          invoiceUrl: null, 
+          qrisString: null, 
+          vaNumber: dataVA.payment_method.virtual_account.channel_properties.virtual_account_number, 
+          gopayUrl: null, 
+          error: null 
+        };
+      } catch (err) {
+        await supabase.from("orders").delete().eq("id", order.id);
+        await supabase.rpc('increment_sold', { x_listing_id: listingId, x_qty: -quantity });
+        return { data: null, invoiceUrl: null, error: "Gagal membuat VA BCA" };
+      }
+    }
+
+    if (method === "gopay") {
+      try {
+        const resEw = await fetch("https://api.xendit.co/payment_requests", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Basic ${xenditToken}`
+          },
+          body: JSON.stringify({
+            reference_id: order.id,
+            amount: totalPrice,
+            currency: "IDR",
+            payment_method: {
+              type: "EWALLET",
+              reusability: "ONE_TIME_USE",
+              ewallet: {
+                channel_code: "GOPAY",
+                channel_properties: {
+                  success_return_url: `${siteUrl}/orders/${order.id}?success=true`,
+                  failure_return_url: `${siteUrl}/checkout?id=${listingId}&error=gopay_failed`,
+                  cancel_return_url: `${siteUrl}/checkout?id=${listingId}&error=gopay_cancelled`
+                }
+              }
+            }
+          })
+        });
+
+        if (!resEw.ok) throw new Error("Gagal memanggil API Xendit GoPay");
+        const dataEw = await resEw.json();
+        const actionUrl = dataEw.actions?.find((a: any) => a.action === "AUTH")?.url;
+        return { data: order.id, invoiceUrl: null, qrisString: null, vaNumber: null, gopayUrl: actionUrl, error: null };
+      } catch (err) {
+        await supabase.from("orders").delete().eq("id", order.id);
+        await supabase.rpc('increment_sold', { x_listing_id: listingId, x_qty: -quantity });
+        return { data: null, invoiceUrl: null, error: "Gagal memproses GoPay" };
+      }
+    }
+
+    if (method === "ovo") {
+      try {
+        let phone = ovoPhone || "";
+        // OVO requires +62 format strictly.
+        if (phone.startsWith("0")) phone = "+62" + phone.slice(1);
+        if (!phone.startsWith("+62")) phone = "+62" + phone;
+
+        const resEw = await fetch("https://api.xendit.co/payment_requests", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Basic ${xenditToken}`
+          },
+          body: JSON.stringify({
+            reference_id: order.id,
+            amount: totalPrice,
+            currency: "IDR",
+            payment_method: {
+              type: "EWALLET",
+              reusability: "ONE_TIME_USE",
+              ewallet: {
+                channel_code: "OVO",
+                channel_properties: {
+                  mobile_number: phone
+                }
+              }
+            }
+          })
+        });
+
+        if (!resEw.ok) {
+          const errBody = await resEw.json();
+          console.error("OVO Error:", errBody);
+          throw new Error("Gagal memanggil API Xendit OVO");
+        }
+        return { data: order.id, invoiceUrl: null, qrisString: null, vaNumber: null, gopayUrl: null, error: null };
+      } catch (err) {
+        await supabase.from("orders").delete().eq("id", order.id);
+        await supabase.rpc('increment_sold', { x_listing_id: listingId, x_qty: -quantity });
+        return { data: null, invoiceUrl: null, error: "Gagal memproses OVO. Pastikan nomor HP valid." };
+      }
+    }
+
+    // Fallback: Invoice
     const invoice = await Invoice.createInvoice({
       data: {
         externalId: order.id,
