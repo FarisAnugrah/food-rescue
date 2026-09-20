@@ -3,19 +3,9 @@ import { formatCurrency } from "@food-rescue/shared";
 import MerchantNav from "@/components/merchant/merchant-nav";
 import { getMerchantListings } from "@/lib/listing-queries";
 
+import ListingRow from "./listing-row";
+
 export const dynamic = "force-dynamic";
-
-const STATUS_STYLES: Record<string, string> = {
-  active: "bg-[#d8f3dc] text-[#2d6a4f]",
-  sold_out: "bg-[#fefae0] text-[#92400e]",
-  expired: "bg-gray-100 text-gray-500",
-};
-
-const STATUS_LABELS: Record<string, string> = {
-  active: "Aktif",
-  sold_out: "Habis",
-  expired: "Expired",
-};
 
 export default async function MerchantListings() {
   const { data: listings } = await getMerchantListings();
@@ -42,42 +32,18 @@ export default async function MerchantListings() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-[#e8e4d4] text-left text-xs text-[#888] uppercase tracking-wider">
-                <th className="px-5 py-4">Nama</th>
+                <th className="px-5 py-4">Item</th>
                 <th className="px-5 py-4">Harga</th>
                 <th className="px-5 py-4">Stok</th>
                 <th className="px-5 py-4">Status</th>
                 <th className="px-5 py-4">Pickup</th>
+                <th className="px-5 py-4">Aksi</th>
               </tr>
             </thead>
             <tbody>
-              {(listings || []).map((l: any) => {
-                const remaining = l.quantity - l.quantity_sold;
-                const start = new Date(l.pickup_start).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
-                const end = new Date(l.pickup_end).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
-                return (
-                  <tr key={l.id} className="border-b border-[#f0ede0] last:border-0 hover:bg-[#fafaf7]">
-                    <td className="px-5 py-4">
-                      <p className="font-medium text-[#1b4332]">{l.title}</p>
-                      <p className="text-xs text-[#aaa]">{l.category} · {l.weight_kg} kg</p>
-                    </td>
-                    <td className="px-5 py-4">
-                      <p className="font-bold text-[#1b4332]">{formatCurrency(l.discounted_price)}</p>
-                      <p className="text-xs text-[#bbb] line-through">{formatCurrency(l.original_price)}</p>
-                    </td>
-                    <td className="px-5 py-4">
-                      <p className={`font-medium ${remaining <= 2 ? "text-red-500" : "text-[#1b4332]"}`}>
-                        {remaining} / {l.quantity}
-                      </p>
-                    </td>
-                    <td className="px-5 py-4">
-                      <span className={`rounded-full px-3 py-1 text-xs font-semibold ${STATUS_STYLES[l.status]}`}>
-                        {STATUS_LABELS[l.status]}
-                      </span>
-                    </td>
-                    <td className="px-5 py-4 text-[#888]">{start}–{end}</td>
-                  </tr>
-                );
-              })}
+              {(listings || []).map((l: any) => (
+                <ListingRow key={l.id} listing={l} />
+              ))}
             </tbody>
           </table>
         </div>

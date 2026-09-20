@@ -3,9 +3,34 @@
 import { createClient } from "./supabase/server";
 import { revalidatePath } from "next/cache";
 
+export async function updateListingStock(listingId: string, newQuantity: number) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: "Unauthorized" };
+
+  // Pastikan listing milik merchant yang sedang login
+  const { data: listing } = await supabase.from("listings").select("merchant_id, quantity_sold").eq("id", listingId).single();
+  const { data: merchant } = await supabase.from("merchants").select("id").eq("user_id", user.id).single();
+
+  if (!listing || !merchant || listing.merchant_id !== merchant.id) return { error: "Unauthorized access" };
+  if (newQuantity < listing.quantity_sold) return { error: "Total stok tidak boleh kurang dari jumlah yang sudah terjual" };
+
+  const newStatus = newQuantity > listing.quantity_sold ? "active" : "sold_out";
+
+  const { error } = await supabase
+    .from("listings")
+    .update({ quantity: newQuantity, status: newStatus })
+    .eq("id", listingId);
+
+  if (error) return { error: error.message };
+
+  revalidatePath("/merchant/listings");
+  revalidatePath("/listings");
+  return { success: true };
+}
+
 export async function createListing(formData: FormData) {
   const supabase = await createClient();
-  
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
     return { error: null };
   }
