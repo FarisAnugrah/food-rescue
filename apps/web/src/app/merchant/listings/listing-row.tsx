@@ -29,6 +29,9 @@ export default function ListingRow({ listing }: { listing: any }) {
   const end = endObj.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
   const dateStr = startObj.toLocaleDateString("id-ID", { day: "numeric", month: "short" });
 
+  const isExpired = listing.status === "expired" || endObj < new Date();
+  const displayStatus = isExpired ? "expired" : listing.status;
+
   async function handleSave() {
     const parsedQty = parseInt(newQty);
     if (isNaN(parsedQty)) {
@@ -84,8 +87,8 @@ export default function ListingRow({ listing }: { listing: any }) {
         )}
       </td>
       <td className="px-5 py-4">
-        <span className={`rounded-full px-3 py-1 text-xs font-semibold ${STATUS_STYLES[listing.status] || "bg-gray-100"}`}>
-          {STATUS_LABELS[listing.status] || listing.status}
+        <span className={`rounded-full px-3 py-1 text-xs font-semibold ${STATUS_STYLES[displayStatus] || "bg-gray-100"}`}>
+          {STATUS_LABELS[displayStatus] || displayStatus}
         </span>
       </td>
       <td className="px-5 py-4 text-[#888]">
