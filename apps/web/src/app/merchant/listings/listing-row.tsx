@@ -23,8 +23,11 @@ export default function ListingRow({ listing }: { listing: any }) {
   const [error, setError] = useState("");
 
   const remaining = listing.quantity - listing.quantity_sold;
-  const start = new Date(listing.pickup_start).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
-  const end = new Date(listing.pickup_end).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+  const startObj = new Date(listing.pickup_start);
+  const endObj = new Date(listing.pickup_end);
+  const start = startObj.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+  const end = endObj.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+  const dateStr = startObj.toLocaleDateString("id-ID", { day: "numeric", month: "short" });
 
   async function handleSave() {
     const parsedQty = parseInt(newQty);
@@ -85,7 +88,12 @@ export default function ListingRow({ listing }: { listing: any }) {
           {STATUS_LABELS[listing.status] || listing.status}
         </span>
       </td>
-      <td className="px-5 py-4 text-[#888]">{start}–{end}</td>
+      <td className="px-5 py-4 text-[#888]">
+        <div className="flex flex-col">
+          <span className="text-[10px] font-semibold text-[#aaa]">{dateStr}</span>
+          <span>{start}–{end}</span>
+        </div>
+      </td>
       <td className="px-5 py-4">
         {listing.status === "expired" || new Date(listing.pickup_end) < new Date() ? (
           <span className="text-xs text-gray-400">Locked</span>
