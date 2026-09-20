@@ -87,7 +87,7 @@ export default function ListingRow({ listing }: { listing: any }) {
       </td>
       <td className="px-5 py-4 text-[#888]">{start}–{end}</td>
       <td className="px-5 py-4">
-        {listing.status === "expired" ? (
+        {listing.status === "expired" || new Date(listing.pickup_end) < new Date() ? (
           <span className="text-xs text-gray-400">Locked</span>
         ) : isEditing ? (
           <div className="flex items-center gap-2">
