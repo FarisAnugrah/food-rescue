@@ -14,7 +14,7 @@ export default async function AdminMerchants() {
   const { data: verified } = await getVerifiedMerchants();
 
   return (
-    <div className="min-h-screen bg-[#fafaf7]">
+    <div className="min-h-screen bg-gray-50">
       <AdminNav active="/admin/merchants" />
       <AdminMerchantsClient initialPending={pending} initialVerified={verified} />
     </div>

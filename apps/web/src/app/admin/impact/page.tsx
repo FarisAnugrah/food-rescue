@@ -15,64 +15,65 @@ export default async function AdminImpact() {
   const maxTopKg = TOP_MERCHANTS.length > 0 ? TOP_MERCHANTS[0].kg : 1;
 
   return (
-    <div className="min-h-screen bg-[#fafaf7]">
+    <div className="min-h-screen bg-gray-50">
       <AdminNav active="/admin/impact" />
 
-      <div className="mx-auto max-w-6xl px-6 py-10">
-        <h1 className="text-3xl font-bold text-[#1b4332] mb-2">Impact Dashboard</h1>
-        <p className="text-[#888] mb-8">Dampak platform Food Rescue secara keseluruhan</p>
+      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
+        <h1 className="text-2xl font-black tracking-tight text-gray-900 sm:text-3xl mb-1">Impact Dashboard</h1>
+        <p className="text-sm text-gray-500 mb-8">Dampak platform Food Rescue secara keseluruhan</p>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 mb-10">
-          <div className="rounded-2xl bg-[#1b4332] text-white p-6">
-            <p className="text-sm text-[#95d5b2]">Total Makanan Diselamatkan</p>
-            <p className="mt-2 text-4xl font-bold">{formatWeight(s.total_kg_saved)}</p>
-            <p className="mt-1 text-xs text-[#95d5b2]">Setara dengan {Math.round(s.total_kg_saved / 0.3)} porsi makan</p>
+        <div className="grid grid-cols-1 gap-3 sm:gap-6 sm:grid-cols-3 mb-8">
+          <div className="rounded-2xl bg-[#1b4332] text-white p-6 shadow-sm overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#2d6a4f] rounded-full blur-2xl transform translate-x-1/2 -translate-y-1/2 opacity-50" />
+            <p className="text-xs font-medium text-[#95d5b2] uppercase tracking-wide">Makanan Diselamatkan</p>
+            <p className="mt-2 text-4xl font-black tracking-tight">{formatWeight(s.total_kg_saved)}</p>
+            <p className="mt-2 text-xs font-semibold text-[#52b788]">~ {Math.round(s.total_kg_saved / 0.3)} porsi makan</p>
           </div>
-          <div className="rounded-2xl bg-[#2d6a4f] text-white p-6">
-            <p className="text-sm text-[#95d5b2]">CO₂ Dicegah</p>
-            <p className="mt-2 text-4xl font-bold">{formatWeight(s.total_co2_prevented)}</p>
-            <p className="mt-1 text-xs text-[#95d5b2]">Setara dengan {Math.round(s.total_co2_prevented / 21)} pohon ditanam</p>
+          <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-black/5">
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">CO₂ Dicegah</p>
+            <p className="mt-2 text-4xl font-black tracking-tight text-gray-900">{formatWeight(s.total_co2_prevented)}</p>
+            <p className="mt-2 text-xs font-medium text-gray-400">~ {Math.round(s.total_co2_prevented / 21)} pohon ditanam</p>
           </div>
-          <div className="rounded-2xl bg-[#52b788] text-[#1b4332] p-6">
-            <p className="text-sm text-[#1b4332]/70">Total Transaksi</p>
-            <p className="mt-2 text-4xl font-bold">{s.total_orders.toLocaleString()}</p>
-            <p className="mt-1 text-xs text-[#1b4332]/70">Revenue: {formatCurrency(s.total_revenue)}</p>
+          <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-black/5">
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Transaksi</p>
+            <p className="mt-2 text-4xl font-black tracking-tight text-gray-900">{s.total_orders.toLocaleString()}</p>
+            <p className="mt-2 text-xs font-medium text-gray-400">Revenue: <span className="text-gray-900">{formatCurrency(s.total_revenue)}</span></p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-          <div className="rounded-2xl bg-white border border-[#e8e4d4] p-6">
-            <h2 className="text-lg font-bold text-[#1b4332] mb-6">Makanan Diselamatkan per Bulan</h2>
-            <div className="flex items-end gap-3 h-48">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div className="rounded-2xl bg-white shadow-sm ring-1 ring-black/5 p-6">
+            <h2 className="text-base font-bold text-gray-900 mb-6">Makanan Diselamatkan per Bulan</h2>
+            <div className="flex items-end gap-3 h-48 border-b border-gray-100 pb-2">
               {MONTHLY.map((d: any) => (
-                <div key={d.month} className="flex flex-1 flex-col items-center gap-2">
-                  <span className="text-[10px] font-semibold text-[#1b4332]">{d.kg > 0 ? d.kg : ""}</span>
+                <div key={d.month} className="flex flex-1 flex-col items-center gap-2 group">
+                  <span className="text-[10px] font-bold text-gray-400 group-hover:text-gray-900 transition-colors">{d.kg > 0 ? d.kg : ""}</span>
                   <div
-                    className="w-full rounded-lg bg-[#52b788] transition-all"
+                    className="w-full rounded-md bg-gray-200 group-hover:bg-[#1b4332] transition-colors"
                     style={{ height: `${(d.kg / maxKg) * 100}%`, minHeight: d.kg > 0 ? 8 : 4 }}
                   />
-                  <span className="text-xs text-[#888]">{d.month}</span>
+                  <span className="text-[11px] font-semibold text-gray-500">{d.month}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="rounded-2xl bg-white border border-[#e8e4d4] p-6">
-            <h2 className="text-lg font-bold text-[#1b4332] mb-6">Top Merchant Rescuers</h2>
-            <div className="flex flex-col gap-3">
+          <div className="rounded-2xl bg-white shadow-sm ring-1 ring-black/5 p-6">
+            <h2 className="text-base font-bold text-gray-900 mb-6">Top Merchant Rescuers</h2>
+            <div className="flex flex-col gap-4">
               {TOP_MERCHANTS.length === 0 ? (
-                <div className="text-center text-[#888] py-10 text-sm">Belum ada data merchant</div>
+                <div className="text-center text-gray-400 py-10 text-sm font-medium">Belum ada data merchant</div>
               ) : TOP_MERCHANTS.map((m: any, i: number) => (
                 <div key={m.name} className="flex items-center gap-3">
-                  <span className="w-5 text-xs font-bold text-[#aaa]">{i + 1}</span>
+                  <span className="w-5 text-xs font-black text-gray-300">{i + 1}</span>
                   <div className="flex-1">
-                    <div className="flex justify-between mb-1">
-                      <span className="text-sm font-medium text-[#1b4332]">{m.name}</span>
-                      <span className="text-sm text-[#52b788] font-semibold">{m.kg} kg</span>
+                    <div className="flex justify-between mb-1.5">
+                      <span className="text-sm font-bold text-gray-900">{m.name}</span>
+                      <span className="text-xs font-black text-[#2d6a4f]">{m.kg} kg</span>
                     </div>
-                    <div className="h-1.5 w-full rounded-full bg-[#f0ede0]">
+                    <div className="h-1.5 w-full rounded-full bg-gray-100">
                       <div
-                        className="h-1.5 rounded-full bg-[#2d6a4f]"
+                        className="h-1.5 rounded-full bg-[#1b4332]"
                         style={{ width: `${(m.kg / maxTopKg) * 100}%` }}
                       />
                     </div>
