@@ -32,12 +32,12 @@ export default function NewListingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#fafaf7]">
+    <div className="min-h-screen bg-gray-50">
       <MerchantNav active="/merchant/listings" />
 
-      <div className="mx-auto max-w-2xl px-6 py-10">
-        <h1 className="text-3xl font-bold text-[#1b4332]">Listing Baru</h1>
-        <p className="mt-1 text-[#888] mb-8">Posting surplus makananmu</p>
+      <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6 lg:py-12">
+        <h1 className="text-2xl font-black tracking-tight text-gray-900 sm:text-3xl">Listing Baru</h1>
+        <p className="mt-1 text-sm text-gray-500 mb-8">Posting surplus makananmu</p>
 
         <div className="rounded-2xl bg-white border border-[#e8e4d4] p-6 sm:p-8 shadow-sm">
           <form onSubmit={handleSubmit} className="space-y-6">
