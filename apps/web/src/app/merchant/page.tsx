@@ -85,47 +85,49 @@ export default async function MerchantDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-[#fafaf7]">
+    <div className="min-h-screen bg-gray-50">
       <MerchantNav active="/merchant" />
 
-      <div className="mx-auto max-w-6xl px-6 py-10">
-        <h1 className="text-3xl font-bold text-[#1b4332]">Dashboard</h1>
-        <p className="mt-1 text-[#888]">Selamat datang kembali, {storeName}</p>
+      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
+        <h1 className="text-2xl font-black text-gray-900 tracking-tight sm:text-3xl">Dashboard</h1>
+        <p className="mt-1 text-sm text-gray-500">Selamat datang kembali, <span className="font-semibold text-gray-700">{storeName}</span></p>
 
-        <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-4">
           {[
-            { label: "Makanan Diselamatkan", value: formatWeight(stats.total_kg_saved), color: "#2d6a4f" },
-            { label: "CO₂ Dicegah", value: formatWeight(stats.total_co2_prevented), color: "#52b788" },
-            { label: "Revenue Tambahan", value: formatCurrency(stats.total_revenue), color: "#1b4332" },
-            { label: "Rating", value: <div className="flex items-center gap-1">{stats.rating} <Star className="w-5 h-5 fill-[#2d6a4f] text-[#2d6a4f]" /></div>, color: "#2d6a4f" },
+            { label: "Makanan Diselamatkan", value: formatWeight(stats.total_kg_saved), color: "text-[#2d6a4f]" },
+            { label: "CO₂ Dicegah", value: formatWeight(stats.total_co2_prevented), color: "text-[#52b788]" },
+            { label: "Revenue Tambahan", value: formatCurrency(stats.total_revenue), color: "text-gray-900" },
+            { label: "Rating", value: <div className="flex items-center gap-1.5">{stats.rating} <Star className="w-4 h-4 fill-orange-400 text-orange-400" /></div>, color: "text-gray-900" },
           ].map((s, idx) => (
-            <div key={idx} className="rounded-2xl bg-white border border-[#e8e4d4] p-5">
-              <p className="text-xs text-[#888]">{s.label}</p>
-              <div className="mt-1 text-2xl font-bold" style={{ color: s.color }}>{s.value}</div>
+            <div key={idx} className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5 flex flex-col justify-between">
+              <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">{s.label}</p>
+              <div className={`mt-3 text-2xl font-black tracking-tight ${s.color}`}>{s.value}</div>
             </div>
           ))}
         </div>
 
-        <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2">
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold text-[#1b4332]">Order Masuk</h2>
-              <Link href="/merchant/orders" className="text-sm text-[#2d6a4f] font-medium hover:underline">Lihat semua</Link>
+        <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-2">
+          <div className="flex flex-col">
+            <div className="flex items-center justify-between mb-4 px-1">
+              <h2 className="text-lg font-bold text-gray-900">Order Masuk</h2>
+              <Link href="/merchant/orders" className="text-sm text-[#2d6a4f] font-semibold hover:underline">Lihat semua</Link>
             </div>
             {recentOrders.length === 0 ? (
-              <p className="text-sm text-[#aaa]">Belum ada order masuk.</p>
+              <div className="flex-1 flex flex-col items-center justify-center rounded-3xl border border-dashed border-gray-200 bg-gray-50/50 p-8 text-center">
+                 <p className="text-sm font-medium text-gray-500">Belum ada order masuk hari ini.</p>
+              </div>
             ) : (
               <div className="flex flex-col gap-3">
                 {recentOrders.map((o) => (
-                  <div key={o.id} className="rounded-xl bg-white border border-[#e8e4d4] p-4 flex items-center justify-between">
+                  <div key={o.id} className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5 flex items-center justify-between hover:ring-black/10 transition-all">
                     <div>
-                      <p className="font-medium text-[#1b4332] text-sm">{o.listing_title}</p>
-                      <p className="text-xs text-[#888]">{o.consumer_name} · {o.quantity} bag</p>
+                      <p className="font-bold text-gray-900 text-base">{o.listing_title}</p>
+                      <p className="text-sm text-gray-500 mt-0.5">{o.consumer_name} · <span className="font-medium text-gray-700">{o.quantity} porsi</span></p>
                     </div>
-                    <div className="text-right">
-                      <p className="font-bold text-[#1b4332] text-sm">{formatCurrency(o.total_price)}</p>
-                      <span className="rounded-full bg-[#fefae0] px-2 py-0.5 text-xs font-semibold text-[#1b4332]">
-                        Menunggu pickup
+                    <div className="text-right flex flex-col items-end">
+                      <p className="font-black text-gray-900 text-base">{formatCurrency(o.total_price)}</p>
+                      <span className="mt-1 rounded-md bg-orange-50 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-orange-600">
+                        Siap Pickup
                       </span>
                     </div>
                   </div>
@@ -134,21 +136,28 @@ export default async function MerchantDashboard() {
             )}
           </div>
 
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold text-[#1b4332]">Listing Aktif</h2>
-              <Link href="/merchant/listings" className="text-sm text-[#2d6a4f] font-medium hover:underline">Kelola</Link>
+          <div className="flex flex-col">
+            <div className="flex items-center justify-between mb-4 px-1">
+              <h2 className="text-lg font-bold text-gray-900">Listing Aktif</h2>
+              <Link href="/merchant/listings" className="text-sm text-[#2d6a4f] font-semibold hover:underline">Kelola menu</Link>
             </div>
             <div className="flex flex-col gap-3">
               {activeListings.length === 0 ? (
-                 <p className="text-sm text-[#aaa]">Tidak ada listing aktif.</p>
+                 <div className="flex-1 flex flex-col items-center justify-center rounded-3xl border border-dashed border-gray-200 bg-gray-50/50 p-8 text-center">
+                   <p className="text-sm font-medium text-gray-500">Tidak ada makanan yang dijual saat ini.</p>
+                 </div>
               ) : activeListings.map((l) => (
-                <div key={l.id} className="rounded-xl bg-white border border-[#e8e4d4] p-4 flex items-center justify-between">
+                <div key={l.id} className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5 flex items-center justify-between hover:ring-black/10 transition-all">
                   <div>
-                    <p className="font-medium text-[#1b4332] text-sm">{l.title}</p>
-                    <p className="text-xs text-[#888]">Sisa {l.quantity - l.quantity_sold} / {l.quantity} bag</p>
+                    <p className="font-bold text-gray-900 text-base">{l.title}</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-xs font-semibold text-[#52b788] bg-[#e8f5e9] px-2 py-0.5 rounded">
+                        Sisa {l.quantity - l.quantity_sold}
+                      </span>
+                      <span className="text-xs text-gray-400">dari {l.quantity}</span>
+                    </div>
                   </div>
-                  <p className="font-bold text-[#2d6a4f] text-sm">{formatCurrency(l.discounted_price)}</p>
+                  <p className="font-black text-[#2d6a4f] text-lg">{formatCurrency(l.discounted_price)}</p>
                 </div>
               ))}
             </div>
