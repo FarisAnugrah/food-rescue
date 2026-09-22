@@ -30,7 +30,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-[#fafaf7]">
+    <div className="flex min-h-screen bg-white">
       {/* Left Banner */}
       <div className="hidden lg:flex w-1/2 flex-col bg-[#1b4332] p-10 xl:p-14 relative overflow-hidden h-screen">
         {/* Background gradient blobs */}
@@ -125,7 +125,7 @@ export default function RegisterPage() {
 
           <form action={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-[#1b4332] mb-1.5">
+              <label className="block text-sm font-medium text-gray-900 mb-1.5">
                 {role === "consumer" ? "Nama Lengkap" : "Nama Toko / Restoran"}
               </label>
               <input
@@ -133,49 +133,49 @@ export default function RegisterPage() {
                 type="text"
                 placeholder={role === "consumer" ? "Andi Pratama" : "Bakery Makmur"}
                 required
-                className="w-full rounded-xl border border-[#e8e4d4] px-4 py-3.5 text-sm focus:border-[#2d6a4f] focus:outline-none focus:ring-1 focus:ring-[#2d6a4f] transition-all bg-white"
+                className="w-full rounded-xl border border-gray-200 px-4 py-3.5 text-sm focus:border-black outline-none transition-colors bg-white"
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-[#1b4332] mb-1.5">Daftar Sebagai</label>
+              <label className="block text-sm font-medium text-gray-900 mb-1.5">Daftar Sebagai</label>
               <div className="flex gap-3">
-                <label className="flex flex-1 items-center gap-2 rounded-xl border border-[#e8e4d4] px-4 py-3.5 bg-white cursor-pointer hover:border-[#2d6a4f] transition-all">
-                  <input type="radio" name="role" value="consumer" checked={role === "consumer"} onChange={() => setRole("consumer")} className="accent-[#2d6a4f]" />
-                  <span className="text-sm font-medium text-[#1b4332]">Konsumen</span>
+                <label className="flex flex-1 items-center gap-2 rounded-xl border border-gray-200 px-4 py-3.5 bg-white cursor-pointer hover:border-black transition-all">
+                  <input type="radio" name="role" value="consumer" checked={role === "consumer"} onChange={() => setRole("consumer")} className="accent-black w-4 h-4" />
+                  <span className="text-sm font-bold text-gray-700">Konsumen</span>
                 </label>
-                <label className="flex flex-1 items-center gap-2 rounded-xl border border-[#e8e4d4] px-4 py-3.5 bg-white cursor-pointer hover:border-[#2d6a4f] transition-all">
-                  <input type="radio" name="role" value="merchant" checked={role === "merchant"} onChange={() => setRole("merchant")} className="accent-[#2d6a4f]" />
-                  <span className="text-sm font-medium text-[#1b4332]">Merchant</span>
+                <label className="flex flex-1 items-center gap-2 rounded-xl border border-gray-200 px-4 py-3.5 bg-white cursor-pointer hover:border-black transition-all">
+                  <input type="radio" name="role" value="merchant" checked={role === "merchant"} onChange={() => setRole("merchant")} className="accent-black w-4 h-4" />
+                  <span className="text-sm font-bold text-gray-700">Merchant</span>
                 </label>
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-[#1b4332] mb-1.5">Email</label>
+              <label className="block text-sm font-medium text-gray-900 mb-1.5">Email</label>
               <input
                 name="email"
                 type="email"
                 placeholder={role === "consumer" ? "nama@email.com" : "admin@namatoko.com"}
                 required
-                className="w-full rounded-xl border border-[#e8e4d4] px-4 py-3.5 text-sm focus:border-[#2d6a4f] focus:outline-none focus:ring-1 focus:ring-[#2d6a4f] transition-all bg-white"
+                className="w-full rounded-xl border border-gray-200 px-4 py-3.5 text-sm focus:border-black outline-none transition-colors bg-white"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-[#1b4332] mb-1.5">Password</label>
+              <label className="block text-sm font-medium text-gray-900 mb-1.5">Password</label>
               <input
                 name="password"
                 type="password"
                 placeholder="Minimal 6 karakter"
                 required
                 minLength={6}
-                className="w-full rounded-xl border border-[#e8e4d4] px-4 py-3.5 text-sm focus:border-[#2d6a4f] focus:outline-none focus:ring-1 focus:ring-[#2d6a4f] transition-all bg-white"
+                className="w-full rounded-xl border border-gray-200 px-4 py-3.5 text-sm focus:border-black outline-none transition-colors bg-white"
               />
             </div>
             
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-xl bg-[#2d6a4f] mt-2 py-3.5 text-sm font-bold text-white hover:bg-[#1b4332] disabled:opacity-50 transition-colors shadow-sm"
+              className="w-full rounded-full bg-black mt-4 py-4 text-sm font-bold text-white hover:bg-gray-800 disabled:opacity-50 transition-colors shadow-sm"
             >
               {loading ? "Loading..." : "Daftar Sekarang"}
             </button>
@@ -183,24 +183,24 @@ export default function RegisterPage() {
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-[#e8e4d4]" />
+              <div className="w-full border-t border-gray-200" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-[#fafaf7] px-4 text-[#888] uppercase tracking-widest font-medium">Atau</span>
+              <span className="bg-white px-4 text-gray-400 uppercase tracking-widest font-bold">Atau</span>
             </div>
           </div>
 
           <button
             onClick={handleGoogle}
             disabled={loading}
-            className="w-full rounded-xl border border-[#e8e4d4] bg-white py-3.5 text-sm font-bold text-[#555] hover:bg-[#f0ede0] disabled:opacity-50 transition-colors"
+            className="w-full rounded-full border border-gray-200 bg-white py-4 text-sm font-bold text-gray-600 hover:bg-gray-50 disabled:opacity-50 transition-colors shadow-sm"
           >
             Lanjutkan dengan Google
           </button>
 
-          <p className="text-center text-sm text-[#888]">
+          <p className="text-center text-sm text-gray-500 font-medium">
             Sudah punya akun?{" "}
-            <Link href="/auth/login" className="font-bold text-[#2d6a4f] hover:underline">
+            <Link href="/auth/login" className="font-bold text-black hover:underline">
               Masuk
             </Link>
           </p>
