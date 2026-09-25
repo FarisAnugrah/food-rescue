@@ -1,10 +1,12 @@
 import Link from "next/link";
+import { logout } from "@/lib/auth-actions";
 
 const NAV_ITEMS = [
   { href: "/admin", label: "Overview" },
   { href: "/admin/merchants", label: "Merchants" },
   { href: "/admin/listings", label: "Listings" },
   { href: "/admin/impact", label: "Impact" },
+  { href: "/admin/cms", label: "CMS" },
 ];
 
 export default function AdminNav({ active }: { active: string }) {
@@ -15,7 +17,7 @@ export default function AdminNav({ active }: { active: string }) {
           food<span className="text-[#52b788]">rescue</span>
           <span className="ml-2 text-xs font-normal text-[#95d5b2]">admin</span>
         </Link>
-        <div className="flex gap-1">
+        <div className="flex gap-1 items-center">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.href}
@@ -29,6 +31,11 @@ export default function AdminNav({ active }: { active: string }) {
               {item.label}
             </Link>
           ))}
+          <form action={logout} className="ml-2 pl-3 border-l border-[#2d6a4f]">
+            <button type="submit" className="text-xs font-bold text-[#95d5b2] hover:text-white transition-colors">
+              Logout
+            </button>
+          </form>
         </div>
       </div>
     </nav>
