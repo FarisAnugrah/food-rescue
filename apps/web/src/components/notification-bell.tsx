@@ -39,13 +39,15 @@ export default function NotificationBell() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-96 bg-white rounded-2xl shadow-xl border border-[#e8e4d4] overflow-hidden z-50">
-          <div className="px-5 py-4 border-b border-[#e8e4d4] bg-[#fafaf7] flex justify-between items-center">
-            <span className="font-bold text-[#1b4332] text-base">Notifikasi</span>
-            {hasUnread && <span className="text-xs font-semibold text-[#52b788] bg-[#d8f3dc] px-2 py-1 rounded-md">Baru</span>}
-          </div>
-          <div className="max-h-[400px] overflow-y-auto">
-            {notifications.length === 0 ? (
+        <>
+          <div className="fixed inset-0 z-40 sm:hidden" onClick={() => setIsOpen(false)} />
+          <div className="absolute right-0 mt-2 w-[calc(100vw-32px)] max-w-sm sm:w-96 bg-white rounded-2xl shadow-xl border border-[#e8e4d4] overflow-hidden z-50">
+            <div className="px-5 py-4 border-b border-[#e8e4d4] bg-[#fafaf7] flex justify-between items-center">
+              <span className="font-bold text-[#1b4332] text-base">Notifikasi</span>
+              {hasUnread && <span className="text-xs font-semibold text-[#52b788] bg-[#d8f3dc] px-2 py-1 rounded-md">Baru</span>}
+            </div>
+            <div className="max-h-[60vh] sm:max-h-[400px] overflow-y-auto">
+              {notifications.length === 0 ? (
               <div className="p-8 text-center">
                 <p className="text-sm text-[#888]">Belum ada notifikasi baru.</p>
               </div>
@@ -64,6 +66,7 @@ export default function NotificationBell() {
             )}
           </div>
         </div>
+        </>
       )}
     </div>
   );
