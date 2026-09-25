@@ -1,0 +1,16 @@
+{
+  "name": "Food Rescue ID",
+  "short_name": "FoodRescue",
+  "description": "Aplikasi penyelamat makanan surplus Indonesia",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fafaf7",
+  "theme_color": "#2d6a4f",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}
