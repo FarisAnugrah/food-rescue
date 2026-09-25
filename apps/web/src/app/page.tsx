@@ -27,7 +27,7 @@ export default async function Home() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  const { stats, testimonials: TESTIMONIALS } = await getLandingPageData();
+  const { stats, testimonials: TESTIMONIALS, assets } = await getLandingPageData();
 
   const dynamicStats = [
     { value: stats?.merchants || "0", label: "Merchant Aktif", suffix: "+" },
@@ -134,7 +134,7 @@ export default async function Home() {
         </div>
         <div className="overflow-hidden rounded-2xl bg-[#d8f3dc] aspect-square sm:aspect-[4/5] flex items-center justify-center relative">
           <img 
-            src="/images/hero.webp" 
+            src={assets?.hero_image || "/images/hero.webp"} 
             alt="Food Rescue Hero" 
             className="absolute inset-0 w-full h-full object-cover" 
           />
@@ -262,7 +262,7 @@ export default async function Home() {
           </div>
           <div className="w-full sm:w-80 h-56 rounded-2xl bg-[#2d6a4f] flex items-center justify-center relative overflow-hidden">
             <img 
-              src="/images/merchant-cta.webp" 
+              src={assets?.merchant_cta_image || "/images/merchant-cta.webp"} 
               alt="Merchant Storefront" 
               className="absolute inset-0 w-full h-full object-cover opacity-80 mix-blend-overlay" 
             />

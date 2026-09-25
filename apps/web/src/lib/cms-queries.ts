@@ -5,7 +5,7 @@ import { createClient } from "./supabase/server";
 export async function getLandingPageData() {
   const supabase = await createClient();
   
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return { stats: null, testimonials: [] };
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return { stats: null, testimonials: [], assets: {} };
 
   // Get real-time stats
   const { count: totalMerchants } = await supabase.from("merchants").select("*", { count: "exact", head: true }).eq("verified", true);
@@ -19,6 +19,16 @@ export async function getLandingPageData() {
     .select("id, quote, name, role")
     .eq("is_active", true)
     .order("created_at", { ascending: false });
+
+  // Get dynamic assets
+  const { data: assetsData } = await supabase
+    .from("landing_assets")
+    .select("key, url");
+
+  const assets = (assetsData || []).reduce((acc: Record<string, string>, item) => {
+    acc[item.key] = item.url;
+    return acc;
+  }, {});
 
   // Default hardcoded ones if DB is empty or fails
   const defaultTestimonials = [
@@ -41,6 +51,10 @@ export async function getLandingPageData() {
       merchants: totalMerchants || 0,
       kg_saved: total_kg_saved || 0
     },
-    testimonials: (testimonials && testimonials.length > 0) ? testimonials : defaultTestimonials
+    testimonials: (testimonials && testimonials.length > 0) ? testimonials : defaultTestimonials,
+    assets: {
+      hero_image: assets.hero_image || "/images/hero.webp",
+      merchant_cta_image: assets.merchant_cta_image || "/images/merchant-cta.webp"
+    }
   };
 }
