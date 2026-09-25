@@ -11,6 +11,13 @@ export const metadata: Metadata = {
   title: "Food Rescue",
   description:
     "Selamatkan makanan surplus dari merchant, dapatkan harga diskon hingga 70%.",
+  keywords: ["food rescue", "makanan murah", "surplus makanan", "diskon makanan"],
+  openGraph: {
+    title: "Food Rescue",
+    description: "Beli makanan sisa berkualitas dengan diskon hingga 70%.",
+    locale: "id_ID",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
