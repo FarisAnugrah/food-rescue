@@ -24,7 +24,7 @@ export default async function MerchantListings() {
             href="/merchant/listings/new"
             className="rounded-full bg-black px-6 py-2.5 text-sm font-bold text-white hover:bg-gray-800 transition-colors w-fit"
           >
-            + Listing Baru
+            + Tambah Makanan
           </Link>
         </div>
 

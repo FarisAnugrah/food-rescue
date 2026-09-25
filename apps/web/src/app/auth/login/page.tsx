@@ -186,7 +186,7 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full rounded-full border border-gray-200 bg-white py-4 text-sm font-bold text-gray-600 hover:bg-gray-50 disabled:opacity-50 transition-colors shadow-sm"
           >
-            Lanjutkan dengan Google
+            Masuk dengan Google
           </button>
 
           <p className="text-center text-sm text-gray-500 font-medium mt-4">
