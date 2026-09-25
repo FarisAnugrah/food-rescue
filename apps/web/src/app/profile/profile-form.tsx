@@ -37,7 +37,7 @@ export default function ProfileForm({ userProfile }: { userProfile: any }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form onSubmit={handleSubmit} className="space-y-5" encType="multipart/form-data">
       {msg.text && (
         <div className={`p-3 rounded-xl text-sm font-medium ${msg.type === "error" ? "bg-red-50 text-red-600" : "bg-green-50 text-green-600"}`}>
           {msg.text}

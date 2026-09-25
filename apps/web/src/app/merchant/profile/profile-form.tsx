@@ -78,7 +78,7 @@ export default function ProfileForm({ merchant }: { merchant: any }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6" encType="multipart/form-data">
       {msg.text && (
         <div className={`p-3 rounded text-sm ${msg.type === "error" ? "bg-red-50 text-red-600" : "bg-green-50 text-green-600"}`}>
           {msg.text}

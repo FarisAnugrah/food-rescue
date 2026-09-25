@@ -52,7 +52,7 @@ export default function NewListingPage() {
         <p className="mt-1 text-sm text-gray-500 mb-8">Posting surplus makananmu</p>
 
         <div className="rounded-2xl bg-white border border-[#e8e4d4] p-6 sm:p-8 shadow-sm">
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6" encType="multipart/form-data">
           {error && <div className="text-red-500 text-sm bg-red-50 p-3 rounded-xl">{error}</div>}
 
           <div className="space-y-1.5">
