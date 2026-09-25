@@ -132,10 +132,12 @@ export default async function Home() {
             </a>
           </div>
         </div>
-        <div className="overflow-hidden rounded-2xl bg-[#d8f3dc] aspect-square sm:aspect-[4/5] flex items-center justify-center">
-          <span className="text-[#2d6a4f] text-sm font-medium opacity-60">
-            [ Hero image ]
-          </span>
+        <div className="overflow-hidden rounded-2xl bg-[#d8f3dc] aspect-square sm:aspect-[4/5] flex items-center justify-center relative">
+          <img 
+            src="/images/hero.webp" 
+            alt="Food Rescue Hero" 
+            className="absolute inset-0 w-full h-full object-cover" 
+          />
         </div>
       </section>
 
@@ -258,8 +260,13 @@ export default async function Home() {
               Daftar sebagai Merchant
             </Link>
           </div>
-          <div className="w-full sm:w-80 h-56 rounded-2xl bg-[#2d6a4f] flex items-center justify-center">
-            <span className="text-[#52b788] text-sm opacity-60">[ foto merchant ]</span>
+          <div className="w-full sm:w-80 h-56 rounded-2xl bg-[#2d6a4f] flex items-center justify-center relative overflow-hidden">
+            <img 
+              src="/images/merchant-cta.webp" 
+              alt="Merchant Storefront" 
+              className="absolute inset-0 w-full h-full object-cover opacity-80 mix-blend-overlay" 
+            />
+            <span className="text-white text-sm font-bold opacity-0 hover:opacity-100 transition-opacity z-10">Food Rescue Merchant</span>
           </div>
         </div>
       </section>
