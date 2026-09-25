@@ -41,7 +41,7 @@ export default function NotificationBell() {
       {isOpen && (
         <>
           <div className="fixed inset-0 z-40 sm:hidden" onClick={() => setIsOpen(false)} />
-          <div className="absolute right-0 mt-2 w-[calc(100vw-32px)] max-w-sm sm:w-96 bg-white rounded-2xl shadow-xl border border-[#e8e4d4] overflow-hidden z-50">
+          <div className="absolute right-[-60px] sm:right-0 mt-2 w-[85vw] max-w-sm sm:w-96 bg-white rounded-2xl shadow-xl border border-[#e8e4d4] overflow-hidden z-50">
             <div className="px-5 py-4 border-b border-[#e8e4d4] bg-[#fafaf7] flex justify-between items-center">
               <span className="font-bold text-[#1b4332] text-base">Notifikasi</span>
               {hasUnread && <span className="text-xs font-semibold text-[#52b788] bg-[#d8f3dc] px-2 py-1 rounded-md">Baru</span>}
