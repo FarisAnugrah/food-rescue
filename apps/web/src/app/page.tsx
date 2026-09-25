@@ -1,12 +1,7 @@
 import Link from "next/link";
 import { ScrollToTop } from "@/components/scroll-to-top";
 import { createClient } from "@/lib/supabase/server";
-
-const STATS = [
-  { value: "185", label: "Merchant Aktif", suffix: "+" },
-  { value: "1.752", label: "Ton Makanan Diselamatkan", suffix: "" },
-  { value: "70", label: "Diskon hingga", suffix: "%" },
-];
+import { getLandingPageData } from "@/lib/cms-queries";
 
 const FEATURES = [
   {
@@ -26,26 +21,19 @@ const FEATURES = [
   },
 ];
 
-const TESTIMONIALS = [
-  {
-    quote:
-      "Awalnya skeptis, tapi ternyata makanannya masih layak banget. Sekarang tiap sore saya cek app-nya sebelum pulang kerja.",
-    name: "Rendra A.",
-    role: "Consumer, Jakarta Selatan",
-  },
-  {
-    quote:
-      "Dulu makanan sisa tiap malam dibuang. Sekarang malah jadi revenue tambahan. Tim onboarding-nya juga helpful banget.",
-    name: "Dewi S.",
-    role: "Owner Bakery, Bandung",
-  },
-];
-
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+
+  const { stats, testimonials: TESTIMONIALS } = await getLandingPageData();
+
+  const dynamicStats = [
+    { value: stats?.merchants || "0", label: "Merchant Aktif", suffix: "+" },
+    { value: stats?.kg_saved ? (stats.kg_saved / 1000).toFixed(1) : "0", label: "Ton Makanan Diselamatkan", suffix: "" },
+    { value: "70", label: "Diskon hingga", suffix: "%" },
+  ];
 
   let role = "guest";
   if (user) {
@@ -154,7 +142,7 @@ export default async function Home() {
       {/* Stats */}
       <section id="dampak" className="bg-[#1b4332] py-16">
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-0 px-6 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-[#2d6a4f]">
-          {STATS.map((s) => (
+          {dynamicStats.map((s) => (
             <div key={s.label} className="flex flex-col items-center py-10 sm:py-6 text-center">
               <p className="text-5xl font-bold text-white">
                 {s.value}
