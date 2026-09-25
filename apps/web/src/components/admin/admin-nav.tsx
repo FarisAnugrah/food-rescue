@@ -4,7 +4,7 @@ import { logout } from "@/lib/auth-actions";
 const NAV_ITEMS = [
   { href: "/admin", label: "Overview" },
   { href: "/admin/merchants", label: "Merchants" },
-  { href: "/admin/listings", label: "Listings" },
+  { href: "/admin/wallet", label: "Payouts" },
   { href: "/admin/impact", label: "Impact" },
   { href: "/admin/cms", label: "CMS" },
 ];

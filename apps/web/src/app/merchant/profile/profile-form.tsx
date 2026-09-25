@@ -153,7 +153,24 @@ export default function ProfileForm({ merchant }: { merchant: any }) {
         <MapPin className="w-4 h-4" /> Deteksi Lokasi Otomatis
       </button>
 
-      <div className="pt-2">
+      <div className="pt-6 mt-4 border-t border-[#e8e4d4]">
+        <h3 className="font-bold text-[#1b4332] mb-4">Informasi Rekening Bank (Untuk Pencairan)</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label className="block text-sm font-semibold text-[#1b4332] mb-1.5">Nama Bank</label>
+            <input name="bank_name" defaultValue={merchant.bank_name || ""} placeholder="BCA / Mandiri / GoPay" className="w-full rounded-xl border border-[#e8e4d4] px-4 py-2.5 text-sm focus:border-[#2d6a4f] outline-none transition-colors" />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-[#1b4332] mb-1.5">Nomor Rekening</label>
+            <input name="bank_account_number" defaultValue={merchant.bank_account_number || ""} className="w-full rounded-xl border border-[#e8e4d4] px-4 py-2.5 text-sm focus:border-[#2d6a4f] outline-none transition-colors" />
+          </div>
+        </div>
+        <div>
+          <label className="block text-sm font-semibold text-[#1b4332] mb-1.5">Nama Pemilik Rekening</label>
+          <input name="bank_account_name" defaultValue={merchant.bank_account_name || ""} className="w-full rounded-xl border border-[#e8e4d4] px-4 py-2.5 text-sm focus:border-[#2d6a4f] outline-none transition-colors" />
+        </div>
+      </div>
+      <div className="pt-6">
         <button type="submit" disabled={loading} className="w-full rounded-full bg-[#2d6a4f] py-3.5 text-sm font-bold text-white hover:bg-[#1b4332] disabled:opacity-50 transition-colors">
           {loading ? "Menyimpan..." : "Simpan Profil"}
         </button>

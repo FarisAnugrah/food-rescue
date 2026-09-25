@@ -16,6 +16,9 @@ export async function updateMerchantProfile(formData: FormData) {
   const address = formData.get("address") as string;
   const lat = parseFloat(formData.get("lat") as string) || 0;
   const lng = parseFloat(formData.get("lng") as string) || 0;
+  const bank_name = formData.get("bank_name") as string;
+  const bank_account_number = formData.get("bank_account_number") as string;
+  const bank_account_name = formData.get("bank_account_name") as string;
 
   let photo_url = undefined;
   let ktp_url = undefined;
@@ -52,7 +55,7 @@ export async function updateMerchantProfile(formData: FormData) {
     }
   }
 
-  const updates: any = { store_name, owner_name, description, phone, address, lat, lng };
+  const updates: any = { store_name, owner_name, description, phone, address, lat, lng, bank_name, bank_account_number, bank_account_name };
   if (photo_url) updates.photo_url = photo_url;
   if (ktp_url) updates.ktp_url = ktp_url;
 
