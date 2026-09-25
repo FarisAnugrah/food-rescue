@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { updateConsumerProfile } from "@/lib/user-actions";
 import { User } from "lucide-react";
+import { validateImageFile } from "@food-rescue/shared";
 
 export default function ProfileForm({ userProfile }: { userProfile: any }) {
   const [loading, setLoading] = useState(false);
@@ -16,6 +17,15 @@ export default function ProfileForm({ userProfile }: { userProfile: any }) {
     setMsg({ text: "", type: "" });
     
     const formData = new FormData(e.currentTarget);
+    
+    const avatarFile = formData.get("avatar") as File;
+    const fileErr = validateImageFile(avatarFile);
+    if (fileErr) {
+      setMsg({ text: fileErr, type: "error" });
+      setLoading(false);
+      return;
+    }
+
     const res = await updateConsumerProfile(formData);
     
     if (res.error) {

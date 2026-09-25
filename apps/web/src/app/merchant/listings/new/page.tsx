@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import MerchantNav from "@/components/merchant/merchant-nav";
 import { createListing } from "@/lib/listing-actions";
 
+import { validateImageFile } from "@food-rescue/shared";
+
 const CATEGORIES = ["Bakery", "Restoran", "Japanese", "Western", "Healthy", "Lainnya"];
 
 export default function NewListingPage() {
@@ -19,6 +21,16 @@ export default function NewListingPage() {
     setError("");
     
     const formData = new FormData(e.currentTarget);
+    
+    // Validasi file foto
+    const photoFile = formData.get("photo") as File;
+    const fileError = validateImageFile(photoFile);
+    if (fileError) {
+      setError(fileError);
+      setLoading(false);
+      return;
+    }
+
     formData.append("type", type);
 
     const res = await createListing(formData);

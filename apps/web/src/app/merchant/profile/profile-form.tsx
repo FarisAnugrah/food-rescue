@@ -5,6 +5,8 @@ import { updateMerchantProfile } from "@/lib/merchant-actions";
 
 import { MapPin } from "lucide-react";
 
+import { validateImageFile } from "@food-rescue/shared";
+
 export default function ProfileForm({ merchant }: { merchant: any }) {
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState({ text: "", type: "" });
@@ -52,6 +54,19 @@ export default function ProfileForm({ merchant }: { merchant: any }) {
     setMsg({ text: "", type: "" });
     
     const formData = new FormData(e.currentTarget);
+    
+    const photoFile = formData.get("photo") as File;
+    const ktpFile = formData.get("ktp") as File;
+    
+    const photoErr = validateImageFile(photoFile);
+    const ktpErr = validateImageFile(ktpFile);
+    
+    if (photoErr || ktpErr) {
+      setMsg({ text: photoErr || ktpErr || "File tidak valid", type: "error" });
+      setLoading(false);
+      return;
+    }
+
     const res = await updateMerchantProfile(formData);
     
     if (res.error) {
