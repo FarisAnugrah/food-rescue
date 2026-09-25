@@ -5,40 +5,60 @@ import AdminActionButtons from "../admin-action-buttons";
 
 export default function AdminMerchantsClient({ initialPending, initialVerified }: { initialPending: any[], initialVerified: any[] }) {
   const [tab, setTab] = useState<"pending" | "verified">("pending");
+  const [search, setSearch] = useState("");
   const [pageP, setPageP] = useState(1);
   const [pageV, setPageV] = useState(1);
   const perPage = 10;
 
-  const displayedPending = initialPending.slice(0, pageP * perPage);
-  const displayedVerified = initialVerified.slice(0, pageV * perPage);
+  const filteredPending = initialPending.filter((m) => 
+    m.store_name?.toLowerCase().includes(search.toLowerCase()) || 
+    m.users?.email?.toLowerCase().includes(search.toLowerCase())
+  );
+  
+  const filteredVerified = initialVerified.filter((m) => 
+    m.store_name?.toLowerCase().includes(search.toLowerCase())
+  );
 
-  const hasMoreP = displayedPending.length < initialPending.length;
-  const hasMoreV = displayedVerified.length < initialVerified.length;
+  const displayedPending = filteredPending.slice(0, pageP * perPage);
+  const displayedVerified = filteredVerified.slice(0, pageV * perPage);
+
+  const hasMoreP = displayedPending.length < filteredPending.length;
+  const hasMoreV = displayedVerified.length < filteredVerified.length;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
       <h1 className="text-2xl font-black tracking-tight text-gray-900 sm:text-3xl mb-1">Merchant Management</h1>
       <p className="text-sm text-gray-500 mb-8">Verifikasi dan kelola merchant</p>
 
-      <div className="flex gap-2 mb-6 bg-gray-200/50 p-1 w-fit rounded-full">
-        {(["pending", "verified"] as const).map((t) => (
-          <button
-            key={t}
-            onClick={() => setTab(t)}
-            className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${
-              tab === t ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-700"
-            }`}
-          >
-            {t === "pending" ? `Pending (${initialPending.length})` : `Verified (${initialVerified.length})`}
-          </button>
-        ))}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div className="flex gap-2 bg-gray-200/50 p-1 w-fit rounded-full">
+          {(["pending", "verified"] as const).map((t) => (
+            <button
+              key={t}
+              onClick={() => { setTab(t); setSearch(""); }}
+              className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${
+                tab === t ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              {t === "pending" ? `Pending (${filteredPending.length})` : `Verified (${filteredVerified.length})`}
+            </button>
+          ))}
+        </div>
+
+        <input 
+          type="text" 
+          placeholder="Cari merchant..." 
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full sm:w-64 rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:border-black outline-none transition-colors"
+        />
       </div>
 
       {tab === "pending" ? (
         <div className="flex flex-col gap-4">
-          {initialPending.length === 0 && (
+          {filteredPending.length === 0 && (
             <div className="rounded-3xl border border-dashed border-gray-200 bg-gray-50/50 p-12 text-center text-gray-500 font-medium">
-              Tidak ada merchant yang menunggu approval.
+              Tidak ada merchant yang sesuai pencarian.
             </div>
           )}
           {displayedPending.map((m) => (
@@ -90,9 +110,9 @@ export default function AdminMerchantsClient({ initialPending, initialVerified }
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-              {initialVerified.length === 0 && (
+              {filteredVerified.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="px-5 py-12 text-center text-gray-500 font-medium">Belum ada merchant yang diverifikasi.</td>
+                  <td colSpan={4} className="px-5 py-12 text-center text-gray-500 font-medium">Tidak ada merchant yang sesuai pencarian.</td>
                 </tr>
               )}
               {displayedVerified.map((m) => (
