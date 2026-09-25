@@ -94,3 +94,10 @@ export interface ImpactLog {
   co2_kg: number;
   created_at: string;
 }
+
+export type AuthRole = "consumer" | "merchant" | "admin";
+
+export interface GeoLocation {
+  lat: number;
+  lng: number;
+}
