@@ -124,8 +124,15 @@ export default function ListingsClient({ initialListings, user }: { initialListi
             ))}
           </div>
 
-          <div className="flex gap-4 items-center">
-            <label className="flex items-center gap-2 text-sm font-medium text-[#555] cursor-pointer bg-white border border-[#e8e4d4] px-4 py-2 rounded-full hover:border-[#2d6a4f] transition-colors">
+          <div className="flex flex-wrap gap-4 items-center">
+            <input
+              type="text"
+              placeholder="Cari makanan..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="rounded-full border border-[#e8e4d4] bg-white px-4 py-2.5 text-sm focus:border-[#2d6a4f] focus:outline-none flex-1 min-w-[200px]"
+            />
+            <label className="flex shrink-0 items-center gap-2 text-sm font-medium text-[#555] cursor-pointer bg-white border border-[#e8e4d4] px-4 py-2.5 rounded-full hover:border-[#2d6a4f] transition-colors">
               <input
                 type="checkbox"
                 checked={halalOnly}
@@ -134,7 +141,7 @@ export default function ListingsClient({ initialListings, user }: { initialListi
               />
               Halal
             </label>
-            <div className="flex bg-white border border-[#e8e4d4] rounded-full p-1">
+            <div className="flex shrink-0 bg-white border border-[#e8e4d4] rounded-full p-1">
               <button 
                 onClick={() => setViewMode("list")}
                 className={`px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${viewMode === "list" ? "bg-[#e8f5e9] text-[#2d6a4f]" : "text-[#888] hover:text-[#2d6a4f]"}`}
@@ -148,13 +155,6 @@ export default function ListingsClient({ initialListings, user }: { initialListi
                 Map
               </button>
             </div>
-            <input
-              type="text"
-              placeholder="Cari..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="rounded-full border border-[#e8e4d4] bg-white px-4 py-2 text-sm focus:border-[#2d6a4f] focus:outline-none w-44"
-            />
           </div>
         </div>
 
