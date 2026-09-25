@@ -5,6 +5,15 @@ import AdminActionButtons from "../admin-action-buttons";
 
 export default function AdminMerchantsClient({ initialPending, initialVerified }: { initialPending: any[], initialVerified: any[] }) {
   const [tab, setTab] = useState<"pending" | "verified">("pending");
+  const [pageP, setPageP] = useState(1);
+  const [pageV, setPageV] = useState(1);
+  const perPage = 10;
+
+  const displayedPending = initialPending.slice(0, pageP * perPage);
+  const displayedVerified = initialVerified.slice(0, pageV * perPage);
+
+  const hasMoreP = displayedPending.length < initialPending.length;
+  const hasMoreV = displayedVerified.length < initialVerified.length;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
@@ -32,7 +41,7 @@ export default function AdminMerchantsClient({ initialPending, initialVerified }
               Tidak ada merchant yang menunggu approval.
             </div>
           )}
-          {initialPending.map((m) => (
+          {displayedPending.map((m) => (
             <div key={m.id} className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-black/5 flex flex-col gap-4 hover:ring-black/10 transition-all">
               <div className="flex items-start justify-between">
                 <div>
@@ -56,6 +65,17 @@ export default function AdminMerchantsClient({ initialPending, initialVerified }
               </div>
             </div>
           ))}
+
+          {hasMoreP && (
+            <div className="mt-2 flex justify-center">
+              <button 
+                onClick={() => setPageP(p => p + 1)}
+                className="rounded-full border border-gray-200 bg-white px-6 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-50 transition-colors"
+              >
+                Load More
+              </button>
+            </div>
+          )}
         </div>
       ) : (
         <div className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5">
@@ -70,12 +90,12 @@ export default function AdminMerchantsClient({ initialPending, initialVerified }
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {initialVerified.length === 0 && (
-                  <tr>
-                    <td colSpan={4} className="px-5 py-12 text-center text-gray-500 font-medium">Belum ada merchant yang diverifikasi.</td>
-                  </tr>
-                )}
-                {initialVerified.map((m) => (
+              {initialVerified.length === 0 && (
+                <tr>
+                  <td colSpan={4} className="px-5 py-12 text-center text-gray-500 font-medium">Belum ada merchant yang diverifikasi.</td>
+                </tr>
+              )}
+              {displayedVerified.map((m) => (
                   <tr key={m.id} className="hover:bg-gray-50/50 transition-colors">
                     <td className="px-5 py-4">
                       <p className="font-bold text-gray-900 leading-tight">{m.store_name}</p>
@@ -100,6 +120,17 @@ export default function AdminMerchantsClient({ initialPending, initialVerified }
               </tbody>
             </table>
           </div>
+        </div>
+      )}
+      
+      {tab === "verified" && hasMoreV && (
+        <div className="mt-6 flex justify-center">
+          <button 
+            onClick={() => setPageV(p => p + 1)}
+            className="rounded-full border border-gray-200 bg-white px-6 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-50 transition-colors"
+          >
+            Load More
+          </button>
         </div>
       )}
     </div>
