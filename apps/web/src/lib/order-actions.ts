@@ -23,6 +23,9 @@ export async function createOrder(listingId: string, quantity: number, totalPric
 
   const qrCode = "FR-" + Math.random().toString(36).substring(2, 6).toUpperCase() + "-" + Math.floor(1000 + Math.random() * 9000);
   
+  const platformFee = 2000;
+  const grandTotal = totalPrice + platformFee;
+  
   // 1. Create order di DB dengan status PENDING
   const { data: order, error } = await supabase
     .from("orders")
@@ -30,11 +33,12 @@ export async function createOrder(listingId: string, quantity: number, totalPric
       user_id: user.id,
       listing_id: listingId,
       quantity,
-      total_price: totalPrice,
+      total_price: totalPrice, // Merchant revenue
       total_weight_kg: totalWeightKg,
       qr_code: qrCode,
       status: "pending",
       payment_method: method
+      // Note: Make sure to add `platform_fee` column to the DB and insert it here if you need reporting.
     })
     .select("id")
     .single();
@@ -73,7 +77,7 @@ export async function createOrder(listingId: string, quantity: number, totalPric
           body: JSON.stringify({
             reference_id: order.id,
             type: "DYNAMIC",
-            amount: totalPrice,
+            amount: grandTotal,
             currency: "IDR"
           })
         });
@@ -109,7 +113,7 @@ export async function createOrder(listingId: string, quantity: number, totalPric
           },
           body: JSON.stringify({
             reference_id: order.id,
-            amount: totalPrice,
+            amount: grandTotal,
             currency: "IDR",
             payment_method: {
               type: "VIRTUAL_ACCOUNT",
@@ -157,7 +161,7 @@ export async function createOrder(listingId: string, quantity: number, totalPric
           },
           body: JSON.stringify({
             reference_id: order.id,
-            amount: totalPrice,
+            amount: grandTotal,
             currency: "IDR",
             payment_method: {
               type: "EWALLET",
@@ -204,7 +208,7 @@ export async function createOrder(listingId: string, quantity: number, totalPric
           },
           body: JSON.stringify({
             reference_id: order.id,
-            amount: totalPrice,
+            amount: grandTotal,
             currency: "IDR",
             payment_method: {
               type: "EWALLET",

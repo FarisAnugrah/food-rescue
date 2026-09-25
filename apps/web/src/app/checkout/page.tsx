@@ -162,7 +162,7 @@ function CheckoutContent() {
             </div>
           </div>
           
-          <p className="font-bold text-2xl text-[#1b4332] mb-6">{formatCurrency(total)}</p>
+          <p className="font-bold text-2xl text-[#1b4332] mb-6">{formatCurrency(total + 2000)}</p>
 
           <button
             onClick={() => router.push(`/orders/${qrisOrder}`)}
@@ -197,7 +197,7 @@ function CheckoutContent() {
             <p className="text-xs text-[#888] uppercase tracking-widest font-semibold mb-1">Nomor VA</p>
             <p className="text-2xl font-mono font-bold text-[#1b4332] tracking-wider">{vaNumber}</p>
           </div>
-          <p className="font-bold text-2xl text-[#1b4332] mb-6">{formatCurrency(total)}</p>
+          <p className="font-bold text-2xl text-[#1b4332] mb-6">{formatCurrency(total + 2000)}</p>
           <button
             onClick={() => router.push(`/orders/${qrisOrder}`)}
             disabled={timeLeft === 0}
@@ -363,10 +363,14 @@ function CheckoutContent() {
             <span>Total Diskon</span>
             <span>−{formatCurrency(saved)}</span>
           </div>
+          <div className="flex justify-between text-gray-600 text-sm mt-1">
+            <span>Biaya Layanan Aplikasi</span>
+            <span>{formatCurrency(2000)}</span>
+          </div>
           
           <div className="border-t border-[#e8e4d4] pt-3 mt-1 flex justify-between items-center">
             <span className="font-bold text-[#1b4332]">Total Tagihan</span>
-            <span className="font-bold text-xl text-[#1b4332]">{formatCurrency(total)}</span>
+            <span className="font-bold text-xl text-[#1b4332]">{formatCurrency(total + 2000)}</span>
           </div>
         </div>
 
@@ -381,7 +385,7 @@ function CheckoutContent() {
           disabled={loading}
           className="w-full rounded-full bg-[#2d6a4f] py-4 text-sm font-bold text-white hover:bg-[#1b4332] transition-colors disabled:opacity-50 mt-2"
         >
-          {loading ? "Memproses..." : `Bayar ${formatCurrency(total)}`}
+          {loading ? "Memproses..." : `Bayar ${formatCurrency(total + 2000)}`}
         </button>
       </div>
     </div>
