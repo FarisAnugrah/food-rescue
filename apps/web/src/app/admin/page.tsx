@@ -3,6 +3,7 @@ import { formatCurrency, formatWeight } from "@food-rescue/shared";
 import AdminNav from "@/components/admin/admin-nav";
 import { getAdminDashboardStats, getPendingMerchants } from "@/lib/admin-queries";
 import AdminActionButtons from "./admin-action-buttons";
+import KtpPreview from "./ktp-preview";
 import { requireRole } from "@/lib/auth-checks";
 
 export const dynamic = "force-dynamic";
@@ -74,11 +75,7 @@ export default async function AdminDashboard() {
                     <p className="font-bold text-[#1b4332] text-sm">{m.store_name}</p>
                     <p className="text-xs text-[#888] mt-0.5">Pemilik: {m.owner_name || m.users?.name} ({m.users?.email})</p>
                     <p className="text-xs text-[#aaa] mt-1">{m.address}</p>
-                    {m.ktp_url && (
-                      <a href={m.ktp_url} target="_blank" rel="noreferrer" className="inline-block mt-2 text-xs font-bold text-[#2d6a4f] hover:underline">
-                        Lihat KTP
-                      </a>
-                    )}
+                    {m.ktp_url && <KtpPreview url={m.ktp_url} />}
                   </div>
                   <AdminActionButtons merchantId={m.id} userId={m.user_id} />
                 </div>

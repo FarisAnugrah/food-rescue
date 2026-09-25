@@ -8,6 +8,7 @@ export default function AdminMerchantsClient({ initialPending, initialVerified }
   const [search, setSearch] = useState("");
   const [pageP, setPageP] = useState(1);
   const [pageV, setPageV] = useState(1);
+  const [previewKtp, setPreviewKtp] = useState<string | null>(null);
   const perPage = 10;
 
   const filteredPending = initialPending.filter((m) => 
@@ -75,9 +76,9 @@ export default function AdminMerchantsClient({ initialPending, initialVerified }
               </div>
               <div className="flex items-center justify-between border-t border-dashed border-gray-200 pt-4">
                 {m.ktp_url ? (
-                  <a href={m.ktp_url} target="_blank" rel="noreferrer" className="text-[11px] font-bold uppercase tracking-wider text-[#2d6a4f] hover:text-[#1b4332] bg-[#e8f5e9] px-4 py-2 rounded-full transition-colors">
+                  <button onClick={() => setPreviewKtp(m.ktp_url)} className="text-[11px] font-bold uppercase tracking-wider text-[#2d6a4f] hover:text-[#1b4332] bg-[#e8f5e9] px-4 py-2 rounded-full transition-colors cursor-pointer">
                     Cek Foto KTP
-                  </a>
+                  </button>
                 ) : (
                   <span className="text-[11px] font-bold uppercase tracking-wider text-red-600 bg-red-50 px-4 py-2 rounded-full">Belum upload KTP</span>
                 )}
@@ -151,6 +152,21 @@ export default function AdminMerchantsClient({ initialPending, initialVerified }
           >
             Load More
           </button>
+        </div>
+      )}
+
+      {/* KTP Modal Preview */}
+      {previewKtp && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <div className="relative max-w-3xl w-full">
+            <button 
+              onClick={() => setPreviewKtp(null)} 
+              className="absolute -top-12 right-0 text-white font-bold text-sm bg-white/20 hover:bg-white/30 px-4 py-2 rounded-full transition-colors"
+            >
+              Tutup
+            </button>
+            <img src={previewKtp} alt="KTP Preview" className="w-full rounded-2xl shadow-2xl" />
+          </div>
         </div>
       )}
     </div>
