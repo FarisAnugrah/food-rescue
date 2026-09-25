@@ -28,7 +28,9 @@ export async function updateMerchantProfile(formData: FormData) {
       .from("listings")
       .upload(fileName, file);
       
-    if (!uploadError && uploadData) {
+    if (uploadError) return { error: `Gagal upload Logo: ${uploadError.message}` };
+    
+    if (uploadData) {
       const { data: publicUrlData } = supabase.storage.from("listings").getPublicUrl(fileName);
       photo_url = publicUrlData.publicUrl;
     }
@@ -42,7 +44,9 @@ export async function updateMerchantProfile(formData: FormData) {
       .from("listings")
       .upload(fileName, ktpFile);
       
-    if (!uploadError && uploadData) {
+    if (uploadError) return { error: `Gagal upload KTP: ${uploadError.message}` };
+    
+    if (uploadData) {
       const { data: publicUrlData } = supabase.storage.from("listings").getPublicUrl(fileName);
       ktp_url = publicUrlData.publicUrl;
     }
