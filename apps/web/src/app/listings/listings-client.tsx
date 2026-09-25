@@ -74,6 +74,13 @@ export default function ListingsClient({ initialListings, user }: { initialListi
   const active = filtered.filter((l) => l.status === "active");
   const soldOut = filtered.filter((l) => l.status === "sold_out");
 
+  // Group active listings by category if "Semua" is selected
+  const activeByCategory = CATEGORIES.slice(1).reduce((acc: Record<string, typeof active>, cat) => {
+    const items = active.filter(l => l.category === cat);
+    if (items.length > 0) acc[cat] = items;
+    return acc;
+  }, {});
+
   return (
     <div className="min-h-screen bg-[#fafaf7]">
       <nav className="sticky top-0 z-20 bg-[#fafaf7]/90 backdrop-blur border-b border-[#e8e4d4]">
@@ -164,12 +171,30 @@ export default function ListingsClient({ initialListings, user }: { initialListi
           </div>
         ) : (
           <>
-            {active.length > 0 && (
-              <div className="flex overflow-x-auto pb-6 -mx-6 px-6 sm:mx-0 sm:px-0 sm:pb-2 sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 hide-scrollbar">
-                {active.map((l) => (
-                  <ListingCard key={l.id} listing={l} compact={true} />
+            {category === "Semua" && !search ? (
+              <div className="flex flex-col gap-10">
+                {Object.entries(activeByCategory).map(([cat, items]) => (
+                  <div key={cat}>
+                    <div className="flex items-center justify-between mb-4">
+                      <h2 className="text-xl font-bold text-[#1b4332]">{cat}</h2>
+                      <button onClick={() => setCategory(cat)} className="text-sm font-semibold text-[#2d6a4f] hover:underline">Lihat semua</button>
+                    </div>
+                    <div className="flex overflow-x-auto pb-6 -mx-6 px-6 sm:mx-0 sm:px-0 sm:pb-2 sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 hide-scrollbar">
+                      {items.map((l) => (
+                        <ListingCard key={l.id} listing={l} compact={true} />
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
+            ) : (
+              active.length > 0 && (
+                <div className="flex overflow-x-auto pb-6 -mx-6 px-6 sm:mx-0 sm:px-0 sm:pb-2 sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 hide-scrollbar">
+                  {active.map((l) => (
+                    <ListingCard key={l.id} listing={l} compact={true} />
+                  ))}
+                </div>
+              )
             )}
 
             {soldOut.length > 0 && (
