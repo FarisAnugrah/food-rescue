@@ -108,12 +108,12 @@ export default function ListingsClient({ initialListings, user }: { initialListi
         </div>
 
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-wrap gap-2">
+          <div className="flex overflow-x-auto pb-2 -mx-6 px-6 sm:mx-0 sm:px-0 sm:pb-0 sm:flex-wrap gap-2 hide-scrollbar">
             {CATEGORIES.map((c) => (
               <button
                 key={c}
                 onClick={() => setCategory(c)}
-                className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                   category === c
                     ? "bg-[#2d6a4f] text-white"
                     : "bg-white border border-[#e8e4d4] text-[#555] hover:border-[#2d6a4f]"
