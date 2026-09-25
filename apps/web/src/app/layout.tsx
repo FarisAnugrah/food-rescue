@@ -24,6 +24,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="id" className={`${geist.variable} h-full antialiased`}>
       <head>
+        <link rel="manifest" href="/manifest.json" />
+
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossOrigin="" />
       </head>
       <body className="min-h-full flex flex-col">{children}</body>
