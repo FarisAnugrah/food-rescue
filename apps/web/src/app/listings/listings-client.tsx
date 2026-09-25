@@ -165,19 +165,19 @@ export default function ListingsClient({ initialListings, user }: { initialListi
         ) : (
           <>
             {active.length > 0 && (
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="flex overflow-x-auto pb-6 -mx-6 px-6 sm:mx-0 sm:px-0 sm:pb-2 sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 hide-scrollbar">
                 {active.map((l) => (
-                  <ListingCard key={l.id} listing={l} />
+                  <ListingCard key={l.id} listing={l} compact={true} />
                 ))}
               </div>
             )}
 
             {soldOut.length > 0 && (
               <>
-                <h2 className="mt-12 mb-4 text-lg font-semibold text-[#aaa]">Sold Out</h2>
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <h2 className="mt-12 mb-4 text-lg font-bold text-gray-400">Habis Terjual</h2>
+                <div className="flex overflow-x-auto pb-6 -mx-6 px-6 sm:mx-0 sm:px-0 sm:pb-2 sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 hide-scrollbar">
                   {soldOut.map((l) => (
-                    <ListingCard key={l.id} listing={l} />
+                    <ListingCard key={l.id} listing={l} compact={true} />
                   ))}
                 </div>
               </>

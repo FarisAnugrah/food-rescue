@@ -5,9 +5,10 @@ import { Image as ImageIcon } from "lucide-react";
 
 interface Props {
   listing: Listing & { merchant_name: string; merchant_address: string };
+  compact?: boolean;
 }
 
-export default function ListingCard({ listing }: Props) {
+export default function ListingCard({ listing, compact = false }: Props) {
   const discount = calculateDiscount(listing.original_price, listing.discounted_price);
   const isSoldOut = listing.status === "sold_out";
   const remaining = listing.quantity - listing.quantity_sold;
@@ -17,7 +18,7 @@ export default function ListingCard({ listing }: Props) {
   return (
     <Link
       href={`/listings/${listing.id}`}
-      className={`group flex flex-col overflow-hidden rounded-[24px] bg-white shadow-sm ring-1 ring-black/5 transition-all hover:-translate-y-1 hover:shadow-md ${isSoldOut ? "opacity-60" : ""}`}
+      className={`group flex flex-col overflow-hidden rounded-[24px] bg-white shadow-sm ring-1 ring-black/5 transition-all hover:-translate-y-1 hover:shadow-md shrink-0 ${compact ? "w-[240px] sm:w-[280px]" : ""} ${isSoldOut ? "opacity-60" : ""}`}
     >
       <div className="relative aspect-[4/3] bg-gray-100 flex items-center justify-center overflow-hidden">
         {listing.photo_url ? (
@@ -65,7 +66,7 @@ export default function ListingCard({ listing }: Props) {
             <p className="text-xs text-gray-400 line-through mb-0.5">
               {formatCurrency(listing.original_price)}
             </p>
-            <p className="text-xl font-black text-gray-900 tracking-tight">
+            <p className={`${compact ? "text-lg" : "text-xl"} font-black text-gray-900 tracking-tight`}>
               {formatCurrency(listing.discounted_price)}
             </p>
           </div>
