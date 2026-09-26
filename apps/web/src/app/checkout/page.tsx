@@ -130,7 +130,7 @@ function CheckoutContent() {
       return;
     }
 
-    if (method === "va_bca") {
+    if (method.startsWith("va_")) {
       setQrisOrder(orderId);
       setVaNumber(vNum);
       setTimeLeft(3600);
@@ -138,7 +138,7 @@ function CheckoutContent() {
       return;
     }
 
-    if (method === "gopay") {
+    if (method === "gopay" || method === "dana" || method === "shopeepay") {
       setQrisOrder(orderId);
       setGopayUrl(gUrl);
       setTimeLeft(900);
@@ -253,7 +253,7 @@ function CheckoutContent() {
               <button onClick={() => window.location.reload()} className="px-6 py-2 bg-[#2d6a4f] text-white rounded-full text-sm font-bold mt-2">Ulangi Checkout</button>
             </div>
           )}
-          <h2 className="font-bold text-xl text-[#1b4332] mb-2">Transfer VA BCA</h2>
+          <h2 className="font-bold text-xl text-[#1b4332] mb-2 uppercase">Transfer VA {method.replace("va_", "")}</h2>
           <div className="bg-orange-50 text-orange-700 px-4 py-1.5 rounded-full text-sm font-bold mb-4 flex items-center gap-2">
             <Clock className="w-4 h-4" /> Selesaikan dalam {m}:{s}
           </div>

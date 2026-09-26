@@ -122,7 +122,7 @@ export default async function OrderDetailPage({ params, searchParams }: { params
             
             <PaymentTimer 
               createdAt={order.created_at} 
-              durationMinutes={order.payment_method === "va_bca" ? 60 : order.payment_method === "ovo" ? 1 : 15} 
+              durationMinutes={order.payment_method?.startsWith("va_") ? 60 : order.payment_method === "ovo" ? 1 : 15} 
             />
 
             {order.payment_method === "qris" && order.payment_link && (
