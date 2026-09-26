@@ -10,11 +10,34 @@ import { PackageOpen, Clock, Download } from "lucide-react";
 import QRCode from "react-qr-code";
 import CopyButton from "@/components/orders/copy-button";
 
-const PAYMENT_METHODS = [
-  { id: "gopay", label: "GoPay" },
-  { id: "ovo", label: "OVO" },
-  { id: "qris", label: "QRIS" },
-  { id: "va_bca", label: "Virtual Account BCA" },
+const PAYMENT_CATEGORIES = [
+  {
+    id: "ewallet",
+    label: "E-Wallet",
+    methods: [
+      { id: "gopay", label: "GoPay" },
+      { id: "ovo", label: "OVO" },
+      { id: "dana", label: "DANA" },
+      { id: "shopeepay", label: "ShopeePay" },
+    ]
+  },
+  {
+    id: "va",
+    label: "Transfer Virtual Account",
+    methods: [
+      { id: "va_bca", label: "BCA" },
+      { id: "va_mandiri", label: "Mandiri" },
+      { id: "va_bni", label: "BNI" },
+      { id: "va_bri", label: "BRI" },
+    ]
+  },
+  {
+    id: "qris",
+    label: "QRIS",
+    methods: [
+      { id: "qris", label: "QRIS (Semua E-Wallet/Bank)" }
+    ]
+  }
 ];
 
 function CheckoutContent() {
@@ -26,7 +49,8 @@ function CheckoutContent() {
   const [loadingListing, setLoadingListing] = useState(true);
 
   const [qty, setQty] = useState(1);
-  const [method, setMethod] = useState("gopay");
+  const [method, setMethod] = useState("qris");
+  const [openCategory, setOpenCategory] = useState<string>("qris");
   const [ovoPhone, setOvoPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -258,10 +282,10 @@ function CheckoutContent() {
     return (
       <div className="min-h-screen bg-[#fafaf7] flex flex-col items-center justify-center px-4 pb-20">
         <div className="bg-white p-8 rounded-2xl border border-[#e8e4d4] flex flex-col items-center w-full max-w-sm text-center shadow-sm">
-          <h2 className="font-bold text-xl text-[#1b4332] mb-4">Bayar dengan GoPay</h2>
-          <p className="text-sm text-[#888] mb-6">Klik tombol di bawah ini untuk membuka aplikasi Gojek dan menyelesaikan pembayaran.</p>
-          <a href={gopayUrl} className="w-full rounded-full bg-[#00AED6] py-4 text-sm font-bold text-white hover:bg-[#0092B3] transition-colors block text-center mb-4">
-            Buka Aplikasi Gojek
+          <h2 className="font-bold text-xl text-[#1b4332] mb-4 uppercase">Bayar dengan {method}</h2>
+          <p className="text-sm text-[#888] mb-6">Klik tombol di bawah ini untuk membuka aplikasi E-Wallet dan menyelesaikan pembayaran.</p>
+          <a href={gopayUrl} className="w-full rounded-full bg-[#00AED6] py-4 text-sm font-bold text-white hover:bg-[#0092B3] transition-colors block text-center mb-4 uppercase">
+            Buka Aplikasi {method}
           </a>
           <button
             onClick={() => router.push(`/orders/${qrisOrder}`)}
@@ -365,35 +389,61 @@ function CheckoutContent() {
         {/* Pembayaran */}
         <div className="rounded-2xl bg-white border border-[#e8e4d4] p-5">
           <h3 className="font-bold text-[#1b4332] mb-4">Metode Pembayaran</h3>
-          <div className="grid grid-cols-2 gap-3 mb-4">
-            {PAYMENT_METHODS.map((m) => (
-              <button
-                key={m.id}
-                onClick={() => setMethod(m.id)}
-                className={`rounded-xl border py-3 text-sm font-semibold transition-colors flex flex-col gap-1 items-center justify-center ${
-                  method === m.id
-                    ? "border-[#2d6a4f] bg-[#d8f3dc] text-[#1b4332]"
-                    : "border-[#e8e4d4] text-[#555] hover:border-[#2d6a4f]"
-                }`}
-              >
-                <span>{m.label}</span>
-              </button>
+          
+          <div className="flex flex-col gap-3 mb-2">
+            {PAYMENT_CATEGORIES.map((cat) => (
+              <div key={cat.id} className="flex flex-col border border-[#e8e4d4] rounded-xl overflow-hidden transition-all">
+                <button
+                  onClick={() => {
+                    setOpenCategory(cat.id === openCategory ? "" : cat.id);
+                    if (cat.id !== openCategory && cat.methods.length > 0) {
+                      setMethod(cat.methods[0].id);
+                    }
+                  }}
+                  className={`w-full text-left px-5 py-4 font-semibold text-sm transition-colors flex justify-between items-center ${
+                    openCategory === cat.id ? "bg-[#fefae0] text-[#1b4332]" : "bg-white text-[#555] hover:bg-[#fafaf7]"
+                  }`}
+                >
+                  <span>{cat.label}</span>
+                  <span className="text-xl leading-none font-light">{openCategory === cat.id ? "−" : "+"}</span>
+                </button>
+                
+                {openCategory === cat.id && (
+                  <div className="bg-white p-4 border-t border-[#e8e4d4]">
+                    <div className="grid grid-cols-2 gap-3">
+                      {cat.methods.map((m) => (
+                        <button
+                          key={m.id}
+                          onClick={() => setMethod(m.id)}
+                          className={`rounded-lg border py-3 px-2 text-xs sm:text-sm font-semibold transition-colors flex items-center justify-center text-center ${
+                            method === m.id
+                              ? "border-[#2d6a4f] bg-[#d8f3dc] text-[#1b4332]"
+                              : "border-[#e8e4d4] text-[#555] hover:border-[#2d6a4f]"
+                          }`}
+                        >
+                          {m.label}
+                        </button>
+                      ))}
+                    </div>
+
+                    {method === "ovo" && (
+                      <div className="mt-4 pt-4 border-t border-[#e8e4d4]">
+                        <label className="block text-sm font-semibold text-[#1b4332] mb-1.5">Nomor Handphone OVO</label>
+                        <input
+                          type="text"
+                          placeholder="Contoh: 08123456789"
+                          value={ovoPhone}
+                          onChange={(e) => setOvoPhone(e.target.value)}
+                          className="w-full rounded-xl border border-[#e8e4d4] px-4 py-2.5 text-sm focus:border-[#2d6a4f] outline-none transition-colors"
+                        />
+                        <p className="text-xs text-[#888] mt-1.5">Notifikasi pembayaran akan dikirim ke aplikasi OVO di nomor ini.</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             ))}
           </div>
-
-          {method === "ovo" && (
-            <div className="mt-4 pt-4 border-t border-[#e8e4d4]">
-              <label className="block text-sm font-semibold text-[#1b4332] mb-1.5">Nomor Handphone OVO</label>
-              <input
-                type="text"
-                placeholder="Contoh: 08123456789"
-                value={ovoPhone}
-                onChange={(e) => setOvoPhone(e.target.value)}
-                className="w-full rounded-xl border border-[#e8e4d4] px-4 py-2.5 text-sm focus:border-[#2d6a4f] outline-none transition-colors"
-              />
-              <p className="text-xs text-[#888] mt-1.5">Notifikasi pembayaran akan dikirim ke aplikasi OVO di nomor ini.</p>
-            </div>
-          )}
         </div>
 
         {/* Ringkasan */}

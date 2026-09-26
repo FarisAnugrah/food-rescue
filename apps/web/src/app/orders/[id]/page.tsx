@@ -131,9 +131,9 @@ export default async function OrderDetailPage({ params, searchParams }: { params
               </div>
             )}
             
-            {order.payment_method === "va_bca" && order.va_number && (
+            {order.payment_method?.startsWith("va_") && order.va_number && (
               <div className="mt-4 bg-white p-4 rounded-xl border border-orange-200 w-full max-w-xs text-left">
-                <p className="text-xs text-orange-800 uppercase tracking-widest font-semibold mb-1">Nomor VA BCA</p>
+                <p className="text-xs text-orange-800 uppercase tracking-widest font-semibold mb-1">Nomor VA {order.payment_method.replace("va_", "").toUpperCase()}</p>
                 <div className="flex items-center justify-between">
                   <p className="text-xl font-mono font-bold text-orange-900 tracking-wider">{order.va_number}</p>
                   <CopyButton textToCopy={order.va_number} />
@@ -141,9 +141,9 @@ export default async function OrderDetailPage({ params, searchParams }: { params
               </div>
             )}
             
-            {order.payment_method === "gopay" && order.payment_link && (
-              <a href={order.payment_link} className="mt-4 w-full max-w-xs rounded-full bg-[#00AED6] py-3 text-sm font-bold text-white hover:bg-[#0092B3] transition-colors block text-center">
-                Buka Aplikasi Gojek
+            {["gopay", "dana", "shopeepay"].includes(order.payment_method) && order.payment_link && (
+              <a href={order.payment_link} className="mt-4 w-full max-w-xs rounded-full bg-[#00AED6] py-3 text-sm font-bold uppercase text-white hover:bg-[#0092B3] transition-colors block text-center">
+                Buka Aplikasi {order.payment_method}
               </a>
             )}
 

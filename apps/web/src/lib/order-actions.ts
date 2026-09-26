@@ -103,7 +103,8 @@ export async function createOrder(listingId: string, quantity: number, totalPric
       }
     }
 
-    if (method === "va_bca") {
+    if (method.startsWith("va_")) {
+      const bankCode = method.replace("va_", "").toUpperCase();
       try {
         const resVA = await fetch("https://api.xendit.co/payment_requests", {
           method: "POST",
@@ -119,7 +120,7 @@ export async function createOrder(listingId: string, quantity: number, totalPric
               type: "VIRTUAL_ACCOUNT",
               reusability: "ONE_TIME_USE",
               virtual_account: {
-                channel_code: "BCA",
+                channel_code: bankCode,
                 channel_properties: {
                   customer_name: userData?.name || "Food Rescue User"
                 }
@@ -128,7 +129,7 @@ export async function createOrder(listingId: string, quantity: number, totalPric
           })
         });
 
-        if (!resVA.ok) throw new Error("Gagal memanggil API Xendit VA");
+        if (!resVA.ok) throw new Error(`Gagal memanggil API Xendit VA ${bankCode}`);
         const dataVA = await resVA.json();
         const vNumber = dataVA.payment_method.virtual_account.channel_properties.virtual_account_number;
         
@@ -147,11 +148,11 @@ export async function createOrder(listingId: string, quantity: number, totalPric
       } catch (err) {
         await adminSupabase.from("orders").delete().eq("id", order.id);
         await adminSupabase.rpc('increment_sold', { x_listing_id: listingId, x_qty: -quantity });
-        return { data: null, invoiceUrl: null, qrisString: null, vaNumber: null, gopayUrl: null, error: "Gagal membuat VA BCA" };
+        return { data: null, invoiceUrl: null, qrisString: null, vaNumber: null, gopayUrl: null, error: `Gagal membuat VA ${bankCode}` };
       }
     }
 
-    if (method === "gopay") {
+    if (method === "gopay" || method === "dana" || method === "shopeepay") {
       try {
         const resEw = await fetch("https://api.xendit.co/payment_requests", {
           method: "POST",
@@ -167,18 +168,18 @@ export async function createOrder(listingId: string, quantity: number, totalPric
               type: "EWALLET",
               reusability: "ONE_TIME_USE",
               ewallet: {
-                channel_code: "GOPAY",
+                channel_code: method.toUpperCase(),
                 channel_properties: {
                   success_return_url: `${siteUrl}/orders/${order.id}?success=true`,
-                  failure_return_url: `${siteUrl}/checkout?id=${listingId}&error=gopay_failed`,
-                  cancel_return_url: `${siteUrl}/checkout?id=${listingId}&error=gopay_cancelled`
+                  failure_return_url: `${siteUrl}/checkout?id=${listingId}&error=ewallet_failed`,
+                  cancel_return_url: `${siteUrl}/checkout?id=${listingId}&error=ewallet_cancelled`
                 }
               }
             }
           })
         });
 
-        if (!resEw.ok) throw new Error("Gagal memanggil API Xendit GoPay");
+        if (!resEw.ok) throw new Error(`Gagal memanggil API Xendit ${method}`);
         const dataEw = await resEw.json();
         const actionUrl = dataEw.actions?.find((a: any) => a.action === "AUTH")?.url;
         
@@ -190,7 +191,7 @@ export async function createOrder(listingId: string, quantity: number, totalPric
       } catch (err) {
         await adminSupabase.from("orders").delete().eq("id", order.id);
         await adminSupabase.rpc('increment_sold', { x_listing_id: listingId, x_qty: -quantity });
-        return { data: null, invoiceUrl: null, qrisString: null, vaNumber: null, gopayUrl: null, error: "Gagal memproses GoPay" };
+        return { data: null, invoiceUrl: null, qrisString: null, vaNumber: null, gopayUrl: null, error: `Gagal memproses ${method}` };
       }
     }
 
