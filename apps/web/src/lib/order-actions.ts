@@ -18,6 +18,12 @@ export async function createOrder(listingId: string, quantity: number, totalPric
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { data: null, invoiceUrl: null, error: "Unauthorized" };
 
+  // 0. Verify stock availability
+  const { data: targetListing } = await supabase.from("listings").select("quantity, quantity_sold, pickup_end").eq("id", listingId).single();
+  if (!targetListing) return { data: null, invoiceUrl: null, error: "Makanan tidak ditemukan" };
+  if (new Date() > new Date(targetListing.pickup_end)) return { data: null, invoiceUrl: null, error: "Waktu pickup telah berakhir" };
+  if (targetListing.quantity - targetListing.quantity_sold < quantity) return { data: null, invoiceUrl: null, error: "Stok makanan tidak cukup" };
+
   // Get user details for invoice
   const { data: userData } = await supabase.from("users").select("name, email").eq("id", user.id).single();
 
@@ -294,11 +300,17 @@ export async function verifyOrderByQr(qrCode: string) {
   // Cari order berdasarkan QR Code
   const { data: order, error: searchError } = await supabase
     .from("orders")
-    .select("id, status")
+    .select("id, status, listings(merchant_id)")
     .eq("qr_code", qrCode)
     .single();
 
   if (searchError || !order) return { error: "QR Code tidak valid atau tidak ditemukan" };
+
+  const { data: merchant } = await supabase.from("merchants").select("id").eq("user_id", user.id).single();
+  if (!merchant || (order.listings as any).merchant_id !== merchant.id) {
+    return { error: "Order ini bukan dari toko Anda." };
+  }
+
   if (order.status !== "paid") return { error: `Order tidak valid (Status: ${order.status})` };
 
   return verifyOrder(order.id);

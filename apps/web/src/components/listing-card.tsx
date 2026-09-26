@@ -10,8 +10,8 @@ interface Props {
 
 export default function ListingCard({ listing, compact = false }: Props) {
   const discount = calculateDiscount(listing.original_price, listing.discounted_price);
-  const isSoldOut = listing.status === "sold_out";
-  const remaining = listing.quantity - listing.quantity_sold;
+  const remaining = Math.max(0, listing.quantity - listing.quantity_sold);
+  const isSoldOut = listing.status === "sold_out" || remaining === 0;
   const pickupStart = new Date(listing.pickup_start).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
   const pickupEnd = new Date(listing.pickup_end).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
 

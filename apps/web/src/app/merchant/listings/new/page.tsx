@@ -31,6 +31,15 @@ export default function NewListingPage() {
       return;
     }
 
+    const origPrice = parseInt(formData.get("original_price") as string);
+    const discPrice = parseInt(formData.get("discounted_price") as string);
+    
+    if (discPrice >= origPrice) {
+      setError("Harga diskon harus lebih murah dari harga asli.");
+      setLoading(false);
+      return;
+    }
+
     formData.append("type", type);
 
     const res = await createListing(formData);

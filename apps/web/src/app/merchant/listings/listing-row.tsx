@@ -22,7 +22,7 @@ export default function ListingRow({ listing }: { listing: any }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const remaining = listing.quantity - listing.quantity_sold;
+  const remaining = Math.max(0, listing.quantity - listing.quantity_sold);
   const startObj = new Date(listing.pickup_start);
   const endObj = new Date(listing.pickup_end);
   const start = startObj.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });

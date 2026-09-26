@@ -40,8 +40,8 @@ export default function ListingClientDetail({
     };
   }, [listing.id]);
 
-  const remaining = listing.quantity - listing.quantity_sold;
-  const isSoldOut = listing.status === "sold_out";
+  const remaining = Math.max(0, listing.quantity - listing.quantity_sold);
+  const isSoldOut = listing.status === "sold_out" || remaining === 0;
   const isExpired = listing.status === "expired" || new Date(listing.pickup_end) < new Date();
 
   return (

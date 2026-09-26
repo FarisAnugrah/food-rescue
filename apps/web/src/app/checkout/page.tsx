@@ -55,6 +55,12 @@ function CheckoutContent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    const errParam = searchParams.get("error");
+    if (errParam === "ewallet_failed" || errParam === "gopay_failed") setError("Pembayaran E-Wallet dibatalkan atau gagal.");
+    if (errParam === "payment_failed") setError("Pembayaran gagal. Silakan coba metode lain.");
+  }, [searchParams]);
+
   const [qrisOrder, setQrisOrder] = useState<string | null>(null);
   const [qrisString, setQrisString] = useState<string | null>(null);
   
