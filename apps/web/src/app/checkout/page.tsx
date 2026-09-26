@@ -6,7 +6,7 @@ import Link from "next/link";
 import { formatCurrency, calculateDiscount } from "@food-rescue/shared";
 import { getListingByIdAction } from "@/lib/listing-actions";
 import { createOrder, simulatePaymentSuccess } from "@/lib/order-actions";
-import { PackageOpen, Clock } from "lucide-react";
+import { PackageOpen, Clock, Download } from "lucide-react";
 import QRCode from "react-qr-code";
 
 const PAYMENT_METHODS = [
@@ -136,6 +136,38 @@ function CheckoutContent() {
     }
   }
 
+  function downloadQR() {
+    const svg = document.getElementById("qris-svg");
+    if (!svg) return;
+    
+    // Bikin objek gambar SVG
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    const img = new Image();
+    
+    // Bikin canvas ukuran standar + padding biar keren
+    canvas.width = 300;
+    canvas.height = 300;
+
+    img.onload = () => {
+      // Kasih background putih
+      if (ctx) {
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 50, 50, 200, 200); // QR code di tengah
+      }
+      
+      const pngFile = canvas.toDataURL("image/png");
+      const downloadLink = document.createElement("a");
+      downloadLink.download = `QRIS-FoodRescue-${qrisOrder}.png`;
+      downloadLink.href = `${pngFile}`;
+      downloadLink.click();
+    };
+
+    img.src = "data:image/svg+xml;base64," + btoa(svgData);
+  }
+
   if (qrisString) {
     const m = Math.floor(timeLeft / 60).toString().padStart(2, "0");
     const s = (timeLeft % 60).toString().padStart(2, "0");
@@ -158,9 +190,17 @@ function CheckoutContent() {
           
           <div className="p-4 border-4 border-[#2d6a4f] rounded-xl mb-6 bg-white flex items-center justify-center mx-auto w-fit">
             <div className={`w-48 h-48 flex items-center justify-center ${timeLeft === 0 ? "opacity-20" : ""}`}>
-              <QRCode value={qrisString} size={192} style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
+              <QRCode id="qris-svg" value={qrisString} size={192} style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
             </div>
           </div>
+          
+          <button 
+            onClick={downloadQR}
+            disabled={timeLeft === 0}
+            className="flex items-center gap-2 text-sm font-bold text-[#2d6a4f] hover:underline disabled:opacity-50 mb-6 mt-[-12px]"
+          >
+            <Download className="w-4 h-4" /> Download QR Code
+          </button>
           
           <p className="font-bold text-2xl text-[#1b4332] mb-6">{formatCurrency(total + 2000)}</p>
 

@@ -4,6 +4,7 @@ import { formatCurrency, formatWeight } from "@food-rescue/shared";
 import { submitReview } from "@/lib/enhanced-actions";
 import { getConsumerOrderById } from "@/lib/order-queries";
 import { PackageOpen, CheckCircle } from "lucide-react";
+import QRDownload from "@/components/orders/qr-download";
 import QRCode from "react-qr-code";
 import PaymentTimer from "@/components/orders/payment-timer";
 
@@ -124,8 +125,8 @@ export default async function OrderDetailPage({ params, searchParams }: { params
             />
 
             {order.payment_method === "qris" && order.payment_link && (
-              <div className="mt-4 p-4 border-4 border-orange-200 rounded-xl bg-white flex items-center justify-center mx-auto w-fit">
-                <QRCode value={order.payment_link} size={160} style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
+              <div className="mt-4">
+                <QRDownload qrString={order.payment_link} filename={`QRIS-${order.qr_code}`} />
               </div>
             )}
             
