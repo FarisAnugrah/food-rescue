@@ -8,6 +8,7 @@ import { getListingByIdAction } from "@/lib/listing-actions";
 import { createOrder, simulatePaymentSuccess } from "@/lib/order-actions";
 import { PackageOpen, Clock, Download } from "lucide-react";
 import QRCode from "react-qr-code";
+import CopyButton from "@/components/orders/copy-button";
 
 const PAYMENT_METHODS = [
   { id: "gopay", label: "GoPay" },
@@ -233,9 +234,12 @@ function CheckoutContent() {
             <Clock className="w-4 h-4" /> Selesaikan dalam {m}:{s}
           </div>
           <p className="text-sm text-[#888] mb-4">Transfer tepat sesuai nominal ke nomor Virtual Account di bawah ini:</p>
-          <div className="bg-[#fefae0] p-4 rounded-xl border border-[#e8e4d4] w-full mb-6">
+          <div className="bg-[#fefae0] p-4 rounded-xl border border-[#e8e4d4] w-full mb-6 text-left">
             <p className="text-xs text-[#888] uppercase tracking-widest font-semibold mb-1">Nomor VA</p>
-            <p className="text-2xl font-mono font-bold text-[#1b4332] tracking-wider">{vaNumber}</p>
+            <div className="flex items-center justify-between">
+              <p className="text-2xl font-mono font-bold text-[#1b4332] tracking-wider">{vaNumber}</p>
+              <CopyButton textToCopy={vaNumber} />
+            </div>
           </div>
           <p className="font-bold text-2xl text-[#1b4332] mb-6">{formatCurrency(total + 2000)}</p>
           <button

@@ -7,6 +7,7 @@ import { PackageOpen, CheckCircle } from "lucide-react";
 import QRDownload from "@/components/orders/qr-download";
 import QRCode from "react-qr-code";
 import PaymentTimer from "@/components/orders/payment-timer";
+import CopyButton from "@/components/orders/copy-button";
 
 import { simulatePaymentSuccess } from "@/lib/order-actions";
 
@@ -131,9 +132,12 @@ export default async function OrderDetailPage({ params, searchParams }: { params
             )}
             
             {order.payment_method === "va_bca" && order.va_number && (
-              <div className="mt-4 bg-white p-4 rounded-xl border border-orange-200 w-full max-w-xs">
+              <div className="mt-4 bg-white p-4 rounded-xl border border-orange-200 w-full max-w-xs text-left">
                 <p className="text-xs text-orange-800 uppercase tracking-widest font-semibold mb-1">Nomor VA BCA</p>
-                <p className="text-xl font-mono font-bold text-orange-900 tracking-wider">{order.va_number}</p>
+                <div className="flex items-center justify-between">
+                  <p className="text-xl font-mono font-bold text-orange-900 tracking-wider">{order.va_number}</p>
+                  <CopyButton textToCopy={order.va_number} />
+                </div>
               </div>
             )}
             
