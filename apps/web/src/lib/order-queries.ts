@@ -48,7 +48,7 @@ export async function getConsumerOrderById(id: string) {
   const supabase = await createClient();
   
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-    if (id.startsWith("o-")) return { data: { id, status: "paid", qr_code: "FR-DUMMY", listing_title: "Dummy Order", total_weight_kg: 1.5, quantity: 1, total_price: 25000, created_at: new Date().toISOString() }, error: null };
+    if (id.startsWith("o-")) return { data: { id, status: "paid", qr_code: "FR-DUMMY", listing_title: "Sample Order", total_weight_kg: 1.5, quantity: 1, total_price: 25000, created_at: new Date().toISOString() }, error: null };
     return { data: null, error: null };
   }
 
