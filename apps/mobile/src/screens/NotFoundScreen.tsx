@@ -2,12 +2,20 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function NotFoundScreen({ goHome }: { goHome: () => void }) {
   return (
-    <div className="flex-1 justify-center items-center bg-white p-6">
-      <Text className="text-4xl font-black text-green-700 mb-2">404</Text>
-      <Text className="text-gray-600 mb-6 text-center">Halaman tidak ditemukan.</Text>
-      <TouchableOpacity onPress={goHome} className="bg-black px-6 py-3 rounded-full">
-        <Text className="text-white font-bold">Kembali</Text>
+    <View style={s.container}>
+      <Text style={s.title}>404</Text>
+      <Text style={s.subtitle}>Halaman tidak ditemukan.</Text>
+      <TouchableOpacity onPress={goHome} style={s.btn}>
+        <Text style={s.btnText}>Kembali</Text>
       </TouchableOpacity>
-    </div>
+    </View>
   );
 }
+
+const s = StyleSheet.create({
+  container: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "white", padding: 24 },
+  title: { fontSize: 36, fontWeight: "900", color: "#15803d", marginBottom: 8 },
+  subtitle: { color: "#4b5563", marginBottom: 24, textAlign: "center" },
+  btn: { backgroundColor: "black", paddingHorizontal: 24, paddingVertical: 12, borderRadius: 999 },
+  btnText: { color: "white", fontWeight: "bold" },
+});
