@@ -91,7 +91,7 @@ export default function WalletClient({ balance, merchant, withdrawals }: { balan
           
           <div className="flex-1 overflow-y-auto max-h-[300px]">
             {withdrawals.length === 0 ? (
-              <div className="text-center text-gray-400 py-10 text-sm font-medium">Belum ada riwayat penarikan</div>
+              <div className="text-center text-gray-400 py-10 text-sm font-medium">Belum ada riwayat penarikan dana untuk bulan ini</div>
             ) : (
               <div className="flex flex-col gap-3">
                 {withdrawals.map((w) => (
