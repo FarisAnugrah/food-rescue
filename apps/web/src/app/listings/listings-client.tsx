@@ -60,7 +60,7 @@ export default function ListingsClient({ initialListings, user }: { initialListi
     };
   }, []);
 
-  const userInitial = user?.user_metadata?.name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || "U";
+  const userInitial = user?.user_metadata?.name?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase() || "U";
 
   const filtered = useMemo(() => {
     return listings.filter((l) => {
