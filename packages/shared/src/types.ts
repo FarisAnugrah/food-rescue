@@ -95,7 +95,7 @@ export interface ImpactLog {
   created_at: string;
 }
 
-export type AuthRole = "consumer" | "merchant" | "admin";
+export type AuthRole = "consumer" | "merchant" | "admin" | "volunteer";
 
 export interface GeoLocation {
   lat: number;
