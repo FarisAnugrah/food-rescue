@@ -23,3 +23,6 @@ pnpm install
 pnpm dev
 \`\`\`
 Pastikan file \`.env\` sudah diisi sesuai \`.env.example\`.
+
+## SEO & PWA
+Aplikasi ini sudah mendukung *Progressive Web App* (PWA) basic dengan manifest, serta implementasi *OpenGraph* (OG Tags) dinamis untuk rich preview saat dibagikan ke platform sosial media.
