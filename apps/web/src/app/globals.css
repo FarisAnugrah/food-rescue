@@ -11,6 +11,7 @@
   --color-primary: #2d6a4f;
   --color-primary-dark: #1b4332;
   --color-primary-light: #d8f3dc;
+  --color-secondary: #52b788;
   --color-cream: #fefae0;
   --color-warm: #f4f1de;
   --font-sans: var(--font-geist);
@@ -24,8 +25,8 @@ html {
   display: none;
 }
 .hide-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 body {
