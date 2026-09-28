@@ -1,5 +1,7 @@
 # Food Rescue Indonesia 🍃
 
+![Status](https://img.shields.io/badge/status-beta-green)
+
 Marketplace platform yang menghubungkan merchant HOREKA (Hotel, Restoran, Katering) dan retail yang memiliki surplus makanan dengan konsumen untuk mengurangi *food waste* di Indonesia.
 
 ## Fitur Utama
