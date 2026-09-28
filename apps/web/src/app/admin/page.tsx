@@ -16,7 +16,7 @@ export default async function AdminDashboard() {
   const { data: stats } = await getAdminDashboardStats();
   const { data: pendingMerchants } = await getPendingMerchants();
 
-  const s = stats || { total_merchants: 0, total_consumers: 0, total_kg_saved: 0, total_co2_prevented: 0, total_orders: 0, total_revenue: 0, pending_merchants: 0, flagged_listings: 0 };
+  const s = stats ?? { total_merchants: 0, total_consumers: 0, total_kg_saved: 0, total_co2_prevented: 0, total_orders: 0, total_revenue: 0, pending_merchants: 0, flagged_listings: 0 };
 
   return (
     <div className="min-h-screen bg-[#fafaf7]">
