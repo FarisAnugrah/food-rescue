@@ -52,7 +52,7 @@ export default async function Home() {
       <ScrollToTop />
 
       {/* Navbar */}
-      <nav className="sticky top-0 z-20 bg-[#fafaf7]/90 backdrop-blur border-b border-[#e8e4d4]">
+      <nav aria-label="Main Navigation" className="sticky top-0 z-20 bg-[#fafaf7]/90 backdrop-blur border-b border-[#e8e4d4]">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <span className="text-xl font-bold tracking-tight text-[#1b4332]">
             food<span className="text-[#2d6a4f]">rescue</span>
