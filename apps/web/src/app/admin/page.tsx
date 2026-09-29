@@ -65,7 +65,7 @@ export default async function AdminDashboard() {
           
           {pendingMerchants.length === 0 ? (
             <div className="rounded-xl border border-[#e8e4d4] bg-white p-8 text-center text-[#888]">
-              Tidak ada merchant yang menunggu approval.
+              Bagus! Semua pendaftaran merchant saat ini sudah diproses.
             </div>
           ) : (
             <div className="flex flex-col gap-3">
