@@ -3,3 +3,4 @@ export * from "./utils";
 export * from "./utils/file";
 export * from "./utils/logger";
 export * from "./utils/date";
+export * from "./utils/number";
