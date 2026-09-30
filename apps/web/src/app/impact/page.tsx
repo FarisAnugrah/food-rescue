@@ -3,6 +3,7 @@ import { formatWeight } from "@food-rescue/shared";
 import { getConsumerImpact } from "@/lib/enhanced-actions";
 import { Award, ShoppingBag, Leaf, Utensils } from "lucide-react";
 import NotificationBell from "@/components/notification-bell";
+import { ImpactEmptyState } from "./empty-state";
 
 export const dynamic = "force-dynamic";
 
@@ -50,7 +51,7 @@ export default async function ImpactDashboard() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3 mb-10">
+        {i.total_orders === 0 ? <ImpactEmptyState /> : <div className="grid grid-cols-1 gap-6 sm:grid-cols-3 mb-10">
           <div className="rounded-2xl bg-white border border-[#e8e4d4] p-6 text-center">
             <div className="w-12 h-12 mx-auto rounded-full bg-[#d8f3dc] flex items-center justify-center mb-4">
               <Utensils className="w-6 h-6 text-[#2d6a4f]" />
