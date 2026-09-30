@@ -53,6 +53,7 @@ function CheckoutContent() {
   const [openCategory, setOpenCategory] = useState<string>("qris");
   const [ovoPhone, setOvoPhone] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
