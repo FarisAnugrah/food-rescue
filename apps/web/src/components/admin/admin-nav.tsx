@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { href: "/admin/wallet", label: "Payouts" },
   { href: "/admin/impact", label: "Impact" },
   { href: "/admin/cms", label: "CMS" },
+  { href: "/admin/form-builder", label: "Forms" },
 ];
 
 export default function AdminNav({ active }: { active: string }) {
