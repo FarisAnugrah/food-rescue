@@ -486,7 +486,7 @@ function CheckoutContent() {
           disabled={loading}
           className="w-full rounded-full bg-[#2d6a4f] py-4 text-sm font-bold text-white hover:bg-[#1b4332] transition-colors disabled:opacity-50 mt-2"
         >
-          {loading ? "Memproses..." : `Bayar ${formatCurrency(total + 2000)}`}
+          {loading ? "Tunggu sebentar..." : `Bayar ${formatCurrency(total + 2000)}`}
         </button>
       </div>
     </div>
